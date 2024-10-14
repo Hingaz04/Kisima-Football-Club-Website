@@ -1,0 +1,29 @@
+.players {
+  padding: 20px;
+}
+
+.add-player-form {
+  margin-bottom: 20px;
+}
+
+.add-player-form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.add-player-form input {
+  margin-left: 10px;
+}
+
+button {
+  margin-top: 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px;
+}

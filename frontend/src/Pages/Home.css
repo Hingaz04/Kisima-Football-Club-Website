@@ -1,0 +1,87 @@
+/* Main container for the Home page */
+.home-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 20px;
+}
+
+/* News section (left side) */
+.home-news-section {
+  flex: 0 0 65%;
+  padding-right: 20px;
+}
+
+/* Heading styles for news and photos */
+.home-heading {
+  font-size: 44px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #ff033e;
+}
+
+/* List and individual news item styles */
+.home-news-list {
+  list-style: none;
+  padding: 0;
+}
+
+.home-news-item {
+  margin-bottom: 15px;
+  padding: 10px;
+   background-color: #f9f9f9; 
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+  box-sizing: border-box;
+}
+
+/* Title and paragraph styles for news */
+.home-news-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.home-news-description,
+.home-news-date {
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+/* News image styles */
+.home-news-image {
+  margin-bottom: 15px;
+  width: 100%;
+  min-width: 780px;
+  height: auto;
+}
+
+/* Photos section (right side) */
+.home-photos-section {
+  flex: 0 0 35%;
+  padding-left: 20px;
+}
+
+/* Photo list and individual photo item styles */
+.home-photo-list {
+  list-style: none;
+  padding: 0;
+}
+
+.home-photo-item {
+  margin-bottom: 15px;
+}
+
+/* Photo image styles */
+.home-photo-image {
+  width: 100%;
+  height: auto;
+}
+
+/* Error message styles */
+.home-error-message {
+  color: red;
+  font-size: 16px;
+  margin-top: 20px;
+}

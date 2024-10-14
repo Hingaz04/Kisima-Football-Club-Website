@@ -1,0 +1,99 @@
+
+.footer {
+  background-color: #ff033e; 
+  color: gray;
+  padding: 20px 0;
+  font-family: Arial, sans-serif;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-around;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.footer-section {
+  flex: 1;
+  margin: 0 20px;
+  min-width: 200px;
+}
+
+.footer-title {
+  font-size: 1.7rem;
+  margin-bottom: 10px;
+  color: gray;
+}
+
+.footer-text span{
+    color:gray;
+}
+.footer-text {
+  font-size: 1.7rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: white;
+}
+
+.footer-texts {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.footer-texts span {
+  font-size: 1.7rem;
+  margin-bottom: 10px;
+  color: gray;
+  font-weight: bold;
+}
+
+.footer-socials {
+  display: flex;
+  justify-content: center; 
+  gap: 50px; 
+
+}
+
+.footer-socials a {
+  display: inline-block;
+  font-size: 2rem; 
+  color: gray;
+  transition: transform 0.2s ease-in-out; 
+}
+
+.footer-socials a:hover {
+  transform: scale(1.2); 
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 10px 0;
+  background-color: gray;
+  color:white;
+}
+
+.footer-bottom-text {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.sports-logos ul {
+  list-style: none;  
+  padding: 0; 
+  margin-top: 30px; 
+  display: flex;  
+  justify-content: center;
+  gap: 50px; 
+}
+
+.sports-logos li {
+  display: inline-block; 
+  font-size: 4rem;  
+}
+
+.sports-logos li:hover {
+  transform: scale(1.2);  
+  transition: transform 0.2s ease-in-out;  
+}
