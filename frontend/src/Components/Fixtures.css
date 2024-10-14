@@ -1,0 +1,51 @@
+.fixture-team-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.fixtures-heading{
+   color: #ff033e;
+   text-align: center; 
+    font-size: 2.5rem;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.fixture-team-image {
+  width: 150px; 
+  height: auto; 
+  border-radius: 8px;
+  max-width: 200px; 
+  max-height: 150px; 
+}
+
+.fixture-vs {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 0 20px;
+  color: #ff033e; 
+
+}
+
+.fixture-details-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 45px;
+}
+
+.fixture-team-name {
+font-size: 1.2rem;
+color:#ff033e;
+}
+
+.fixture-details {
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+.fixture-details-span{
+  color: #ff033e;
+}

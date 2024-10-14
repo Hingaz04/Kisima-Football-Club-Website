@@ -1,0 +1,44 @@
+.academy-team-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+
+}
+
+.academy-players-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #ff033e; 
+  text-align: center;
+}
+
+.academy-players-list {
+  list-style-type: decimal;
+  padding-left: 20px;
+  margin: 0;
+}
+
+.academy-player-item {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.academy-player-item:hover {
+ cursor: pointer;
+ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+ transform: translateY(5px);
+}
+
+.academy-player-info {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.player-bold {
+  color:  #ff033e; 
+  font-weight: bold;
+}
+

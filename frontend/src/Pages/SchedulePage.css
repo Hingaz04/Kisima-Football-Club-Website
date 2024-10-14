@@ -1,0 +1,20 @@
+.schedule-page-container {
+  display: flex;
+  justify-content: space-between; /* Aligns the items side by side */
+  gap: 20px; /* Adds spacing between the two sections */
+  padding: 20px;
+  margin: 0 auto;
+  width: 90%; /* Container width */
+  box-sizing: border-box;
+}
+
+.fixtures-container,
+.results-container {
+  width: 50%; 
+  background-color: #f9f9f9; 
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  box-sizing: border-box;
+}
+
