@@ -66,7 +66,7 @@ function Admin() {
           <div className="form-group">
             <label>Password:</label>
             <input
-              type="password"
+              type="text"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
