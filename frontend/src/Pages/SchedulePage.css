@@ -18,3 +18,19 @@
   box-sizing: border-box;
 }
 
+/* ===================== SCHEDULE PAGE MOBILE / PHONE VIEW ===================== */
+@media (max-width: 768px) {
+  .schedule-page-container {
+    flex-direction: column; /* stack Fixtures and Results vertically */
+    gap: 15px; /* space between the sections */
+    padding: 15px;
+    width: 100%; /* full width on mobile */
+  }
+
+  .fixtures-container,
+  .results-container {
+    width: 100%; /* take full width */
+    padding: 15px; /* reduce padding for mobile */
+    box-sizing: border-box;
+  }
+}

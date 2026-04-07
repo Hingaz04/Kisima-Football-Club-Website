@@ -22,37 +22,37 @@ function Fixtures() {
   }, []);
 
   return (
-    <div className="fixtures-page">
-      <h1 className="fixtures-heading">Fixtures</h1>
+    <div className="fixturesPage">
+      <h1 className="fixturesHeading">Fixtures</h1>
       {fixtures.length === 0 && (
-        <p className="fixtures-message">No fixtures available.</p>
+        <p className="fixturesMessage">No fixtures available.</p>
       )}
-      <ul className="fixtures-list">
+      <ul className="fixturesList">
         {fixtures.map((fixture) => (
-          <li className="fixture-item" key={fixture.id}>
-            <div className="fixture-team-row">
+          <li className="fixtureItem" key={fixture.id}>
+            <div className="fixtureTeam-row">
               <img
-                className="fixture-team-image"
+                className="fixtureTeam-image"
                 src={`http://127.0.0.1:5000/fixture/${fixture.homeTeamImage}`}
                 alt="Home Team"
               />
-              <h2 className="fixture-vs">VS</h2>
+              <h2 className="fixtureVS">VS</h2>
               <img
-                className="fixture-team-image"
+                className="fixtureTeam-image"
                 src={`http://127.0.0.1:5000/fixture/${fixture.awayTeamImage}`}
                 alt="Away Team"
               />
             </div>
-            <div className="fixture-details-row">
-              <p className="fixture-team-name">{fixture.homeTeam}</p>
-              <p className="fixture-team-name">{fixture.awayTeam}</p>
+            <div className="fixtureDetails-row">
+              <p className="fixtureTeam-name">{fixture.homeTeam}</p>
+              <p className="fixtureTeam-name">{fixture.awayTeam}</p>
             </div>
-            <p className="fixture-details">
-              <span className="fixture-details-span">Venue:</span>{" "}
+            <p className="fixtureDetails">
+              <span className="fixtureDetails-span">Venue:</span>{" "}
               {fixture.venue}
             </p>
-            <p className="fixture-details">
-              <span className="fixture-details-span">Date:</span> {fixture.date}
+            <p className="fixtureDetails">
+              <span className="fixtureDetails-span">Date:</span> {fixture.date}
             </p>
           </li>
         ))}

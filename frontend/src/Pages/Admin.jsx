@@ -39,13 +39,13 @@ function Admin() {
           navigate("/admin_dashboard");
         } else {
           setApiError("Login failed: Invalid response data.");
-          alert("Login failed: Invalid email or password. Please try again.");
+          alert("Login failed: Sorry wrong admin credentials.");
         }
       })
       .catch((err) => {
         console.error("Fetch error:", err);
         setApiError("Login failed: Please try again.");
-        alert("Login failed: Invalid email or password. Please try again.");
+        alert("Login failed: Wrong admin credentials.");
       });
   };
 

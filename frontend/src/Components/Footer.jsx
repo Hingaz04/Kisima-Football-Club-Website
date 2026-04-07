@@ -16,27 +16,28 @@ function Footer() {
     <footer className="footer">
       <div className="footer-container">
         <div className="footer-section">
-          <h3 className="footer-title">Kisima FC</h3>
+          <h3 className="footer-title">KISIMA - FC.</h3>
           <p className="footer-texts">
             Uniting our community through football.
           </p>
-          <p className="footer-texts">
-            <span>Home Ground:</span>Mahiga Primary, Nairobi
-          </p>
+          <h3 className="footer-title">HOME GROUND: </h3>
+          <p className="footer-texts">Mahiga Primary, Nairobi</p>
+          <h3 className="footer-title">OUR PARTNERS:</h3>
+          
+          <p className="footer-texts">PEFA THIKA ROAD CHURCH</p>
         </div>
+
         <div className="footer-section">
-          <h3 className="footer-title">Contact Us</h3>
-          <p className="footer-text">
-            <span>EMAIL:</span> info@kisima-fc
-          </p>
+          <h3 className="footer-title">Contact Us:</h3>
+
           <p className="footer-text">
             {" "}
-            <span>PHONE:</span> <li>+254 722387463</li> <li>+254 738049143</li>{" "}
+            <li>+254 722387463</li> <li>+254 738049143</li>{" "}
             <li>+254 716487084</li>
           </p>
         </div>
         <div className="footer-section">
-          <h3 className="footer-title">Follow Us</h3>
+          <h3 className="footer-title">Follow Us:</h3>
           <div className="footer-socials">
             <a
               href="https://www.facebook.com/profile.php?id=100083523874353"

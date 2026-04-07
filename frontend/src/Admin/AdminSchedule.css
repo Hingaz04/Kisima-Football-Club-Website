@@ -1,0 +1,126 @@
+.admin-schedule-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+  font-family: Arial, sans-serif;
+}
+
+.admin-schedule-page h1 {
+  text-align: center;
+  color: #ff033e;
+}
+
+.admin-schedule-page a {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #ff033e;
+  text-decoration: none;
+}
+
+.admin-schedule-page a:hover {
+  text-decoration: underline;
+}
+
+/* FORM */
+.admin-schedule-form {
+  margin-bottom: 30px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+.admin-schedule-form .form-group {
+  margin-bottom: 15px;
+}
+
+.admin-schedule-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.admin-schedule-form input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.admin-schedule-form button {
+  padding: 10px 15px;
+  background-color: #ff033e;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.admin-schedule-form button:hover {
+  background-color: gray;
+}
+
+/* GRID */
+.admin-fixtures-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* CARD */
+.admin-card {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  text-align: center;
+  background-color: #fff;
+  transition: transform 0.2s ease;
+}
+
+.admin-card:hover {
+  transform: translateY(-5px);
+}
+
+.admin-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.admin-card h3 {
+  margin: 10px 0;
+  color: #ff033e;
+}
+
+.admin-card p {
+  font-size: 0.95rem;
+  margin: 5px 0;
+}
+
+.admin-card button {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #ff033e;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.admin-card button:hover {
+  background-color: gray;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .admin-card img {
+    height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-fixtures-grid {
+    grid-template-columns: 1fr;
+  }
+}

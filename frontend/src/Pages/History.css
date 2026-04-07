@@ -52,3 +52,45 @@
   margin-bottom: 20px;
   color: #ff033e;
 }
+
+
+@media (max-width: 768px) {
+  .history-container {
+    width: 95%; /* almost full width on phones */
+    padding: 15px;
+    margin: 10px auto;
+    box-shadow: none; /* optional: remove shadow for cleaner mobile view */
+  }
+
+  .history {
+    padding: 15px;
+  }
+
+  .history-title {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
+
+  .history-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  .history-text {
+    font-size: 1rem;
+    line-height: 1.4;
+    margin-bottom: 15px;
+  }
+
+  .history img {
+    max-width: 100%;
+    min-height: 200px; /* smaller images for phones */
+    margin: 10px auto;
+  }
+
+  .paragraph {
+    font-size: 0.9rem;
+    margin-top: 5px;
+    margin-bottom: 15px;
+  }
+}

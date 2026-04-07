@@ -43,19 +43,13 @@ function AcademyPage() {
             <h2 className="about-subtitle">Team Details</h2>
             <ul className="about-list">
               <li>
-                <strong>Coach:</strong> Pele Makana
+                <strong>Coach:</strong> Ian Okasiba
               </li>
               <li>
                 <strong>Assistant Coach:</strong> Gregory Olasia
               </li>
               <li>
-                <strong>Team Captain:</strong> Stanley Chege
-              </li>
-              <li>
-                <strong>Assistant Captain:</strong> Dalmas Otieno
-              </li>
-              <li>
-                <strong>Team Formation:</strong> 4-3-3
+                <strong>Team Captain:</strong> Beckham Kimani
               </li>
               <li>
                 <strong>Home Ground:</strong> MAHIGA PRIMARY

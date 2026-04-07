@@ -4,7 +4,7 @@ import Home from "./Pages/Home";
 import Team from "./Pages/Team";
 import History from "./Pages/History";
 import About from "./Pages/About";
-import Schedule from "./Admin/Schedule";
+import AdminSchedule from "./Admin/AdminSchedule";
 import Admin from "./Pages/Admin";
 import News from "./Admin/News";
 import SchedulePage from "./Pages/SchedulePage";
@@ -20,6 +20,7 @@ import AcademyNews from "./Admin/AcademyNews";
 import AcademyPlayers from "./Admin/AcademyPlayers";
 import ResultAdmin from "./Admin/ResultAdmin";
 import WeekendPics from "./Admin/WeekendPics";
+import AdminSchedulePage from "./Admin/AdminSchedule";
 
 function App() {
   return (
@@ -34,7 +35,7 @@ function App() {
         <Route path="/admin" element={<Admin />} />
         <Route path="/admin_dashboard" element={<AdminPage />} />
         <Route path="/news" element={<News />} />
-        <Route path="/schedule" element={<Schedule />} />
+        <Route path="/admin-schedule" element={<AdminSchedule />} />
         <Route path="/players" element={<Players />} />
         <Route path="/academy-players" element={<AcademyPlayerPage />} />
         <Route path="/academy-news" element={<AcademyNewsPage />} />

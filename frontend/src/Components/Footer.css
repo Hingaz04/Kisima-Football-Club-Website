@@ -31,7 +31,7 @@
 }
 .footer-text {
   font-size: 1.7rem;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   font-weight: bold;
   color: white;
 }
@@ -59,12 +59,13 @@
 .footer-socials a {
   display: inline-block;
   font-size: 2rem; 
-  color: gray;
+  color: white;
   transition: transform 0.2s ease-in-out; 
 }
 
 .footer-socials a:hover {
   transform: scale(1.2); 
+  color: gray;
 }
 
 .footer-bottom {
@@ -96,4 +97,59 @@
 .sports-logos li:hover {
   transform: scale(1.2);  
   transition: transform 0.2s ease-in-out;  
+}
+
+
+/* ===================== FOOTER MOBILE / PHONE VIEW ===================== */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; 
+    padding: 10px 15px;
+  }
+
+  .footer-section {
+    margin: 10px 0;
+    text-align: center; 
+    min-width: auto;
+  }
+
+  .footer-title {
+    font-size: 1.4rem; /* smaller title */
+  }
+
+  .footer-text, 
+  .footer-texts {
+    font-size: 1.2rem; /* smaller text */
+  }
+
+  .footer-texts span, 
+  .footer-text span {
+    font-size: 1.2rem;
+  }
+
+  .footer-socials {
+    gap: 25px; /* reduce gap between icons */
+  }
+
+  .footer-socials a {
+    font-size: 1.5rem; /* smaller icons */
+  }
+
+  .sports-logos ul {
+    gap: 20px; /* smaller spacing between logos */
+  }
+
+  .sports-logos li {
+    font-size: 2.5rem; /* smaller logos */
+  }
+
+  .footer-bottom {
+    padding: 5px 0;
+  }
+
+  .footer-bottom-text {
+    font-size: 0.8rem;
+  }
 }

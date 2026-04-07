@@ -1,12 +1,12 @@
-
+/* ===================== NAVBAR ===================== */
 .navbar {
-  background-color:#ff033e;
+  background-color: #ff033e;
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap; /* allow wrapping on small screens */
 }
-
 
 .navbar-header {
   display: flex;
@@ -14,33 +14,27 @@
 }
 
 .navbar-header img {
-  width: 100px; 
+  width: 100px;
   height: 100px;
   margin-right: 15px;
-  border-radius: 10px; 
+  border-radius: 10px;
 }
 
 .navbar-header .nav-head {
-  color:white;
+  color: white;
   font-size: 3rem;
   font-weight: bold;
 }
-
 
 .navbar-links {
   list-style: none;
   display: flex;
   gap: 20px;
+  flex-wrap: wrap; /* allow links to wrap if needed */
 }
 
 .navbar-links li {
   display: inline;
-}
-
-.logo-header{
-  color:white;
-  font-size: 10px;
-  margin-left: 20px;
 }
 
 .navbar-links a {
@@ -51,33 +45,53 @@
 }
 
 .navbar-links a:hover {
-  background: white;      
-  color: #ff033e;             
-  padding: 5px 10px;     
-  border-radius: 15px;  
-  transition: background 0.3s ease, color 0.3s ease, border-radius 0.3s ease; /* Smooth transition */
+  background: white;
+  color: #ff033e;
+  padding: 5px 10px;
+  border-radius: 15px;
+  transition: background 0.3s ease, color 0.3s ease, border-radius 0.3s ease;
 }
 
-
-
+/* ===================== MOBILE / PHONE VIEW ===================== */
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column;
     align-items: flex-start;
+    padding: 10px 15px;
+  }
+
+  .navbar-header {
+    justify-content: flex-start;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .navbar-header img {
+    width: 70px; /* smaller logo on phone */
+    height: 70px;
+    margin-right: 10px;
+  }
+
+  .navbar-header .nav-head {
+    font-size: 2rem; /* smaller heading on phone */
   }
 
   .navbar-links {
     flex-direction: column;
     gap: 10px;
-    padding-top: 10px;
+    width: 100%;
+    padding-left: 0;
+  }
+
+  .navbar-links li {
+    width: 100%;
   }
 
   .navbar-links a {
-    font-size: 1.2rem;
-  }
-
-  .navbar-header {
-    justify-content: space-between;
+    font-size: 1.1rem;
+    display: block;
     width: 100%;
+    padding: 8px 10px;
+    box-sizing: border-box;
   }
 }

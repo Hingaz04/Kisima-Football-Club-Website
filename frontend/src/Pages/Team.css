@@ -51,3 +51,42 @@
 .player-card p.position {
   color: #555;
 }
+
+
+
+@media (max-width: 768px) {
+  .team-container {
+    padding: 10px;
+    margin-right: 0px;
+    overflow-x: hidden; /* prevent horizontal scroll */
+  }
+
+  .team-container img {
+    width: 100%; /* make images scale to container */
+    height: auto;
+  }
+
+  .team-container h2 {
+    font-size: 1.6rem;
+  }
+
+  .players-section {
+    grid-template-columns: 1fr; /* stack player cards vertically */
+    gap: 15px;
+  }
+
+  .player-card {
+    padding: 8px;
+    margin-bottom: 15px;
+    width: 100%; /* ensure cards take full width */
+    box-sizing: border-box; /* include padding in width */
+  }
+
+  .player-card p.name {
+    font-size: 1.1rem;
+  }
+
+  .player-card p.position {
+    font-size: 0.9rem;
+  }
+}

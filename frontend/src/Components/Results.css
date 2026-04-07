@@ -1,13 +1,14 @@
+/* ===================== RESULTS COMPONENT UNIFIED ===================== */
 .results-page {
   padding: 20px;
   margin: 0 auto;
-  max-width: 100%; 
+  max-width: 100%;
 }
 
 .results-heading {
   font-size: 2.5rem;
   margin-bottom: 30px;
-  color: #ff033e; 
+  color: #ff033e;
   text-align: center;
 }
 
@@ -15,68 +16,63 @@
   list-style-type: none;
   padding: 0;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr; 
-  gap: 20px;
-  max-width: 100%; 
 }
 
 .results-item {
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 5x;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd; /* line border instead of shadow */
+  max-width: 100%;
   box-sizing: border-box;
-  max-width: 1200px; 
-  width: 100%; 
-  margin: 0 auto; 
+  
 }
 
 .results-team-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); 
+  display: flex; /* side-by-side like Fixtures */
   align-items: center;
-  gap: 20px;
+  justify-content: space-between;
   margin-bottom: 10px;
 }
 
 .results-team-image {
-  width: 100%; 
-  height: auto; 
+  width: 150px;
+  height: auto;
   border-radius: 8px;
-  max-width: 200px; 
-  max-height: 150px; 
+  max-width: 200px;
+  max-height: 150px;
 }
 
 .results-vs {
   font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
-  color: #ff033e; 
+  margin: 0 20px;
+  color: #ff033e;
 }
 
 .results-details-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr; 
-  gap: 20px;
-  margin-bottom: 15px;
+  display: flex; /* team names side by side */
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
-.results-team-name {
-  font-size: 1.2rem;
-  color: #ff033e; 
-}
-
+.results-team-name,
 .results-team-name2 {
   font-size: 1.2rem;
-  color: #ff033e; 
-  margin-left: 90px;
+  color: #ff033e;
 }
 
 .results-details {
   font-size: 1rem;
-  color: #777;
   margin-top: 10px;
+  text-align: left;
+  color: #777;
+}
+
+.results-final {
+  color: #ff033e;
 }
 
 .error-message {
@@ -85,6 +81,61 @@
   margin-top: 20px;
 }
 
-.results-final {
-  color: #ff033e;
+/* ===================== PHONE VIEW ===================== */
+@media (max-width: 768px) {
+  .results-team-row {
+    flex-direction: row; /* keep images side by side */
+    justify-content: space-around;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .results-team-image {
+    width: 100px;
+    max-width: 100px;
+    max-height: 100px;
+  }
+
+  .results-vs {
+    font-size: 1.2rem;
+    margin: 0 10px;
+  }
+
+  .results-details-row {
+    flex-direction: row; /* keep team names side by side */
+    justify-content: space-around;
+    gap: 5px;
+  }
+
+  .results-team-name,
+  .results-team-name2 {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .results-details {
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .results-heading {
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+
+  .results-item {
+    padding: 15px;
+  }
+
+  .results-item {
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 5x;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd; /* line border instead of shadow */
+  max-width: 180%;
+  box-sizing: border-box;
+  margin-left:-20px;
+  
+}
 }

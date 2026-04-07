@@ -6,7 +6,7 @@ import "./AdminPage.css";
 
 function AdminPage() {
   const [news, setNews] = useState([]);
-  const [fixtures, setFixtures] = useState([]);
+  const [AdminSchedule, setAdminSchedule] = useState([]);
   const [players, setPlayers] = useState([]);
   const [academyPlayers, setAcademyPlayers] = useState([]);
   const [academyNews, setAcademyNews] = useState([]);
@@ -16,7 +16,7 @@ function AdminPage() {
 
   useEffect(() => {
     fetchNews();
-    fetchFixtures();
+    fetchAdminSchedule();
     fetchPlayers();
     fetchAcademyPlayers();
     fetchAcademyNews();
@@ -29,7 +29,7 @@ function AdminPage() {
       const response = await axios.get("http://localhost:5000/news/news", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem(
-            "REACT_TOKEN_AUTH_KEY"
+            "REACT_TOKEN_AUTH_KEY",
           )}`,
         },
       });
@@ -50,10 +50,10 @@ function AdminPage() {
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem(
-              "REACT_TOKEN_AUTH_KEY"
+              "REACT_TOKEN_AUTH_KEY",
             )}`,
           },
-        }
+        },
       );
       if (Array.isArray(response.data)) {
         setWeekendImages(response.data);
@@ -72,17 +72,17 @@ function AdminPage() {
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem(
-              "REACT_TOKEN_AUTH_KEY"
+              "REACT_TOKEN_AUTH_KEY",
             )}`,
           },
-        }
+        },
       );
       if (Array.isArray(response.data)) {
         setAcademyNews(response.data);
       } else {
         console.error(
           "Unexpected response format for academy news:",
-          response.data
+          response.data,
         );
       }
     } catch (error) {
@@ -90,24 +90,24 @@ function AdminPage() {
     }
   };
 
-  const fetchFixtures = async () => {
+  const fetchAdminSchedule = async () => {
     try {
       const response = await axios.get(
         "http://localhost:5000/fixture/fixtures",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem(
-              "REACT_TOKEN_AUTH_KEY"
+              "REACT_TOKEN_AUTH_KEY",
             )}`,
           },
-        }
+        },
       );
       if (Array.isArray(response.data)) {
-        setFixtures(response.data);
+        setAdminSchedule(response.data);
       } else {
         console.error(
           "Unexpected response format for fixtures:",
-          response.data
+          response.data,
         );
       }
     } catch (error) {
@@ -120,7 +120,7 @@ function AdminPage() {
       const response = await axios.get("http://localhost:5000/result/results", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem(
-            "REACT_TOKEN_AUTH_KEY"
+            "REACT_TOKEN_AUTH_KEY",
           )}`,
         },
       });
@@ -139,7 +139,7 @@ function AdminPage() {
       const response = await axios.get("http://localhost:5000/player/players", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem(
-            "REACT_TOKEN_AUTH_KEY"
+            "REACT_TOKEN_AUTH_KEY",
           )}`,
         },
       });
@@ -157,10 +157,10 @@ function AdminPage() {
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem(
-              "REACT_TOKEN_AUTH_KEY"
+              "REACT_TOKEN_AUTH_KEY",
             )}`,
           },
-        }
+        },
       );
       console.log("Fetched academy players:", response.data);
       setAcademyPlayers(response.data);
@@ -183,7 +183,7 @@ function AdminPage() {
           <Link to="/news">Manage News</Link>
         </button>
         <button>
-          <Link to="/schedule">Manage Schedule</Link>
+          <Link to="/admin-schedule">Manage Schedule</Link>
         </button>
         <button>
           <Link to="/players">Manage Players</Link>
@@ -205,23 +205,21 @@ function AdminPage() {
       <section className="news-section">
         <h2 className="section-title">Team News</h2>
         <ul className="news-list">
-          <div className="news-container">
-            {news.length > 0 ? (
-              news.map((item) => (
-                <li className="news-item" key={item.id}>
-                  <h3>{item.title}</h3>
-                  <p className="news-description">{item.description}</p>
-                  <img
-                    className="news-image"
-                    src={`http://localhost:5000/news/${item.image}`}
-                    alt={item.title}
-                  />
-                </li>
-              ))
-            ) : (
-              <p>No news available.</p>
-            )}
-          </div>
+          {news.length > 0 ? (
+            news.map((item) => (
+              <li className="news-item" key={item.id}>
+                <img
+                  className="news-image"
+                  src={`http://localhost:5000/news/${item.image}`}
+                  alt={item.title}
+                />
+                <h3>{item.title}</h3>
+                <p className="news-description">{item.description}</p>
+              </li>
+            ))
+          ) : (
+            <p>No news available.</p>
+          )}
         </ul>
       </section>
 
@@ -269,8 +267,8 @@ function AdminPage() {
       <section className="fixtures-section">
         <h2 className="section-title">Fixtures</h2>
         <ul className="fixtures-list">
-          {fixtures.length > 0 ? (
-            fixtures.map((item) => (
+          {AdminSchedule.length > 0 ? (
+            AdminSchedule.map((item) => (
               <li className="fixture-item" key={item.id}>
                 {item.homeTeamImage && (
                   <img

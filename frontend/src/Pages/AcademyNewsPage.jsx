@@ -39,6 +39,7 @@ function AcademyNewsPage() {
               />
             )}
             <p className="academy-item-description">{item.description}</p>
+            
           </li>
         ))}
       </ul>

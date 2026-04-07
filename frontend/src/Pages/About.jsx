@@ -17,7 +17,7 @@ function About() {
   const fetchPlayers = async () => {
     try {
       const response = await axios.get("http://localhost:5000/player/players");
-      console.log("API Response:", response.data); // Debugging line
+      console.log("API Response:", response.data);
       if (response.data && Array.isArray(response.data)) {
         const categorizedPlayers = categorizePlayers(response.data);
         setPlayers(categorizedPlayers);
@@ -31,16 +31,16 @@ function About() {
 
   const categorizePlayers = (playersData) => {
     const goalkeepers = playersData.filter(
-      (player) => player.position === "Goalkeeper"
+      (player) => player.position === "Goalkeeper",
     );
     const defenders = playersData.filter(
-      (player) => player.position === "Defender"
+      (player) => player.position === "Defender",
     );
     const midfielders = playersData.filter(
-      (player) => player.position === "Midfielder"
+      (player) => player.position === "Midfielder",
     );
     const attackers = playersData.filter(
-      (player) => player.position === "Attacking"
+      (player) => player.position === "Attacking",
     );
 
     return {
@@ -112,14 +112,9 @@ function About() {
           <strong>Coach:</strong> Pele Makana
         </li>
         <li>
-          <strong>Assisant Coach:</strong> Dennis Wekesa
+          <strong>Assisant Coach:</strong> Kim Modo
         </li>
-        <li>
-          <strong>Team Captain:</strong> Stanley Chege
-        </li>
-        <li>
-          <strong>Assistant Team Captain:</strong> Dalmas Otieno
-        </li>
+
         <li>
           <strong>Home Ground:</strong> Mahiga Primary
         </li>

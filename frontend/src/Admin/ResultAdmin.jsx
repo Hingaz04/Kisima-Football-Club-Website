@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "./Schedule.css";
+import "./ResultAdmin.css"; // new CSS file
 
 function ResultAdmin() {
   const [results, setResults] = useState([]);
@@ -18,13 +18,10 @@ function ResultAdmin() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // Fetch fixtures from the backend
+  // Fetch results from backend
   useEffect(() => {
     const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
-    if (!token) {
-      console.error("Token not found");
-      return;
-    }
+    if (!token) return;
 
     const parsedToken = JSON.parse(token);
     const accessToken = parsedToken.access_token;
@@ -42,24 +39,22 @@ function ResultAdmin() {
       });
   }, []);
 
-  // Handle form input changes
+  // Handle input changes
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (files) {
-      setFormData((prevForm) => ({ ...prevForm, [name]: files[0] }));
+      setFormData((prev) => ({ ...prev, [name]: files[0] }));
     } else {
-      setFormData((prevForm) => ({ ...prevForm, [name]: value }));
+      setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
 
-  // Validate the form inputs
+  // Validate form
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.homeTeamImage)
-      newErrors.homeTeamImage = "Home team image is required";
+    if (!formData.homeTeamImage) newErrors.homeTeamImage = "Home team image is required";
     if (!formData.homeTeam) newErrors.homeTeam = "Home team is required";
-    if (!formData.awayTeamImage)
-      newErrors.awayTeamImage = "Away team image is required";
+    if (!formData.awayTeamImage) newErrors.awayTeamImage = "Away team image is required";
     if (!formData.awayTeam) newErrors.awayTeam = "Away team is required";
     if (!formData.result) newErrors.result = "Result is required";
     if (!formData.venue) newErrors.venue = "Venue is required";
@@ -67,7 +62,7 @@ function ResultAdmin() {
     return newErrors;
   };
 
-  // Submit the form to add or update fixtures
+  // Submit form
   const handleSubmit = (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
@@ -77,11 +72,7 @@ function ResultAdmin() {
     }
 
     const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
-    if (!token) {
-      console.error("Token not found");
-      return;
-    }
-
+    if (!token) return;
     const parsedToken = JSON.parse(token);
     const accessToken = parsedToken.access_token;
 
@@ -103,35 +94,30 @@ function ResultAdmin() {
         },
       })
       .then((response) => {
-        // Add the new result to the beginning of the list
         setResults([response.data, ...results]);
         setSuccess("Result added successfully!");
-        setLoading(false);
         setFormData({
           homeTeamImage: null,
-          homeTeam: "",
           awayTeamImage: null,
+          homeTeam: "",
           awayTeam: "",
           result: "",
           venue: "",
           date: "",
         });
+        setLoading(false);
       })
       .catch((err) => {
         console.error("Error adding result:", err);
-        setError("");
+        setError("Failed to add result.");
         setLoading(false);
       });
   };
 
-  // Delete a fixture
+  // Delete result
   const handleDelete = (id) => {
     const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
-    if (!token) {
-      console.error("Token not found");
-      return;
-    }
-
+    if (!token) return;
     const parsedToken = JSON.parse(token);
     const accessToken = parsedToken.access_token;
 
@@ -141,7 +127,7 @@ function ResultAdmin() {
       })
       .then(() => {
         setResults(results.filter((result) => result.id !== id));
-        alert("result deleted successfully!");
+        alert("Result deleted successfully!");
       })
       .catch((err) => {
         console.error("Error deleting result:", err);
@@ -150,11 +136,11 @@ function ResultAdmin() {
   };
 
   return (
-    <div className="schedule-page">
-      <h1>Results Page</h1>
+    <div className="result-page">
+      <h1>Results Admin Page</h1>
       <Link to="/admin_dashboard">Back to Admin Dashboard</Link>
 
-      <form onSubmit={handleSubmit}>
+      <form className="result-form" onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Home Team Image:</label>
           <input type="file" name="homeTeamImage" onChange={handleChange} />
@@ -170,7 +156,6 @@ function ResultAdmin() {
             required
           />
         </div>
-
         <div className="form-group">
           <label>Away Team Image:</label>
           <input type="file" name="awayTeamImage" onChange={handleChange} />
@@ -182,7 +167,7 @@ function ResultAdmin() {
             name="awayTeam"
             value={formData.awayTeam}
             onChange={handleChange}
-            placeholder="Enter Away Team Name"
+            placeholder="Away Team Name"
             required
           />
         </div>
@@ -193,7 +178,7 @@ function ResultAdmin() {
             name="result"
             value={formData.result}
             onChange={handleChange}
-            placeholder="Enter results"
+            placeholder="Enter Result"
             required
           />
         </div>
@@ -204,51 +189,44 @@ function ResultAdmin() {
             name="venue"
             value={formData.venue}
             onChange={handleChange}
-            placeholder="Enter venue"
+            placeholder="Venue"
             required
           />
         </div>
         <div className="form-group">
           <label>Date:</label>
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            required
-          />
+          <input type="date" name="date" value={formData.date} onChange={handleChange} required />
         </div>
-        <button type="submit" disabled={loading}>
-          Add Result
-        </button>
+        <button type="submit" disabled={loading}>Add Result</button>
         {loading && <p>Loading...</p>}
-        {error && <p className="error-message">{error}</p>}
+        {error && <p className="error-message">{JSON.stringify(error)}</p>}
         {success && <p className="success-message">{success}</p>}
       </form>
 
       <h2>Results List</h2>
       {results.length === 0 && <p>No results available.</p>}
-      <ul>
+
+      <div className="results-grid">
         {results.map((result) => (
-          <li key={result.id}>
+          <div className="card" key={result.id}>
             <img
               src={`http://127.0.0.1:5000/fixture/${result.homeTeamImage}`}
               alt="Home Team"
             />
-            <p>Home Team: {result.homeTeam}</p>
-            <h2>VS</h2>
+            <h3>VS</h3>
             <img
               src={`http://127.0.0.1:5000/fixture/${result.awayTeamImage}`}
               alt="Away Team"
             />
+            <p>Home Team: {result.homeTeam}</p>
             <p>Away Team: {result.awayTeam}</p>
-            <p>Result:{result.result}</p>
+            <p>Result: {result.result}</p>
             <p>Venue: {result.venue}</p>
             <p>Date: {result.date}</p>
             <button onClick={() => handleDelete(result.id)}>Delete</button>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

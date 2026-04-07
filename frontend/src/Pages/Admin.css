@@ -69,3 +69,49 @@ background-color:gray;
 .extra-links a:hover {
   text-decoration: underline;
 }
+
+
+@media (max-width: 768px) {
+  .login-container {
+    margin-left: 0; /* remove large left margin on phones */
+    padding: 20px;
+    height: auto; /* allow container height to adjust */
+    justify-content: center;
+    align-items: flex-start; /* align form at top */
+  }
+
+  .login-form {
+    width: 100%; /* full width */
+    max-width: 350px; /* limit so it doesn’t stretch too much */
+    padding: 30px;
+  }
+
+  .login-form h2 {
+    font-size: 1.5rem; /* smaller heading */
+    margin-bottom: 15px;
+  }
+
+  .form-group label {
+    font-size: 0.85rem;
+  }
+
+  .form-group input {
+    padding: 8px;
+    font-size: 0.95rem;
+  }
+
+  .login-button {
+    font-size: 0.95rem;
+    padding: 8px;
+  }
+
+  .extra-links {
+    flex-direction: column; /* stack links vertically */
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .extra-links a {
+    font-size: 0.9rem;
+  }
+}

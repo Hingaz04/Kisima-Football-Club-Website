@@ -1,51 +1,163 @@
-.fixture-team-row {
+/* ===================== FIXTURES PAGE ===================== */
+.fixturesPage {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ===================== HEADING ===================== */
+.fixturesHeading {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: #ff033e;
+  text-align: center;
+}
+
+.fixturesMessage {
+  text-align: center;
+  color: gray;
+}
+
+/* ===================== LIST (VERY IMPORTANT FIX) ===================== */
+.fixturesList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  display: flex;
+  flex-direction: column; /* 🔥 STACK ITEMS (NO SIDE-BY-SIDE) */
+  gap: 20px;
+}
+
+/* ===================== CARD ===================== */
+.fixtureItem {
+  width: 100%;              /* 🔥 prevents overflow */
+  max-width: 100%;
+  box-sizing: border-box;
+
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #f9f9f9;
+
+  border: 1px solid #ddd;   /* clean look instead of shadow */
+}
+
+/* ===================== TEAM ROW ===================== */
+.fixtureTeam-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
 }
 
-.fixtures-heading{
-   color: #ff033e;
-   text-align: center; 
-    font-size: 2.5rem;
-    margin-top: 30px;
-    margin-bottom: 20px;
-}
-
-.fixture-team-image {
-  width: 150px; 
-  height: auto; 
+/* ===================== IMAGES ===================== */
+.fixtureTeam-image {
+  width: 150px;
+  height: auto;
   border-radius: 8px;
-  max-width: 200px; 
-  max-height: 150px; 
+
+  max-width: 100%;   /* 🔥 prevents overflow */
+  max-height: 150px;
+  object-fit: contain; /* 🔥 prevents face cutting */
 }
 
-.fixture-vs {
+/* ===================== VS TEXT ===================== */
+.fixtureVS {
   font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
   margin: 0 20px;
-  color: #ff033e; 
-
+  color: #ff033e;
 }
 
-.fixture-details-row {
+/* ===================== TEAM NAMES ===================== */
+.fixtureDetails-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 45px;
+  margin-bottom: 20px;
 }
 
-.fixture-team-name {
-font-size: 1.2rem;
-color:#ff033e;
+.fixtureTeam-name {
+  font-size: 1.2rem;
+  color: #ff033e;
 }
 
-.fixture-details {
+/* ===================== DETAILS ===================== */
+.fixtureDetails {
   font-size: 1rem;
   margin-top: 10px;
+  color: #777;
 }
 
-.fixture-details-span{
+.fixtureDetails-span {
   color: #ff033e;
+}
+
+/* ===================== PHONE VIEW ===================== */
+@media (max-width: 768px) {
+  .fixtureTeam-row {
+    justify-content: space-around;
+    gap: 10px;
+  }
+
+  .fixtureTeam-image {
+    width: 100px;
+    max-height: 100px;
+  }
+
+  .fixtureVS {
+    font-size: 1.2rem;
+    margin: 0 10px;
+  }
+
+  .fixtureDetails-row {
+    justify-content: space-around;
+    gap: 5px;
+  }
+
+  .fixtureTeam-name {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .fixtureDetails {
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .fixturesHeading {
+    font-size: 2rem;
+  }
+
+  .fixtureItem {
+    padding: 15px;
+  }
+}
+
+/* ===================== VERY SMALL PHONES ===================== */
+@media (max-width: 400px) {
+  .fixtureTeam-row {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .fixtureTeam-image {
+    width: 90px;
+  }
+
+  .fixtureVS {
+    font-size: 1rem;
+  }
+
+  .fixtureDetails-row {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .fixtureTeam-name {
+    font-size: 0.9rem;
+  }
+
+  .fixtureDetails {
+    font-size: 0.8rem;
+  }
 }

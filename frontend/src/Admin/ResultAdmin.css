@@ -1,0 +1,128 @@
+.result-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.result-page h1 {
+  text-align: center;
+  color: #ff033e;
+  margin-bottom: 15px;
+}
+
+.result-page a {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #ff033e;
+  text-decoration: none;
+}
+
+.result-page a:hover {
+  text-decoration: underline;
+}
+
+/* Form */
+.result-form {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.result-form .form-group {
+  margin-bottom: 15px;
+}
+
+.result-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.result-form input[type="text"],
+.result-form input[type="date"],
+.result-form input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+}
+
+.result-form button {
+  background-color: #ff033e;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.result-form button:hover {
+  background-color: gray;
+}
+
+/* Results Grid */
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card img {
+  width: 100%;
+  height: 150px;
+  object-fit: contain; /* keeps the full image visible */
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.card h3 {
+  margin: 10px 0;
+}
+
+.card p {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.card button {
+  background-color: #ff033e;
+  color: white;
+  padding: 7px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.card button:hover {
+  background-color: gray;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .card img {
+    height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
+  .card img {
+    height: 100px;
+  }
+}

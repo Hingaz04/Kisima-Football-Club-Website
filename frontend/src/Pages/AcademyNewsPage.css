@@ -22,7 +22,7 @@
   padding: 20px;
   margin-bottom: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid #ddd;
 }
 
 .academy-item-title {
@@ -52,4 +52,61 @@
   color: red;
   font-size: 16px;
   margin-top: 20px;
+}
+
+
+/* ===================== ACADEMY PHONE VIEW ===================== */
+@media (max-width: 768px) {
+  .academy {
+    padding: 0px;
+    max-width: 100%; /* full width on mobile */
+  }
+
+  .academy-heading {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .academy-item {
+    padding: 15px;
+  }
+
+  .academy-item-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .academy-item-image {
+    max-width: 100%;
+    min-height: 200px; /* smaller image height */
+  }
+
+  .academy-item-description {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .academy-error {
+    font-size: 14px;
+    margin-top: 15px;
+  }
+}
+
+/* ===================== EXTRA SMALL PHONES (<400px) ===================== */
+@media (max-width: 400px) {
+  .academy-heading {
+    font-size: 20px;
+  }
+
+  .academy-item-title {
+    font-size: 18px;
+  }
+
+  .academy-item-image {
+    min-height: 150px;
+  }
+
+  .academy-item-description {
+    font-size: 13px;
+  }
 }
