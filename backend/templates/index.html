@@ -1,11 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
+    <title>Kisima Football Club</title>
     <meta charset="UTF-8">
-    <title>Kisima FC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 50px 20px;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        .api-info {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        a {
+            color: white;
+            text-decoration: none;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 10px;
+        }
+        a:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        ul {
+            text-align: left;
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            padding: 8px 0;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to Kisima Football Club!</h1>
-    <p>The API is running. Check <a href="/docs">API documentation</a>.</p>
+    <div class="container">
+        <h1>⚽ Kisima Football Club</h1>
+        <p>Welcome to the official Kisima Football Club API and Management System</p>
+        
+        <div class="api-info">
+            <h2>API Documentation</h2>
+            <p>Access our RESTful API endpoints:</p>
+            <a href="/docs">📚 Swagger Documentation</a>
+            <a href="/api">📡 API Root</a>
+        </div>
+        
+        <div class="api-info">
+            <h2>Available Endpoints</h2>
+            <ul>
+                <li>⚽ <strong>/players</strong> - Player management</li>
+                <li>📰 <strong>/news</strong> - News and updates</li>
+                <li>📅 <strong>/fixtures</strong> - Match fixtures</li>
+                <li>📊 <strong>/results</strong> - Match results</li>
+                <li>🎓 <strong>/academy/players</strong> - Academy players</li>
+                <li>📝 <strong>/academy/news</strong> - Academy news</li>
+                <li>🔐 <strong>/auth</strong> - Authentication</li>
+                <li>⭐ <strong>/weekend</strong> - Weekend matches</li>
+            </ul>
+        </div>
+    </div>
 </body>
 </html>
