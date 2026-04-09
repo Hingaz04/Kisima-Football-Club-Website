@@ -1,5 +1,5 @@
 # backend/main.py
-from flask import Flask
+from flask import Flask, jsonify, render_template
 from flask_restx import Api
 from config import Config
 from exts import db
@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 
-# Import your namespaces here (example)
+# Import your namespaces
 from Players import player_ns
 from News import news_ns
 from Fixtures import fixture_ns
@@ -18,7 +18,7 @@ from results import result_ns
 from weekend import weekend_ns
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder="templates", static_folder="static")
     app.config.from_object(Config)
 
     CORS(app)
@@ -38,16 +38,20 @@ def create_app():
     api.add_namespace(result_ns)
     api.add_namespace(weekend_ns)
 
-    # Root route for testing
+    # Root route for homepage (HTML)
     @app.route('/')
-    def home():
-        return {
-            "message": "Welcome to Kisima Football Club API",
-            "status": "API is running successfully 🚀",
+    def homepage():
+        return render_template("index.html")  # create this file in templates/
+
+    # Optional: JSON API root for API users
+    @app.route('/api')
+    def api_root():
+        return jsonify({
+            "message": "Welcome to Kisima Football Club API 🚀",
             "documentation": "/docs",
             "endpoints": [
                 "/players",
-                "/news", 
+                "/news",
                 "/fixtures",
                 "/results",
                 "/academy/players",
@@ -55,7 +59,7 @@ def create_app():
                 "/auth",
                 "/weekend"
             ]
-        }
+        })
 
     @app.shell_context_processor
     def make_shell_context():
@@ -63,7 +67,7 @@ def create_app():
 
     return app
 
-# This is what Gunicorn needs:
+# Gunicorn entrypoint
 app = create_app()
 
 if __name__ == "__main__":
