@@ -1,57 +1,57 @@
-from flask import Flask, request, jsonify
+from flask import request
 from flask_restx import Resource, Namespace, fields
 from models import AcademyPlayers
 from flask_jwt_extended import jwt_required
 
-
+# Namespace
 academyPlayer_ns = Namespace(
-    'academy-player', description="A namespace fpr our academy players")
+    'academy/players', description="A namespace for our academy players"
+)
 
-# models seriallizer
+# Model serializer for Swagger
 academyPlayer_model = academyPlayer_ns.model(
-    "Player", {
+    "AcademyPlayer", {
         "id": fields.Integer(),
         "name": fields.String(),
         "position": fields.String()
     }
 )
 
-
-@academyPlayer_ns.route('/academy-players')
-class RecipeResource(Resource):
+# List route: /academy/players/
+@academyPlayer_ns.route('/')
+class AcademyPlayerListResource(Resource):
     @academyPlayer_ns.marshal_list_with(academyPlayer_model)
     def get(self):
-        players = AcademyPlayers.query.all()
-        return players
+        """Get all academy players"""
+        return AcademyPlayers.query.all()
 
     @academyPlayer_ns.marshal_with(academyPlayer_model)
     @academyPlayer_ns.expect(academyPlayer_model)
     @jwt_required()
+    @academyPlayer_ns.doc(security=[])
     def post(self):
+        """Add a new academy player (JWT required)"""
         data = request.get_json()
-
-        new_academy_player = AcademyPlayers(
+        new_player = AcademyPlayers(
             name=data.get("name"),
             position=data.get("position")
         )
-
-        new_academy_player.save()
-
-        return new_academy_player, 201
+        new_player.save()
+        return new_player, 201
 
 
-@academyPlayer_ns.route('/academy-player/<int:id>')
-class RecipeResource(Resource):
-    @academyPlayer_ns.marshal_with(academyPlayer_ns)
-    def get(self, id):
-        player = AcademyPlayers.query.get_or_404(id)
-
-        return player
-
+# Detail route: /academy/players/<id>
+@academyPlayer_ns.route('/<int:id>')
+class AcademyPlayerResource(Resource):
     @academyPlayer_ns.marshal_with(academyPlayer_model)
+    def get(self, id):
+        """Get a single academy player by ID"""
+        return AcademyPlayers.query.get_or_404(id)
+
     @jwt_required()
+    @academyPlayer_ns.doc(security=[])
     def delete(self, id):
-        print(f"Received DELETE request for ID: {id}")
-        player_to_delete = AcademyPlayers.query.get_or_404(id)
-        player_to_delete.delete()
+        """Delete an academy player by ID (JWT required)"""
+        player = AcademyPlayers.query.get_or_404(id)
+        player.delete()
         return {"message": "Player deleted successfully"}, 200
