@@ -46,3 +46,4 @@ werkzeug
 wtforms
 zope.event
 zope.interface
+pymysql
