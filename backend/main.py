@@ -1,4 +1,7 @@
-# main.py
+# 🔥 MUST BE FIRST (fix MySQL driver issue)
+import pymysql
+pymysql.install_as_MySQLdb()
+
 from flask import Flask, jsonify, render_template
 from flask_restx import Api
 from config import Config
@@ -22,6 +25,13 @@ def create_app():
     app = Flask(__name__, template_folder="templates", static_folder="uploads")
     app.config.from_object(Config)
 
+    # ✅ FIX: SSL config MUST come BEFORE db.init_app
+    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+        "connect_args": {
+            "ssl": {"ssl": {}}
+        }
+    }
+
     # Enable CORS
     CORS(app)
 
@@ -33,7 +43,7 @@ def create_app():
     JWTManager(app)
 
     # --------------------------
-    # Register homepage BEFORE Api
+    # Routes BEFORE Api
     # --------------------------
     @app.route("/")
     def homepage():
@@ -54,6 +64,7 @@ def create_app():
     # Initialize RESTX API
     # --------------------------
     api = Api(app, doc="/docs", title="Kisima FC API", version="1.0")
+
     app.config['RESTX_VALIDATE'] = True
     app.config['ERROR_404_HELP'] = False
 
@@ -70,9 +81,10 @@ def create_app():
     return app
 
 
+# Create app instance
 app = create_app()
 
-# Ensure database tables exist
+# ⚠️ DEV ONLY (safe for now)
 with app.app_context():
     db.create_all()
 
@@ -81,5 +93,6 @@ if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", 5000))
     host = "0.0.0.0"
-    print(f"Starting Kisima FC backend on http://{host}:{port}")
+
+    print(f"🚀 Starting Kisima FC backend on http://{host}:{port}")
     app.run(host=host, port=port, debug=Config.DEBUG)
