@@ -7,6 +7,7 @@ from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 
+# Import namespaces
 from Players import player_ns
 from News import news_ns
 from Fixtures import fixture_ns
@@ -16,13 +17,19 @@ from AcademyNews import academyNews_ns
 from results import result_ns
 from weekend import weekend_ns
 
+
 def create_app():
     app = Flask(__name__, template_folder="templates", static_folder="uploads")
     app.config.from_object(Config)
 
+    # Enable CORS
     CORS(app)
+
+    # Initialize database and migration
     db.init_app(app)
     Migrate(app, db)
+
+    # JWT Manager
     JWTManager(app)
 
     # --------------------------
@@ -44,12 +51,13 @@ def create_app():
         })
 
     # --------------------------
-    # Initialize API AFTER routes
+    # Initialize RESTX API
     # --------------------------
     api = Api(app, doc="/docs", title="Kisima FC API", version="1.0")
     app.config['RESTX_VALIDATE'] = True
     app.config['ERROR_404_HELP'] = False
 
+    # Register namespaces
     api.add_namespace(player_ns, path='/players')
     api.add_namespace(news_ns, path='/news')
     api.add_namespace(fixture_ns, path='/fixtures')
@@ -61,8 +69,17 @@ def create_app():
 
     return app
 
+
 app = create_app()
+
+# Ensure database tables exist
+with app.app_context():
+    db.create_all()
+
 
 if __name__ == "__main__":
     import os
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    host = "0.0.0.0"
+    print(f"Starting Kisima FC backend on http://{host}:{port}")
+    app.run(host=host, port=port, debug=Config.DEBUG)
