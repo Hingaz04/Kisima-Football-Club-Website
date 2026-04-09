@@ -38,6 +38,25 @@ def create_app():
     api.add_namespace(result_ns)
     api.add_namespace(weekend_ns)
 
+    # Root route for testing
+    @app.route('/')
+    def home():
+        return {
+            "message": "Welcome to Kisima Football Club API",
+            "status": "API is running successfully 🚀",
+            "documentation": "/docs",
+            "endpoints": [
+                "/players",
+                "/news", 
+                "/fixtures",
+                "/results",
+                "/academy/players",
+                "/academy/news",
+                "/auth",
+                "/weekend"
+            ]
+        }
+
     @app.shell_context_processor
     def make_shell_context():
         return {"db": db}
@@ -48,4 +67,5 @@ def create_app():
 app = create_app()
 
 if __name__ == "__main__":
+    import os
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
