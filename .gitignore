@@ -1,4 +1,40 @@
-backend/.env
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Flask
+instance/
+.webassets-cache
 .env
-backend/.env
-.env
+.venv
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Config files with secrets
+config.py
+backend/config.py
+*.secret.py
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Uploads
+uploads/
+static/uploads/
