@@ -54,6 +54,8 @@ def create_app(config=DevConfig):
     return app
 
 
+# Create top-level app for Gunicorn / Render
+app = create_app(DevConfig)
+
 if __name__ == "__main__":
-    app = create_app(DevConfig)
-    app.run()
+    app.run(debug=True)
