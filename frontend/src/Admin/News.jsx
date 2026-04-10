@@ -26,7 +26,7 @@ function NewsPage() {
     const accessToken = parsedToken.access_token;
 
     axios
-      .get("https://kisima-football-club-website-27xr.onrender.com/news/news", {
+      .get("https://kisima-football-club-website-27xr.onrender.com/news", {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((response) => {
@@ -83,7 +83,7 @@ function NewsPage() {
     setLoading(true);
     axios
       .post(
-        "https://kisima-football-club-website-27xr.onrender.com/news/news",
+        "https://kisima-football-club-website-27xr.onrender.com/news",
         formData,
         {
           headers: {
@@ -123,7 +123,7 @@ function NewsPage() {
 
     axios
       .delete(
-        `https://kisima-football-club-website-27xr.onrender.com/news/news/${id}`,
+        `https://kisima-football-club-website-27xr.onrender.com/news/${id}`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
         },

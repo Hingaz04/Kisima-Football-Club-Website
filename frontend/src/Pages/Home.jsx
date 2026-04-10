@@ -9,7 +9,7 @@ function Home() {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:5000/news/news")
+      .get("http://127.0.0.1:5000/news")
       .then((response) => {
         const sortedNews = response.data.sort(
           (a, b) => new Date(b.date) - new Date(a.date),
