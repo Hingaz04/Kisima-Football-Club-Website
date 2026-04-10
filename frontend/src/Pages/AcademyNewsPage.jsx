@@ -8,11 +8,13 @@ function AcademyNewsPage() {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:5000/academy-news/academy-news")
+      .get(
+        "https://kisima-football-club-website-27xr.onrender.com/academy/news/academy/news",
+      )
       .then((response) => {
         // Sort news items to display the most recent first
         const sortedNews = response.data.sort(
-          (a, b) => new Date(b.date) - new Date(a.date)
+          (a, b) => new Date(b.date) - new Date(a.date),
         );
         setAcademyNews(sortedNews);
       })
@@ -33,13 +35,12 @@ function AcademyNewsPage() {
             <h3 className="academy-item-title">{item.title}</h3>
             {item.image && (
               <img
-                src={`http://localhost:5000/academy-news/${item.image}`}
+                src={`https://kisima-football-club-website-27xr.onrender.com/academy/news/${item.image}`}
                 alt={item.title}
                 className="academy-item-image"
               />
             )}
             <p className="academy-item-description">{item.description}</p>
-            
           </li>
         ))}
       </ul>

@@ -17,7 +17,7 @@ function Admin() {
       password,
     };
 
-    fetch("http://127.0.0.1:5000/auth/login", {
+    fetch("https://kisima-football-club-website-27xr.onrender.com/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -26,13 +26,16 @@ function AdminPage() {
 
   const fetchNews = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/news/news", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem(
-            "REACT_TOKEN_AUTH_KEY",
-          )}`,
+      const response = await axios.get(
+        "https://kisima-football-club-website-27xr.onrender.com/news/news",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem(
+              "REACT_TOKEN_AUTH_KEY",
+            )}`,
+          },
         },
-      });
+      );
       if (Array.isArray(response.data)) {
         setNews(response.data);
       } else {
@@ -46,7 +49,7 @@ function AdminPage() {
   const fectchWeekendPictures = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/weekend/weekends",
+        "https://kisima-football-club-website-27xr.onrender.com/weekend/weekends",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem(
@@ -68,7 +71,7 @@ function AdminPage() {
   const fetchAcademyNews = async () => {
     try {
       const response = await axios.get(
-        "http://127.0.0.1:5000/academy-news/academy-news",
+        "https://kisima-football-club-website-27xr.onrender.com/academy/news/academy/news",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem(
@@ -93,7 +96,7 @@ function AdminPage() {
   const fetchAdminSchedule = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/fixture/fixtures",
+        "https://kisima-football-club-website-27xr.onrender.com/fixture/fixtures",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem(
@@ -117,13 +120,16 @@ function AdminPage() {
 
   const fetchResults = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/result/results", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem(
-            "REACT_TOKEN_AUTH_KEY",
-          )}`,
+      const response = await axios.get(
+        "https://kisima-football-club-website-27xr.onrender.com/result/results",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem(
+              "REACT_TOKEN_AUTH_KEY",
+            )}`,
+          },
         },
-      });
+      );
       if (Array.isArray(response.data)) {
         setResults(response.data);
       } else {
@@ -136,13 +142,16 @@ function AdminPage() {
 
   const fetchPlayers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/player/players", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem(
-            "REACT_TOKEN_AUTH_KEY",
-          )}`,
+      const response = await axios.get(
+        "https://kisima-football-club-website-27xr.onrender.com/player/players",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem(
+              "REACT_TOKEN_AUTH_KEY",
+            )}`,
+          },
         },
-      });
+      );
       console.log("Fetched players:", response.data);
       setPlayers(response.data);
     } catch (error) {
@@ -153,7 +162,7 @@ function AdminPage() {
   const fetchAcademyPlayers = async () => {
     try {
       const response = await axios.get(
-        "http://127.0.0.1:5000/academy-player/academy-players",
+        "https://kisima-football-club-website-27xr.onrender.com/academy/player/academy/players",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem(
@@ -210,7 +219,7 @@ function AdminPage() {
               <li className="news-item" key={item.id}>
                 <img
                   className="news-image"
-                  src={`http://localhost:5000/news/${item.image}`}
+                  src={`https://kisima-football-club-website-27xr.onrender.com/news/${item.image}`}
                   alt={item.title}
                 />
                 <h3>{item.title}</h3>
@@ -231,7 +240,7 @@ function AdminPage() {
               <li className="picture-item" key={item.id}>
                 <img
                   className="picture-image"
-                  src={`http://localhost:5000/weekend/${item.weekendImages}`}
+                  src={`https://kisima-football-club-website-27xr.onrender.com/weekend/${item.weekendImages}`}
                   alt={item.title}
                 />
                 <p className="picture-date">Date: {item.date}</p>
@@ -253,7 +262,7 @@ function AdminPage() {
                 <p>{item.description}</p>
                 <img
                   className="academy-news-image"
-                  src={`http://localhost:5000/academy-news/${item.image}`}
+                  src={`https://kisima-football-club-website-27xr.onrender.com/academy/news/${item.image}`}
                   alt={item.title}
                 />
               </li>
@@ -273,7 +282,7 @@ function AdminPage() {
                 {item.homeTeamImage && (
                   <img
                     className="fixture-image"
-                    src={`http://127.0.0.1:5000/fixture/${item.homeTeamImage}`}
+                    src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${item.homeTeamImage}`}
                     alt="Home Team"
                   />
                 )}
@@ -281,7 +290,7 @@ function AdminPage() {
                 {item.awayTeamImage && (
                   <img
                     className="fixture-image"
-                    src={`http://127.0.0.1:5000/fixture/${item.awayTeamImage}`}
+                    src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${item.awayTeamImage}`}
                     alt="Away Team"
                   />
                 )}
@@ -304,7 +313,7 @@ function AdminPage() {
                 {item.homeTeamImage && (
                   <img
                     className="result-image"
-                    src={`http://127.0.0.1:5000/result/${item.homeTeamImage}`}
+                    src={`https://kisima-football-club-website-27xr.onrender.com/result/${item.homeTeamImage}`}
                     alt="Home Team"
                   />
                 )}
@@ -312,7 +321,7 @@ function AdminPage() {
                 {item.awayTeamImage && (
                   <img
                     className="result-image"
-                    src={`http://127.0.0.1:5000/result/${item.awayTeamImage}`}
+                    src={`https://kisima-football-club-website-27xr.onrender.com/result/${item.awayTeamImage}`}
                     alt="Away Team"
                   />
                 )}

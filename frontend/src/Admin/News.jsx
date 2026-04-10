@@ -26,7 +26,7 @@ function NewsPage() {
     const accessToken = parsedToken.access_token;
 
     axios
-      .get("http://127.0.0.1:5000/news/news", {
+      .get("https://kisima-football-club-website-27xr.onrender.com/news/news", {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((response) => {
@@ -82,12 +82,16 @@ function NewsPage() {
 
     setLoading(true);
     axios
-      .post("http://127.0.0.1:5000/news/news", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${accessToken}`,
+      .post(
+        "https://kisima-football-club-website-27xr.onrender.com/news/news",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
-      })
+      )
       .then((response) => {
         console.log("News added:", response.data);
         setNews([response.data, ...news]);
@@ -118,9 +122,12 @@ function NewsPage() {
     const accessToken = parsedToken.access_token;
 
     axios
-      .delete(`http://127.0.0.1:5000/news/news/${id}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
+      .delete(
+        `https://kisima-football-club-website-27xr.onrender.com/news/news/${id}`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      )
       .then(() => {
         setNews(news.filter((item) => item.id !== id));
         alert("News deleted successfully!");
@@ -193,7 +200,7 @@ function NewsPage() {
             <h3>{item.title}</h3>
             {item.image && (
               <img
-                src={`http://127.0.0.1:5000/news/${item.image}`}
+                src={`https://kisima-football-club-website-27xr.onrender.com/news/${item.image}`}
                 alt={item.title}
                 style={{ width: "200px", height: "auto" }}
               />

@@ -27,9 +27,12 @@ function ResultAdmin() {
     const accessToken = parsedToken.access_token;
 
     axios
-      .get("http://127.0.0.1:5000/result/results", {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
+      .get(
+        "https://kisima-football-club-website-27xr.onrender.com/result/results",
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      )
       .then((response) => {
         setResults(response.data);
       })
@@ -52,9 +55,11 @@ function ResultAdmin() {
   // Validate form
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.homeTeamImage) newErrors.homeTeamImage = "Home team image is required";
+    if (!formData.homeTeamImage)
+      newErrors.homeTeamImage = "Home team image is required";
     if (!formData.homeTeam) newErrors.homeTeam = "Home team is required";
-    if (!formData.awayTeamImage) newErrors.awayTeamImage = "Away team image is required";
+    if (!formData.awayTeamImage)
+      newErrors.awayTeamImage = "Away team image is required";
     if (!formData.awayTeam) newErrors.awayTeam = "Away team is required";
     if (!formData.result) newErrors.result = "Result is required";
     if (!formData.venue) newErrors.venue = "Venue is required";
@@ -87,12 +92,16 @@ function ResultAdmin() {
 
     setLoading(true);
     axios
-      .post("http://127.0.0.1:5000/result/results", resultData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${accessToken}`,
+      .post(
+        "https://kisima-football-club-website-27xr.onrender.com/result/results",
+        resultData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
-      })
+      )
       .then((response) => {
         setResults([response.data, ...results]);
         setSuccess("Result added successfully!");
@@ -122,9 +131,12 @@ function ResultAdmin() {
     const accessToken = parsedToken.access_token;
 
     axios
-      .delete(`http://127.0.0.1:5000/result/result/${id}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
+      .delete(
+        `https://kisima-football-club-website-27xr.onrender.com/result/result/${id}`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      )
       .then(() => {
         setResults(results.filter((result) => result.id !== id));
         alert("Result deleted successfully!");
@@ -195,9 +207,17 @@ function ResultAdmin() {
         </div>
         <div className="form-group">
           <label>Date:</label>
-          <input type="date" name="date" value={formData.date} onChange={handleChange} required />
+          <input
+            type="date"
+            name="date"
+            value={formData.date}
+            onChange={handleChange}
+            required
+          />
         </div>
-        <button type="submit" disabled={loading}>Add Result</button>
+        <button type="submit" disabled={loading}>
+          Add Result
+        </button>
         {loading && <p>Loading...</p>}
         {error && <p className="error-message">{JSON.stringify(error)}</p>}
         {success && <p className="success-message">{success}</p>}
@@ -210,12 +230,12 @@ function ResultAdmin() {
         {results.map((result) => (
           <div className="card" key={result.id}>
             <img
-              src={`http://127.0.0.1:5000/fixture/${result.homeTeamImage}`}
+              src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${result.homeTeamImage}`}
               alt="Home Team"
             />
             <h3>VS</h3>
             <img
-              src={`http://127.0.0.1:5000/fixture/${result.awayTeamImage}`}
+              src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${result.awayTeamImage}`}
               alt="Away Team"
             />
             <p>Home Team: {result.homeTeam}</p>

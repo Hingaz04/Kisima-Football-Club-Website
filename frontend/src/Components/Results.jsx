@@ -8,7 +8,7 @@ function Results() {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:5000/result/results")
+      .get("https://kisima-football-club-website-27xr.onrender.com/result/results")
       .then((response) => {
         // Sort results by date in descending order
         const sortedResults = response.data.sort(
@@ -34,13 +34,13 @@ function Results() {
             <div className="results-team-row">
               <img
                 className="results-team-image"
-                src={`http://127.0.0.1:5000/result/${result.homeTeamImage}`}
+                src={`https://kisima-football-club-website-27xr.onrender.com/result/${result.homeTeamImage}`}
                 alt={result.homeTeam}
               />
               <h2 className="results-vs">VS</h2>
               <img
                 className="results-team-image"
-                src={`http://127.0.0.1:5000/result/${result.awayTeamImage}`}
+                src={`https://kisima-football-club-website-27xr.onrender.com/result/${result.awayTeamImage}`}
                 alt={result.awayTeam}
               />
             </div>

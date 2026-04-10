@@ -22,12 +22,15 @@ function Players() {
     const parsedToken = JSON.parse(token);
     const accessToken = parsedToken.access_token;
 
-    fetch("http://127.0.0.1:5000/player/players", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
+    fetch(
+      "https://kisima-football-club-website-27xr.onrender.com/player/players",
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       },
-    })
+    )
       .then((res) => {
         if (!res.ok) {
           throw new Error("Network response was not ok");
@@ -85,7 +88,10 @@ function Players() {
       }),
     };
 
-    fetch("http://127.0.0.1:5000/player/players", requestOptions)
+    fetch(
+      "https://kisima-football-club-website-27xr.onrender.com/player/players",
+      requestOptions,
+    )
       .then((res) => {
         if (!res.ok) {
           throw new Error("Network response was not ok");
@@ -110,12 +116,15 @@ function Players() {
     const parsedToken = JSON.parse(token);
     const accessToken = parsedToken.access_token;
 
-    fetch(`http://127.0.0.1:5000/player/player/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
+    fetch(
+      `https://kisima-football-club-website-27xr.onrender.com/player/player/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       },
-    })
+    )
       .then((res) => {
         if (!res.ok) {
           throw new Error("Failed to delete player");

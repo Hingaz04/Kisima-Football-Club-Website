@@ -40,7 +40,7 @@ function Home() {
               <div key={item.id} className="news-card">
                 {item.image && (
                   <img
-                    src={`http://127.0.0.1:5000/news/${item.image}`}
+                    src={`https://kisima-football-club-website-27xr.onrender.com/news/${item.image}`}
                     alt={item.title}
                   />
                 )}
@@ -63,7 +63,7 @@ function Home() {
               images.map((item) => (
                 <img
                   key={item.id}
-                  src={`http://localhost:5000/weekend/${item.weekendImages}`}
+                  src={`https://kisima-football-club-website-27xr.onrender.com/weekend/${item.weekendImages}`}
                   alt="moment"
                 />
               ))

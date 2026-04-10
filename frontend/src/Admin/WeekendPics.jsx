@@ -24,9 +24,12 @@ function WeekendPics() {
     const accessToken = parsedToken.access_token;
 
     axios
-      .get("http://127.0.0.1:5000/weekend/weekends", {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
+      .get(
+        "https://kisima-football-club-website-27xr.onrender.com/weekend/weekends",
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      )
       .then((response) => {
         console.log("Fetched weekend images:", response.data);
         setWeekendImages(response.data);
@@ -76,12 +79,16 @@ function WeekendPics() {
 
     setLoading(true);
     axios
-      .post("http://127.0.0.1:5000/weekend/weekends", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${accessToken}`,
+      .post(
+        "https://kisima-football-club-website-27xr.onrender.com/weekend/weekends",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
-      })
+      )
       .then((response) => {
         console.log("Image added:", response.data);
         setWeekendImages((prevImages) => [response.data, ...prevImages]);
@@ -106,9 +113,12 @@ function WeekendPics() {
     const accessToken = parsedToken.access_token;
 
     axios
-      .delete(`http://127.0.0.1:5000/weekend/weekend/${id}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
+      .delete(
+        `https://kisima-football-club-website-27xr.onrender.com/weekend/weekend/${id}`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      )
       .then(() => {
         setWeekendImages(weekendImages.filter((item) => item.id !== id));
         alert("Image deleted successfully!");
@@ -165,7 +175,7 @@ function WeekendPics() {
             <h3>{item.date}</h3>
             {item.weekendImages && (
               <img
-                src={`http://127.0.0.1:5000/weekend/${item.weekendImages}`}
+                src={`https://kisima-football-club-website-27xr.onrender.com/weekend/${item.weekendImages}`}
                 alt={item.date}
                 style={{ width: "200px", height: "auto" }}
               />

@@ -22,9 +22,12 @@ function AdminSchedulePage() {
     const accessToken = parsedToken.access_token;
 
     axios
-      .get("http://127.0.0.1:5000/fixture/fixtures", {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
+      .get(
+        "https://kisima-football-club-website-27xr.onrender.com/fixture/fixtures",
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      )
       .then((res) => setFixtures(res.data))
       .catch(console.error);
   }, []);
@@ -47,9 +50,13 @@ function AdminSchedulePage() {
     Object.entries(formData).forEach(([k, v]) => data.append(k, v));
 
     axios
-      .post("http://127.0.0.1:5000/fixture/fixtures", data, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
+      .post(
+        "https://kisima-football-club-website-27xr.onrender.com/fixture/fixtures",
+        data,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      )
       .then((res) => setFixtures([res.data, ...fixtures]))
       .catch(console.error);
   };
@@ -59,9 +66,12 @@ function AdminSchedulePage() {
     const accessToken = token.access_token;
 
     axios
-      .delete(`http://127.0.0.1:5000/fixture/fixture/${id}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
+      .delete(
+        `https://kisima-football-club-website-27xr.onrender.com/fixture/fixture/${id}`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      )
       .then(() => setFixtures(fixtures.filter((f) => f.id !== id)))
       .catch(console.error);
   };
@@ -131,12 +141,12 @@ function AdminSchedulePage() {
         {fixtures.map((f) => (
           <div className="admin-card" key={f.id}>
             <img
-              src={`http://127.0.0.1:5000/fixture/${f.homeTeamImage}`}
+              src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${f.homeTeamImage}`}
               alt="Home Team"
             />
             <h3>VS</h3>
             <img
-              src={`http://127.0.0.1:5000/fixture/${f.awayTeamImage}`}
+              src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${f.awayTeamImage}`}
               alt="Away Team"
             />
             <p>Home: {f.homeTeam}</p>

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-
 function AcademyNews() {
   const [academyNews, setAcademyNews] = useState([]);
   const [form, setForm] = useState({
@@ -26,9 +25,12 @@ function AcademyNews() {
     const accessToken = parsedToken.access_token;
 
     axios
-      .get("http://127.0.0.1:5000/academy-news/academy-news", {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
+      .get(
+        "https://kisima-football-club-website-27xr.onrender.com/academy/news/academy/news",
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      )
       .then((response) => {
         console.log("Fetched news:", response.data);
         setAcademyNews(response.data);
@@ -81,12 +83,16 @@ function AcademyNews() {
 
     setLoading(true);
     axios
-      .post("http://127.0.0.1:5000/academy-news/academy-news", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${accessToken}`,
+      .post(
+        "https://kisima-football-club-website-27xr.onrender.com/academy/news/academy/news",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
-      })
+      )
       .then((response) => {
         console.log("News added:", response.data);
         setAcademyNews([response.data, ...academyNews]);
@@ -111,9 +117,12 @@ function AcademyNews() {
     const accessToken = parsedToken.access_token;
 
     axios
-      .delete(`http://127.0.0.1:5000/academy-news/academy-news/${id}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
+      .delete(
+        `https://kisima-football-club-website-27xr.onrender.com/academy/news/academy/news/${id}`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      )
       .then(() => {
         setAcademyNews(academyNews.filter((item) => item.id !== id));
         alert("News deleted successfully!");
@@ -181,7 +190,7 @@ function AcademyNews() {
             <h3>{item.title}</h3>
             {item.image && (
               <img
-                src={`http://localhost:5000/academy-news/${item.image}`}
+                src={`https://kisima-football-club-website-27xr.onrender.com/academy/news/${item.image}`}
                 alt={item.title}
                 className="academy-news-image"
               />

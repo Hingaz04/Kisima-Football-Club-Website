@@ -8,10 +8,12 @@ function Fixtures() {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:5000/fixture/fixtures")
+      .get(
+        "https://kisima-football-club-website-27xr.onrender.com/fixture/fixtures",
+      )
       .then((response) => {
         const sortedFixtures = response.data.sort(
-          (a, b) => new Date(b.date) - new Date(a.date)
+          (a, b) => new Date(b.date) - new Date(a.date),
         );
         setFixtures(sortedFixtures);
       })
@@ -33,13 +35,13 @@ function Fixtures() {
             <div className="fixtureTeam-row">
               <img
                 className="fixtureTeam-image"
-                src={`http://127.0.0.1:5000/fixture/${fixture.homeTeamImage}`}
+                src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${fixture.homeTeamImage}`}
                 alt="Home Team"
               />
               <h2 className="fixtureVS">VS</h2>
               <img
                 className="fixtureTeam-image"
-                src={`http://127.0.0.1:5000/fixture/${fixture.awayTeamImage}`}
+                src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${fixture.awayTeamImage}`}
                 alt="Away Team"
               />
             </div>
