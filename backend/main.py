@@ -23,7 +23,10 @@ from weekend import weekend_ns
 
 def create_app():
     app = Flask(__name__, template_folder="templates", static_folder="uploads")
+
+    # 🔥 IMPORTANT: prevents redirect slash issues
     app.url_map.strict_slashes = False
+
     app.config.from_object(Config)
 
     # --------------------------
@@ -36,16 +39,28 @@ def create_app():
     }
 
     # --------------------------
-    # CORS (FIXED FOR PRODUCTION)
+    # 🔥 CORS FIX (CRITICAL FOR RENDER + NETLIFY)
     # --------------------------
     CORS(
-    app,
-    resources={r"/*": {"origins": [
-        "https://kisimafc.netlify.app"
-    ]}},
-    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=["Content-Type", "Authorization"],
+        app,
+        resources={r"/*": {"origins": "https://kisimafc.netlify.app"}},
+        supports_credentials=True,
+        allow_headers=["Content-Type", "Authorization"],
+        methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
     )
+
+    # 🔥 FORCE CORS HEADERS ON EVERY RESPONSE
+    @app.after_request
+    def after_request(response):
+        response.headers.add("Access-Control-Allow-Origin", "https://kisimafc.netlify.app")
+        response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
+        response.headers.add("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS")
+        return response
+
+    # 🔥 HANDLE PREFLIGHT REQUESTS (CRITICAL FIX)
+    @app.route("/<path:path>", methods=["OPTIONS"])
+    def options_handler(path):
+        return "", 200
 
     # --------------------------
     # DB + JWT
@@ -80,7 +95,7 @@ def create_app():
     app.config['RESTX_VALIDATE'] = True
     app.config['ERROR_404_HELP'] = False
 
-    # Namespaces
+    # Namespaces (KEEP YOUR ROUTES)
     api.add_namespace(player_ns, path='/players')
     api.add_namespace(news_ns, path='/news')
     api.add_namespace(fixture_ns, path='/fixtures')
@@ -98,9 +113,8 @@ def create_app():
 # --------------------------
 app = create_app()
 
-
-# ⚠️ REMOVE IN PRODUCTION (IMPORTANT)
-# db.create_all()  ❌ DO NOT USE IN RENDER DEPLOYMENTS
+# ⚠️ REMOVE IN PRODUCTION (Render)
+# db.create_all()  ❌ DO NOT USE
 
 
 if __name__ == "__main__":
