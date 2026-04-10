@@ -24,7 +24,7 @@ function WeekendPics() {
     const accessToken = JSON.parse(token).access_token;
 
     axios
-      .get(`${BASE_URL}/weekend/`, {
+      .get(`${BASE_URL}/weekend`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -75,7 +75,7 @@ function WeekendPics() {
     setLoading(true);
 
     axios
-      .post(`${BASE_URL}/weekend/`, formData, {
+      .post(`${BASE_URL}/weekend`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",

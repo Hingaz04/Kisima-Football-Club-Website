@@ -21,12 +21,9 @@ function AdminSchedulePage() {
     const accessToken = token.access_token;
 
     axios
-      .get(
-        "https://kisima-football-club-website-27xr.onrender.com/fixture/fixtures",
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        },
-      )
+      .get("https://kisima-football-club-website-27xr.onrender.com/fixtures", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
       .then((res) => setFixtures(Array.isArray(res.data) ? res.data : []))
       .catch(console.error);
   }, []);
@@ -50,7 +47,7 @@ function AdminSchedulePage() {
 
     axios
       .post(
-        "https://kisima-football-club-website-27xr.onrender.com/fixture/fixtures",
+        "https://kisima-football-club-website-27xr.onrender.com/fixtures",
         data,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
@@ -66,7 +63,7 @@ function AdminSchedulePage() {
 
     axios
       .delete(
-        `https://kisima-football-club-website-27xr.onrender.com/fixture/fixtures/${id}`,
+        `https://kisima-football-club-website-27xr.onrender.com/fixtures/${id}`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
         },
@@ -78,8 +75,10 @@ function AdminSchedulePage() {
   return (
     <div className="admin-schedule-page">
       <h1>Schedule Page</h1>
+
       <Link to="/admin_dashboard">Back to Admin Dashboard</Link>
 
+      {/* FORM */}
       <form className="admin-schedule-form" onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Home Team Image:</label>
@@ -134,27 +133,48 @@ function AdminSchedulePage() {
         <button type="submit">Add Fixture</button>
       </form>
 
+      {/* LIST */}
       <h2>Fixture List</h2>
 
       <div className="admin-fixtures-grid">
-        {fixtures.map((f) => (
-          <div className="admin-card" key={f.id}>
-            <img
-              src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${f.homeTeamImage}`}
-              alt="Home Team"
-            />
-            <h3>VS</h3>
-            <img
-              src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${f.awayTeamImage}`}
-              alt="Away Team"
-            />
-            <p>Home: {f.homeTeam}</p>
-            <p>Away: {f.awayTeam}</p>
-            <p>Venue: {f.venue}</p>
-            <p>Date: {f.date}</p>
-            <button onClick={() => handleDelete(f.id)}>Delete</button>
-          </div>
-        ))}
+        {fixtures.length > 0 ? (
+          fixtures.map((f) => (
+            <div className="admin-card" key={f.id}>
+              {f.homeTeamImage && (
+                <img
+                  src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${f.homeTeamImage}`}
+                  alt="Home Team"
+                />
+              )}
+
+              <h3>VS</h3>
+
+              {f.awayTeamImage && (
+                <img
+                  src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${f.awayTeamImage}`}
+                  alt="Away Team"
+                />
+              )}
+
+              <p>
+                <strong>Home:</strong> {f.homeTeam}
+              </p>
+              <p>
+                <strong>Away:</strong> {f.awayTeam}
+              </p>
+              <p>
+                <strong>Venue:</strong> {f.venue}
+              </p>
+              <p>
+                <strong>Date:</strong> {f.date}
+              </p>
+
+              <button onClick={() => handleDelete(f.id)}>Delete</button>
+            </div>
+          ))
+        ) : (
+          <p>No fixtures available.</p>
+        )}
       </div>
     </div>
   );

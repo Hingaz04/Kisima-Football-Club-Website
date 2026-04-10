@@ -279,4 +279,38 @@ function AdminPage() {
                   <span className="highlight-text">Name:</span> {p.name}
                 </p>
                 <p>
-                  <span className="highlight-text">Position:</sp
+                  <span className="highlight-text">Position:</span> {p.position}
+                </p>
+              </li>
+            ))
+          ) : (
+            <p>No players available.</p>
+          )}
+        </ul>
+      </section>
+
+      {/* ACADEMY PLAYERS */}
+      <section className="academy-players-section">
+        <h2 className="section-title">Academy Players</h2>
+        <ul className="academy-players-list">
+          {academyPlayers.length ? (
+            academyPlayers.map((p) => (
+              <li className="academy-player-item" key={p.id}>
+                <p>
+                  <span className="highlight-text">Name:</span> {p.name}
+                </p>
+                <p>
+                  <span className="highlight-text">Position:</span> {p.position}
+                </p>
+              </li>
+            ))
+          ) : (
+            <p>No academy players available.</p>
+          )}
+        </ul>
+      </section>
+    </div>
+  );
+}
+
+export default AdminPage;

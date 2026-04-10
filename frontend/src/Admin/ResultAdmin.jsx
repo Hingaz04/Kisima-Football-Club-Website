@@ -27,12 +27,9 @@ function ResultAdmin() {
     const accessToken = parsedToken.access_token;
 
     axios
-      .get(
-        "https://kisima-football-club-website-27xr.onrender.com/result/results",
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        },
-      )
+      .get("https://kisima-football-club-website-27xr.onrender.com/results", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
       .then((response) => {
         setResults(Array.isArray(response.data) ? response.data : []);
       })
@@ -87,7 +84,7 @@ function ResultAdmin() {
 
     axios
       .post(
-        "https://kisima-football-club-website-27xr.onrender.com/result/results",
+        "https://kisima-football-club-website-27xr.onrender.com/results",
         resultData,
         {
           headers: {
@@ -118,7 +115,7 @@ function ResultAdmin() {
 
     axios
       .delete(
-        `https://kisima-football-club-website-27xr.onrender.com/result/results/${id}`,
+        `https://kisima-football-club-website-27xr.onrender.com/results/${id}`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
         },
