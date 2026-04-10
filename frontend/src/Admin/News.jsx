@@ -83,7 +83,7 @@ function NewsPage() {
     setLoading(true);
     axios
       .post(
-        "https://kisima-football-club-website-27xr.onrender.com/news",
+        "https://kisima-football-club-website-27xr.onrender.com/news/",
         formData,
         {
           headers: {

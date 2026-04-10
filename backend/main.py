@@ -23,6 +23,7 @@ from weekend import weekend_ns
 
 def create_app():
     app = Flask(__name__, template_folder="templates", static_folder="uploads")
+    app.url_map.strict_slashes = False
     app.config.from_object(Config)
 
     # --------------------------
@@ -38,14 +39,12 @@ def create_app():
     # CORS (FIXED FOR PRODUCTION)
     # --------------------------
     CORS(
-        app,
-        resources={r"/*": {"origins": [
-            "https://kisimafc.netlify.app",
-            "http://localhost:5173"
-        ]}},
-        methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        allow_headers=["Content-Type", "Authorization"],
-        max_age=3600
+    app,
+    resources={r"/*": {"origins": [
+        "https://kisimafc.netlify.app"
+    ]}},
+    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
     )
 
     # --------------------------
