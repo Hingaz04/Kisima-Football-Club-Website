@@ -4,7 +4,7 @@ from exts import db
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True, nullable=False)
-    password = db.Column(db.String(150), nullable=False)
+    password = db.Column(db.String(500), nullable=False)
 
     def __repr__(self):
         return f"<User {self.email}>"
@@ -135,7 +135,7 @@ class Weekend(db.Model):
     date = db.Column(db.String(100), nullable=False)
 
     def __repr__(self):
-        return f"<weekend {self.venue}>"
+        return f"<weekend {self.date}>"
 
     def save(self):
         db.session.add(self)
