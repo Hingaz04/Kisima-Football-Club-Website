@@ -75,7 +75,7 @@ function AdminPage() {
   const fetchAdminSchedule = async () => {
     try {
       const response = await axios.get(
-        "https://kisima-football-club-website-27xr.onrender.com/fixture/fixtures",
+        "https://kisima-football-club-website-27xr.onrender.com/fixtures",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("REACT_TOKEN_AUTH_KEY")}`,
@@ -91,7 +91,7 @@ function AdminPage() {
   const fetchResults = async () => {
     try {
       const response = await axios.get(
-        "https://kisima-football-club-website-27xr.onrender.com/result/results",
+        "https://kisima-football-club-website-27xr.onrender.com/results",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("REACT_TOKEN_AUTH_KEY")}`,
@@ -107,7 +107,7 @@ function AdminPage() {
   const fetchPlayers = async () => {
     try {
       const response = await axios.get(
-        "https://kisima-football-club-website-27xr.onrender.com/player/players",
+        "https://kisima-football-club-website-27xr.onrender.com/players",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("REACT_TOKEN_AUTH_KEY")}`,
