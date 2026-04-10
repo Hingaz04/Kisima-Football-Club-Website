@@ -32,8 +32,19 @@ def create_app():
         }
     }
 
-    # Enable CORS
-    CORS(app)
+    # ✅ FIXED CORS Configuration - Allow Netlify frontend
+    CORS(app, 
+         origins=[
+             "https://kisimafc.netlify.app",  # Your Netlify frontend
+             "http://localhost:5173",          # Local Vite dev server
+             "http://localhost:3000",          # Alternative local dev
+             "http://localhost:5000"           # Local backend
+         ],
+         methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+         allow_headers=["Content-Type", "Authorization", "Accept"],
+         supports_credentials=True,
+         max_age=3600  # Cache preflight requests for 1 hour
+    )
 
     # Initialize database and migration
     db.init_app(app)
@@ -68,7 +79,7 @@ def create_app():
     app.config['RESTX_VALIDATE'] = True
     app.config['ERROR_404_HELP'] = False
 
-    # Register namespaces
+    # Register namespaces with correct paths
     api.add_namespace(player_ns, path='/players')
     api.add_namespace(news_ns, path='/news')
     api.add_namespace(fixture_ns, path='/fixtures')
