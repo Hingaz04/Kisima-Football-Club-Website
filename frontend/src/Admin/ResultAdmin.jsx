@@ -186,7 +186,7 @@ function ResultAdmin() {
 
       <div className="results-grid">
         {results.map((result) => (
-          <div key={result.id}>
+          <div key={result.id} className="card">
             <img
               src={`https://kisima-football-club-website-27xr.onrender.com/result/${result.homeTeamImage}`}
               alt="Home"
