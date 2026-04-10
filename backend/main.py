@@ -1,4 +1,4 @@
-# 🔥 MUST BE FIRST (fix MySQL driver issue)
+# 🔥 MUST BE FIRST (MySQL driver fix)
 import pymysql
 pymysql.install_as_MySQLdb()
 
@@ -10,7 +10,7 @@ from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 
-# Import namespaces
+# Namespaces
 from Players import player_ns
 from News import news_ns
 from Fixtures import fixture_ns
@@ -25,36 +25,38 @@ def create_app():
     app = Flask(__name__, template_folder="templates", static_folder="uploads")
     app.config.from_object(Config)
 
-    # ✅ FIX: SSL config MUST come BEFORE db.init_app
+    # --------------------------
+    # SSL (Aiven safe config)
+    # --------------------------
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
         "connect_args": {
             "ssl": {"ssl": {}}
         }
     }
 
-    # ✅ FIXED CORS Configuration - Allow Netlify frontend
-    CORS(app, 
-         origins=[
-             "https://kisimafc.netlify.app",  # Your Netlify frontend
-             "http://localhost:5173",          # Local Vite dev server
-             "http://localhost:3000",          # Alternative local dev
-             "http://localhost:5000"           # Local backend
-         ],
-         methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-         allow_headers=["Content-Type", "Authorization", "Accept"],
-         supports_credentials=True,
-         max_age=3600  # Cache preflight requests for 1 hour
+    # --------------------------
+    # CORS (FIXED FOR PRODUCTION)
+    # --------------------------
+    CORS(
+        app,
+        resources={r"/*": {"origins": [
+            "https://kisimafc.netlify.app",
+            "http://localhost:5173"
+        ]}},
+        methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        allow_headers=["Content-Type", "Authorization"],
+        max_age=3600
     )
 
-    # Initialize database and migration
+    # --------------------------
+    # DB + JWT
+    # --------------------------
     db.init_app(app)
     Migrate(app, db)
-
-    # JWT Manager
     JWTManager(app)
 
     # --------------------------
-    # Routes BEFORE Api
+    # ROUTES
     # --------------------------
     @app.route("/")
     def homepage():
@@ -72,14 +74,14 @@ def create_app():
         })
 
     # --------------------------
-    # Initialize RESTX API
+    # API
     # --------------------------
     api = Api(app, doc="/docs", title="Kisima FC API", version="1.0")
 
     app.config['RESTX_VALIDATE'] = True
     app.config['ERROR_404_HELP'] = False
 
-    # Register namespaces with correct paths
+    # Namespaces
     api.add_namespace(player_ns, path='/players')
     api.add_namespace(news_ns, path='/news')
     api.add_namespace(fixture_ns, path='/fixtures')
@@ -92,12 +94,14 @@ def create_app():
     return app
 
 
-# Create app instance
+# --------------------------
+# CREATE APP
+# --------------------------
 app = create_app()
 
-# ⚠️ DEV ONLY (safe for now)
-with app.app_context():
-    db.create_all()
+
+# ⚠️ REMOVE IN PRODUCTION (IMPORTANT)
+# db.create_all()  ❌ DO NOT USE IN RENDER DEPLOYMENTS
 
 
 if __name__ == "__main__":
@@ -105,5 +109,5 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     host = "0.0.0.0"
 
-    print(f"🚀 Starting Kisima FC backend on http://{host}:{port}")
+    print(f"🚀 Running backend on http://{host}:{port}")
     app.run(host=host, port=port, debug=Config.DEBUG)
