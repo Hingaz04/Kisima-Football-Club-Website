@@ -24,13 +24,16 @@ from weekend import weekend_ns
 def create_app():
     app = Flask(__name__, template_folder="templates", static_folder="uploads")
 
-    # 🔥 IMPORTANT: prevents redirect slash issues
+    # 🔥 Prevents redirect issues (important)
     app.url_map.strict_slashes = False
 
+    # --------------------------
+    # CONFIG
+    # --------------------------
     app.config.from_object(Config)
 
     # --------------------------
-    # SSL (Aiven safe config)
+    # SSL (Aiven MySQL safe config)
     # --------------------------
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
         "connect_args": {
@@ -39,38 +42,23 @@ def create_app():
     }
 
     # --------------------------
-    # 🔥 CORS FIX (CRITICAL FOR RENDER + NETLIFY)
+    # ✅ CLEAN CORS (FIXED)
     # --------------------------
     CORS(
         app,
         resources={r"/*": {"origins": "https://kisimafc.netlify.app"}},
-        supports_credentials=True,
-        allow_headers=["Content-Type", "Authorization"],
-        methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+        supports_credentials=True
     )
 
-    # 🔥 FORCE CORS HEADERS ON EVERY RESPONSE
-    @app.after_request
-    def after_request(response):
-        response.headers.add("Access-Control-Allow-Origin", "https://kisimafc.netlify.app")
-        response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
-        response.headers.add("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS")
-        return response
-
-    # 🔥 HANDLE PREFLIGHT REQUESTS (CRITICAL FIX)
-    @app.route("/<path:path>", methods=["OPTIONS"])
-    def options_handler(path):
-        return "", 200
-
     # --------------------------
-    # DB + JWT
+    # DB + MIGRATE + JWT
     # --------------------------
     db.init_app(app)
     Migrate(app, db)
     JWTManager(app)
 
     # --------------------------
-    # ROUTES
+    # BASIC ROUTES
     # --------------------------
     @app.route("/")
     def homepage():
@@ -82,20 +70,33 @@ def create_app():
             "message": "Welcome to Kisima Football Club API 🚀",
             "version": "1.0",
             "endpoints": [
-                "/players", "/news", "/fixtures", "/results",
-                "/academy/players", "/academy/news", "/auth", "/weekend"
+                "/players",
+                "/news",
+                "/fixtures",
+                "/results",
+                "/academy/players",
+                "/academy/news",
+                "/auth",
+                "/weekend"
             ]
         })
 
     # --------------------------
-    # API
+    # API SETUP
     # --------------------------
-    api = Api(app, doc="/docs", title="Kisima FC API", version="1.0")
+    api = Api(
+        app,
+        doc="/docs",
+        title="Kisima FC API",
+        version="1.0"
+    )
 
     app.config['RESTX_VALIDATE'] = True
     app.config['ERROR_404_HELP'] = False
 
-    # Namespaces (KEEP YOUR ROUTES)
+    # --------------------------
+    # NAMESPACES (IMPORTANT PATHS)
+    # --------------------------
     api.add_namespace(player_ns, path='/players')
     api.add_namespace(news_ns, path='/news')
     api.add_namespace(fixture_ns, path='/fixtures')
@@ -113,9 +114,8 @@ def create_app():
 # --------------------------
 app = create_app()
 
-# ⚠️ REMOVE IN PRODUCTION (Render)
-# db.create_all()  ❌ DO NOT USE
-
+# ⚠️ DO NOT USE IN PRODUCTION (Render)
+# db.create_all()
 
 if __name__ == "__main__":
     import os

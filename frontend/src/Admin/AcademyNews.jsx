@@ -2,9 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-const API =
-  "https://kisima-football-club-website-27xr.onrender.com";
-
 function AcademyNews() {
   const [academyNews, setAcademyNews] = useState([]);
   const [form, setForm] = useState({
@@ -13,47 +10,63 @@ function AcademyNews() {
     description: "",
     date: "",
   });
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const getToken = () => {
-    const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
-    if (!token) return null;
-    return JSON.parse(token).access_token;
-  };
-
-  // ================= FETCH =================
   useEffect(() => {
-    const token = getToken();
+    const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
     if (!token) return;
 
+    const parsedToken = JSON.parse(token);
+    const accessToken = parsedToken.access_token;
+
     axios
-      .get(`${API}/academy/news/`, {
-        headers: { Authorization: `Bearer ${token}` },
+      .get(
+        "https://kisima-football-club-website-27xr.onrender.com/academy/news",
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      )
+      .then((response) => {
+        setAcademyNews(Array.isArray(response.data) ? response.data : []);
       })
-      .then((res) => setAcademyNews(res.data))
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error("Error fetching news:", err);
+      });
   }, []);
 
-  // ================= HANDLE INPUT =================
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-
-    if (name === "image") {
-      setForm((prev) => ({ ...prev, image: files[0] }));
-    } else {
-      setForm((prev) => ({ ...prev, [name]: value }));
-    }
+    setForm((prev) => ({
+      ...prev,
+      [name]: files ? files[0] : value,
+    }));
   };
 
-  // ================= SUBMIT =================
+  const validateForm = () => {
+    const newErrors = {};
+    if (!form.title) newErrors.title = "Title is required";
+    if (!form.image) newErrors.image = "Image is required";
+    if (!form.description) newErrors.description = "Description is required";
+    if (!form.date) newErrors.date = "Date is required";
+    return newErrors;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const token = getToken();
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setError("Please fill all fields correctly");
+      return;
+    }
+
+    const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
     if (!token) return;
+
+    const parsedToken = JSON.parse(token);
+    const accessToken = parsedToken.access_token;
 
     const formData = new FormData();
     formData.append("title", form.title);
@@ -64,77 +77,104 @@ function AcademyNews() {
     setLoading(true);
 
     axios
-      .post(`${API}/academy/news/`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
+      .post(
+        "https://kisima-football-club-website-27xr.onrender.com/academy/news",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
-      })
-      .then((res) => {
-        setAcademyNews([res.data, ...academyNews]);
-        setSuccess("News added!");
+      )
+      .then((response) => {
+        setAcademyNews((prev) => [response.data, ...prev]);
+        setSuccess("News added successfully!");
         setLoading(false);
       })
       .catch((err) => {
-        setError("Failed to add news");
+        console.error("Error:", err);
+        setError("Failed to add news.");
         setLoading(false);
       });
   };
 
-  // ================= DELETE =================
   const handleDelete = (id) => {
-    const token = getToken();
+    const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
     if (!token) return;
 
+    const parsedToken = JSON.parse(token);
+    const accessToken = parsedToken.access_token;
+
     axios
-      .delete(`${API}/academy/news/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .delete(
+        `https://kisima-football-club-website-27xr.onrender.com/academy/news/${id}`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      )
       .then(() => {
-        setAcademyNews((prev) => prev.filter((n) => n.id !== id));
-        alert("Deleted!");
+        setAcademyNews((prev) => prev.filter((item) => item.id !== id));
       })
-      .catch(() => setError("Delete failed"));
+      .catch((err) => {
+        console.error("Error deleting news:", err);
+        setError("Failed to delete news.");
+      });
   };
 
   return (
-    <div>
-      <h1>Academy News</h1>
-      <Link to="/admin_dashboard">Back</Link>
+    <div className="academy-news-page">
+      <h1>Academy News Page</h1>
+      <Link to="/admin_dashboard">Back to Admin Dashboard</Link>
 
-      {/* FORM */}
-      <form onSubmit={handleSubmit}>
-        <input
-          name="title"
-          value={form.title}
-          onChange={handleChange}
-          placeholder="Title"
-        />
+      <form onSubmit={handleSubmit} className="academy-news-form">
+        <div>
+          <label>Title:</label>
+          <input
+            type="text"
+            name="title"
+            value={form.title}
+            onChange={handleChange}
+          />
+        </div>
 
-        <textarea
-          name="description"
-          value={form.description}
-          onChange={handleChange}
-          placeholder="Description"
-        />
+        <div>
+          <label>Description:</label>
+          <textarea
+            name="description"
+            value={form.description}
+            onChange={handleChange}
+          />
+        </div>
 
-        <input
-          type="date"
-          name="date"
-          value={form.date}
-          onChange={handleChange}
-        />
+        <div>
+          <label>Date:</label>
+          <input
+            type="date"
+            name="date"
+            value={form.date}
+            onChange={handleChange}
+          />
+        </div>
 
-        <input type="file" name="image" onChange={handleChange} />
+        <div>
+          <label>Image:</label>
+          <input type="file" name="image" onChange={handleChange} />
+        </div>
 
-        <button disabled={loading}>Add News</button>
+        <button type="submit" disabled={loading}>
+          Add News
+        </button>
+
+        {loading && <p>Loading...</p>}
+        {error && <p>{error}</p>}
+        {success && <p>{success}</p>}
       </form>
 
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
-      {success && <p>{success}</p>}
+      <h2>Academy News List</h2>
 
-      {/* LIST */}
+      {academyNews.length === 0 && <p>No news available.</p>}
+
       <ul>
         {academyNews.map((item) => (
           <li key={item.id}>
@@ -142,17 +182,14 @@ function AcademyNews() {
 
             {item.image && (
               <img
-                src={`${API}${item.image}`}
+                src={`https://kisima-football-club-website-27xr.onrender.com/academy/news/${item.image}`}
                 alt={item.title}
-                width="200"
               />
             )}
 
             <p>{item.description}</p>
 
-            <button onClick={() => handleDelete(item.id)}>
-              Delete
-            </button>
+            <button onClick={() => handleDelete(item.id)}>Delete</button>
           </li>
         ))}
       </ul>

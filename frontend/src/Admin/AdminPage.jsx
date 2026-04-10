@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth, logout } from "../Auth";
+import { logout } from "../Auth";
 import axios from "axios";
 import "./AdminPage.css";
 
@@ -14,58 +14,59 @@ function AdminPage() {
   const [weekendImages, setWeekendImages] = useState([]);
   const navigate = useNavigate();
 
-  const BASE_URL = "https://kisima-football-club-website-27xr.onrender.com";
-
   useEffect(() => {
     fetchNews();
     fetchAdminSchedule();
     fetchPlayers();
     fetchAcademyPlayers();
     fetchAcademyNews();
-    fectchWeekendPictures();
+    fetchWeekendPictures();
     fetchResults();
   }, []);
 
   const fetchNews = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/news/`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("REACT_TOKEN_AUTH_KEY")}`,
+      const response = await axios.get(
+        "https://kisima-football-club-website-27xr.onrender.com/news",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("REACT_TOKEN_AUTH_KEY")}`,
+          },
         },
-      });
-      if (Array.isArray(response.data)) {
-        setNews(response.data);
-      }
+      );
+      setNews(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error("Error fetching news:", error);
     }
   };
 
-  const fectchWeekendPictures = async () => {
+  const fetchWeekendPictures = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/weekend/weekends`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("REACT_TOKEN_AUTH_KEY")}`,
+      const response = await axios.get(
+        "https://kisima-football-club-website-27xr.onrender.com/weekend",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("REACT_TOKEN_AUTH_KEY")}`,
+          },
         },
-      });
-      if (Array.isArray(response.data)) {
-        setWeekendImages(response.data);
-      }
+      );
+      setWeekendImages(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
-      console.error("Error fetching news:", error);
+      console.error("Error fetching weekend pictures:", error);
     }
   };
 
   const fetchAcademyNews = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/academy/news/`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("REACT_TOKEN_AUTH_KEY")}`,
+      const response = await axios.get(
+        "https://kisima-football-club-website-27xr.onrender.com/academy/news",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("REACT_TOKEN_AUTH_KEY")}`,
+          },
         },
-      });
-      if (Array.isArray(response.data)) {
-        setAcademyNews(response.data);
-      }
+      );
+      setAcademyNews(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error("Error fetching academy news:", error);
     }
@@ -73,14 +74,15 @@ function AdminPage() {
 
   const fetchAdminSchedule = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/fixture/fixtures`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("REACT_TOKEN_AUTH_KEY")}`,
+      const response = await axios.get(
+        "https://kisima-football-club-website-27xr.onrender.com/fixture/fixtures",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("REACT_TOKEN_AUTH_KEY")}`,
+          },
         },
-      });
-      if (Array.isArray(response.data)) {
-        setAdminSchedule(response.data);
-      }
+      );
+      setAdminSchedule(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error("Error fetching fixtures:", error);
     }
@@ -88,27 +90,31 @@ function AdminPage() {
 
   const fetchResults = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/result/results`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("REACT_TOKEN_AUTH_KEY")}`,
+      const response = await axios.get(
+        "https://kisima-football-club-website-27xr.onrender.com/result/results",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("REACT_TOKEN_AUTH_KEY")}`,
+          },
         },
-      });
-      if (Array.isArray(response.data)) {
-        setResults(response.data);
-      }
+      );
+      setResults(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
-      console.error("Error fetching fixtures:", error);
+      console.error("Error fetching results:", error);
     }
   };
 
   const fetchPlayers = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/player/players`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("REACT_TOKEN_AUTH_KEY")}`,
+      const response = await axios.get(
+        "https://kisima-football-club-website-27xr.onrender.com/player/players",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("REACT_TOKEN_AUTH_KEY")}`,
+          },
         },
-      });
-      setPlayers(response.data);
+      );
+      setPlayers(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error("Error fetching players:", error);
     }
@@ -116,12 +122,15 @@ function AdminPage() {
 
   const fetchAcademyPlayers = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/academy/players/`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("REACT_TOKEN_AUTH_KEY")}`,
+      const response = await axios.get(
+        "https://kisima-football-club-website-27xr.onrender.com/academy/players",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("REACT_TOKEN_AUTH_KEY")}`,
+          },
         },
-      });
-      setAcademyPlayers(response.data);
+      );
+      setAcademyPlayers(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error("Error fetching academy players:", error);
     }
@@ -161,7 +170,7 @@ function AdminPage() {
         </button>
       </div>
 
-      {/* NEWS IMAGE FIX */}
+      {/* NEWS */}
       <section className="news-section">
         <h2 className="section-title">Team News</h2>
         <ul className="news-list">
@@ -170,7 +179,7 @@ function AdminPage() {
               <li className="news-item" key={item.id}>
                 <img
                   className="news-image"
-                  src={`${BASE_URL}/news/uploads/${item.image}`}
+                  src={`https://kisima-football-club-website-27xr.onrender.com/news/${item.image}`}
                   alt={item.title}
                 />
                 <h3>{item.title}</h3>
@@ -183,7 +192,7 @@ function AdminPage() {
         </ul>
       </section>
 
-      {/* WEEKEND IMAGE FIX */}
+      {/* WEEKEND IMAGES */}
       <section className="pictures-section">
         <h2 className="section-title">Team Pictures</h2>
         <ul className="pictures-list">
@@ -192,10 +201,10 @@ function AdminPage() {
               <li className="picture-item" key={item.id}>
                 <img
                   className="picture-image"
-                  src={`${BASE_URL}/weekend/${item.weekendImages}`}
+                  src={`https://kisima-football-club-website-27xr.onrender.com/weekend/${item.weekendImages}`}
                   alt={item.title}
                 />
-                <p className="picture-date">Date: {item.date}</p>
+                <p>Date: {item.date}</p>
               </li>
             ))
           ) : (
@@ -204,18 +213,18 @@ function AdminPage() {
         </ul>
       </section>
 
-      {/* ACADEMY NEWS IMAGE FIX */}
+      {/* ACADEMY NEWS */}
       <section className="academy-news-section">
         <h2 className="section-title">Academy News</h2>
         <ul className="academy-news-list">
           {academyNews.length > 0 ? (
             academyNews.map((item) => (
-              <li className="academy-news-item" key={item.id}>
+              <li key={item.id}>
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
                 <img
                   className="academy-news-image"
-                  src={`${BASE_URL}/academy/news/uploads/${item.image}`}
+                  src={`https://kisima-football-club-website-27xr.onrender.com/academy/news/${item.image}`}
                   alt={item.title}
                 />
               </li>
@@ -226,30 +235,24 @@ function AdminPage() {
         </ul>
       </section>
 
-      {/* FIX FIXTURES IMAGES */}
+      {/* FIXTURES */}
       <section className="fixtures-section">
         <h2 className="section-title">Fixtures</h2>
         <ul className="fixtures-list">
           {AdminSchedule.length > 0 ? (
             AdminSchedule.map((item) => (
-              <li className="fixture-item" key={item.id}>
-                {item.homeTeamImage && (
-                  <img
-                    className="fixture-image"
-                    src={`${BASE_URL}/fixture/${item.homeTeamImage}`}
-                    alt="Home Team"
-                  />
-                )}
-                <h1 className="vs">VS</h1>
-                {item.awayTeamImage && (
-                  <img
-                    className="fixture-image"
-                    src={`${BASE_URL}/fixture/${item.awayTeamImage}`}
-                    alt="Away Team"
-                  />
-                )}
-                <p className="fixture-venue">Venue: {item.venue}</p>
-                <p className="fixture-date">Date: {item.date}</p>
+              <li key={item.id}>
+                <img
+                  src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${item.homeTeamImage}`}
+                  alt="home"
+                />
+                <h1>VS</h1>
+                <img
+                  src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${item.awayTeamImage}`}
+                  alt="away"
+                />
+                <p>{item.venue}</p>
+                <p>{item.date}</p>
               </li>
             ))
           ) : (
@@ -258,31 +261,25 @@ function AdminPage() {
         </ul>
       </section>
 
-      {/* FIX RESULTS IMAGES */}
+      {/* RESULTS */}
       <section className="results-section">
         <h2 className="section-title">Results</h2>
         <ul className="results-list">
           {results.length > 0 ? (
             results.map((item) => (
-              <li className="result-item" key={item.id}>
-                {item.homeTeamImage && (
-                  <img
-                    className="result-image"
-                    src={`${BASE_URL}/result/${item.homeTeamImage}`}
-                    alt="Home Team"
-                  />
-                )}
-                <h1 className="vs">VS</h1>
-                {item.awayTeamImage && (
-                  <img
-                    className="result-image"
-                    src={`${BASE_URL}/result/${item.awayTeamImage}`}
-                    alt="Away Team"
-                  />
-                )}
-                <p className="result-score">Results: {item.result}</p>
-                <p className="result-venue">Venue: {item.venue}</p>
-                <p className="result-date">Date: {item.date}</p>
+              <li key={item.id}>
+                <img
+                  src={`https://kisima-football-club-website-27xr.onrender.com/result/${item.homeTeamImage}`}
+                  alt="home"
+                />
+                <h1>VS</h1>
+                <img
+                  src={`https://kisima-football-club-website-27xr.onrender.com/result/${item.awayTeamImage}`}
+                  alt="away"
+                />
+                <p>{item.result}</p>
+                <p>{item.venue}</p>
+                <p>{item.date}</p>
               </li>
             ))
           ) : (
@@ -291,7 +288,39 @@ function AdminPage() {
         </ul>
       </section>
 
-      {/* PLAYERS + ACADEMY PLAYERS unchanged */}
+      {/* PLAYERS */}
+      <section className="players-section">
+        <h2>Team Players</h2>
+        <ul>
+          {players.length > 0 ? (
+            players.map((p) => (
+              <li key={p.id}>
+                <p>{p.name}</p>
+                <p>{p.position}</p>
+              </li>
+            ))
+          ) : (
+            <p>No players available.</p>
+          )}
+        </ul>
+      </section>
+
+      {/* ACADEMY PLAYERS */}
+      <section className="academy-players-section">
+        <h2>Academy Players</h2>
+        <ul>
+          {academyPlayers.length > 0 ? (
+            academyPlayers.map((p) => (
+              <li key={p.id}>
+                <p>{p.name}</p>
+                <p>{p.position}</p>
+              </li>
+            ))
+          ) : (
+            <p>No academy players available.</p>
+          )}
+        </ul>
+      </section>
     </div>
   );
 }
