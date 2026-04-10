@@ -12,7 +12,7 @@ function AcademyPlayerPage() {
   const fetchPlayers = async () => {
     try {
       const response = await axios.get(
-        "https://kisima-football-club-website-27xr.onrender.com/academy/player/academy/players",
+        "https://kisima-football-club-website-27xr.onrender.com/academy/players/",
       );
       if (Array.isArray(response.data)) {
         setPlayers(response.data);

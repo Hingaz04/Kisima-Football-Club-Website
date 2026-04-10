@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Players.css";
 
+const API = "https://kisima-football-club-website-27xr.onrender.com";
+
 function AcademyPlayers() {
   const [academyPlayers, setAcademyPlayers] = useState([]);
   const [error, setError] = useState("");
@@ -11,135 +13,115 @@ function AcademyPlayers() {
   });
   const [errors, setErrors] = useState({});
 
-  useEffect(() => {
+  // ================= TOKEN =================
+  const getToken = () => {
     const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
+    if (!token) return null;
+    return JSON.parse(token).access_token;
+  };
 
+  // ================= FETCH PLAYERS =================
+  useEffect(() => {
+    const token = getToken();
     if (!token) {
-      console.error("Token not found");
+      setError("Token not found");
       return;
     }
 
-    const parsedToken = JSON.parse(token);
-    const accessToken = parsedToken.access_token;
-
-    fetch(
-      "https://kisima-football-club-website-27xr.onrender.com/academy/player/academy/players",
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+    fetch(`${API}/academy/players/`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-    )
+    })
       .then((res) => {
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
+        if (!res.ok) throw new Error("Failed to fetch");
         return res.json();
       })
       .then((data) => {
-        console.log("Fetched players:", data);
-        setAcademyPlayers(data);
+        setAcademyPlayers(Array.isArray(data) ? data : []);
       })
       .catch((err) => {
-        console.error("Error fetching players:", err);
-        setError("Failed to fetch players.");
+        console.error(err);
+        setError("Failed to fetch academy players");
       });
   }, []);
 
+  // ================= FORM HANDLER =================
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prevForm) => ({ ...prevForm, [name]: value }));
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const validateForm = () => {
+  const validate = () => {
     const newErrors = {};
     if (!form.name) newErrors.name = "Name is required";
     if (!form.position) newErrors.position = "Position is required";
     return newErrors;
   };
 
+  // ================= ADD PLAYER =================
   const handleSubmit = (e) => {
     e.preventDefault();
-    const validationErrors = validateForm();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
+
+    const validation = validate();
+    if (Object.keys(validation).length > 0) {
+      setErrors(validation);
       return;
     }
 
-    const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
-    if (!token) {
-      console.error("Token not found");
-      return;
-    }
+    const token = getToken();
+    if (!token) return;
 
-    const parsedToken = JSON.parse(token);
-    const accessToken = parsedToken.access_token;
-
-    const requestOptions = {
+    fetch(`${API}/academy/players/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         name: form.name,
         position: form.position,
       }),
-    };
-
-    fetch(
-      "https://kisima-football-club-website-27xr.onrender.com/academy/player/academy/players",
-      requestOptions,
-    )
+    })
       .then((res) => {
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
+        if (!res.ok) throw new Error("Failed to add");
         return res.json();
       })
       .then((data) => {
-        console.log("Player added:", data);
-        setAcademyPlayers([...academyPlayers, data]);
-        window.alert("Player added successfully!");
+        setAcademyPlayers((prev) => [...prev, data]);
+        setForm({ name: "", position: "" });
+        window.alert("Academy player added successfully!");
       })
-      .catch((err) => console.error("Error:", err));
+      .catch((err) => console.error(err));
   };
 
-  const handleDeletePlayer = (id) => {
-    const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
-    if (!token) {
-      console.error("Token not found");
-      return;
-    }
+  // ================= DELETE PLAYER =================
+  const handleDelete = (id) => {
+    const token = getToken();
+    if (!token) return;
 
-    const parsedToken = JSON.parse(token);
-    const accessToken = parsedToken.access_token;
-
-    fetch(
-      `https://kisima-football-club-website-27xr.onrender.com/academy/player/academy/player/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+    fetch(`${API}/academy/players/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-    )
+    })
       .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to delete player");
-        }
-        setAcademyPlayers(academyPlayers.filter((player) => player.id !== id));
-        window.alert("Player deleted successfully!");
+        if (!res.ok) throw new Error("Delete failed");
+        setAcademyPlayers((prev) => prev.filter((player) => player.id !== id));
+        window.alert("Deleted successfully!");
       })
-      .catch((err) => console.error("Error:", err));
+      .catch((err) => console.error(err));
   };
 
   return (
     <div className="players">
       <Link to="/admin_dashboard">Back to Admin Dashboard</Link>
+
       <h1>ACADEMY PLAYERS</h1>
 
+      {/* ================= FORM ================= */}
       <form onSubmit={handleSubmit} className="add-player-form">
         <label>
           Name:
@@ -148,10 +130,10 @@ function AcademyPlayers() {
             name="name"
             value={form.name}
             onChange={handleChange}
-            required
           />
           {errors.name && <span className="error-message">{errors.name}</span>}
         </label>
+
         <label>
           Position:
           <input
@@ -159,33 +141,37 @@ function AcademyPlayers() {
             name="position"
             value={form.position}
             onChange={handleChange}
-            required
           />
           {errors.position && (
             <span className="error-message">{errors.position}</span>
           )}
         </label>
+
         <button type="submit">Add Player</button>
       </form>
 
+      {/* ================= LIST ================= */}
       <section>
-        <h2>Academy Player List</h2>
+        <h2>Academy Players List</h2>
+
         {error && <p className="error-message">{error}</p>}
-        {academyPlayers.length === 0 && <p>No players available.</p>}
-        <ul>
-          {academyPlayers.map((academyPlayer, index) => (
-            <li key={academyPlayer.id}>
-              <p>
-                {index + 1}. Name: {academyPlayer.name}
-              </p>{" "}
-              {/* Numbered list */}
-              <p>Position: {academyPlayer.position}</p>
-              <button onClick={() => handleDeletePlayer(academyPlayer.id)}>
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
+
+        {academyPlayers.length === 0 ? (
+          <p>No academy players available.</p>
+        ) : (
+          <ul>
+            {academyPlayers.map((player, index) => (
+              <li key={player.id}>
+                <p>
+                  {index + 1}. {player.name}
+                </p>
+                <p>Position: {player.position}</p>
+
+                <button onClick={() => handleDelete(player.id)}>Delete</button>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
     </div>
   );

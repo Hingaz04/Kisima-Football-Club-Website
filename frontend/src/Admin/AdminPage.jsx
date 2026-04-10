@@ -1,382 +1,267 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth, logout } from "../Auth";
 import axios from "axios";
 import "./AdminPage.css";
 
+const API = "https://kisima-football-club-website-27xr.onrender.com";
+
 function AdminPage() {
   const [news, setNews] = useState([]);
-  const [AdminSchedule, setAdminSchedule] = useState([]);
+  const [fixtures, setFixtures] = useState([]);
   const [players, setPlayers] = useState([]);
   const [academyPlayers, setAcademyPlayers] = useState([]);
   const [academyNews, setAcademyNews] = useState([]);
   const [results, setResults] = useState([]);
   const [weekendImages, setWeekendImages] = useState([]);
+
   const navigate = useNavigate();
 
+  // 🔐 TOKEN
+  const getToken = () => {
+    const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
+    if (!token) return null;
+    return JSON.parse(token).access_token;
+  };
+
+  const authHeader = () => ({
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+
   useEffect(() => {
+    fetchAll();
+  }, []);
+
+  const fetchAll = () => {
     fetchNews();
-    fetchAdminSchedule();
+    fetchFixtures();
     fetchPlayers();
     fetchAcademyPlayers();
     fetchAcademyNews();
-    fectchWeekendPictures();
     fetchResults();
-  }, []);
+    fetchWeekend();
+  };
 
+  // ================= NEWS =================
   const fetchNews = async () => {
     try {
-      const response = await axios.get(
-        "https://kisima-football-club-website-27xr.onrender.com/news/news",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem(
-              "REACT_TOKEN_AUTH_KEY",
-            )}`,
-          },
-        },
-      );
-      if (Array.isArray(response.data)) {
-        setNews(response.data);
-      } else {
-        console.error("Unexpected response format for news:", response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching news:", error);
+      const res = await axios.get(`${API}/news/news`, authHeader());
+      setNews(Array.isArray(res.data) ? res.data : []);
+    } catch (err) {
+      console.error("News error:", err);
     }
   };
 
-  const fectchWeekendPictures = async () => {
+  // ================= FIXTURES =================
+  const fetchFixtures = async () => {
     try {
-      const response = await axios.get(
-        "https://kisima-football-club-website-27xr.onrender.com/weekend/weekends",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem(
-              "REACT_TOKEN_AUTH_KEY",
-            )}`,
-          },
-        },
-      );
-      if (Array.isArray(response.data)) {
-        setWeekendImages(response.data);
-      } else {
-        console.error("Unexpected response format for news:", response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching news:", error);
+      const res = await axios.get(`${API}/fixture/fixtures`, authHeader());
+      setFixtures(Array.isArray(res.data) ? res.data : []);
+    } catch (err) {
+      console.error("Fixtures error:", err);
     }
   };
 
-  const fetchAcademyNews = async () => {
-    try {
-      const response = await axios.get(
-        "https://kisima-football-club-website-27xr.onrender.com/academy/news/academy/news",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem(
-              "REACT_TOKEN_AUTH_KEY",
-            )}`,
-          },
-        },
-      );
-      if (Array.isArray(response.data)) {
-        setAcademyNews(response.data);
-      } else {
-        console.error(
-          "Unexpected response format for academy news:",
-          response.data,
-        );
-      }
-    } catch (error) {
-      console.error("Error fetching academy news:", error);
-    }
-  };
-
-  const fetchAdminSchedule = async () => {
-    try {
-      const response = await axios.get(
-        "https://kisima-football-club-website-27xr.onrender.com/fixture/fixtures",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem(
-              "REACT_TOKEN_AUTH_KEY",
-            )}`,
-          },
-        },
-      );
-      if (Array.isArray(response.data)) {
-        setAdminSchedule(response.data);
-      } else {
-        console.error(
-          "Unexpected response format for fixtures:",
-          response.data,
-        );
-      }
-    } catch (error) {
-      console.error("Error fetching fixtures:", error);
-    }
-  };
-
+  // ================= RESULTS =================
   const fetchResults = async () => {
     try {
-      const response = await axios.get(
-        "https://kisima-football-club-website-27xr.onrender.com/result/results",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem(
-              "REACT_TOKEN_AUTH_KEY",
-            )}`,
-          },
-        },
-      );
-      if (Array.isArray(response.data)) {
-        setResults(response.data);
-      } else {
-        console.error("Unexpected response format for results:", response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching fixtures:", error);
+      const res = await axios.get(`${API}/result/results`, authHeader());
+      setResults(Array.isArray(res.data) ? res.data : []);
+    } catch (err) {
+      console.error("Results error:", err);
     }
   };
 
+  // ================= PLAYERS =================
   const fetchPlayers = async () => {
     try {
-      const response = await axios.get(
-        "https://kisima-football-club-website-27xr.onrender.com/player/players",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem(
-              "REACT_TOKEN_AUTH_KEY",
-            )}`,
-          },
-        },
-      );
-      console.log("Fetched players:", response.data);
-      setPlayers(response.data);
-    } catch (error) {
-      console.error("Error fetching players:", error);
+      const res = await axios.get(`${API}/player/players`, authHeader());
+      setPlayers(Array.isArray(res.data) ? res.data : []);
+    } catch (err) {
+      console.error("Players error:", err);
     }
   };
 
+  // ================= ACADEMY PLAYERS =================
   const fetchAcademyPlayers = async () => {
     try {
-      const response = await axios.get(
-        "https://kisima-football-club-website-27xr.onrender.com/academy/player/academy/players",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem(
-              "REACT_TOKEN_AUTH_KEY",
-            )}`,
-          },
-        },
+      const res = await axios.get(
+        `${API}/academy/player/academy/players`,
+        authHeader(),
       );
-      console.log("Fetched academy players:", response.data);
-      setAcademyPlayers(response.data);
-    } catch (error) {
-      console.error("Error fetching academy players:", error);
+      setAcademyPlayers(Array.isArray(res.data) ? res.data : []);
+    } catch (err) {
+      console.error("Academy players error:", err);
     }
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate("/admin");
+  // ================= ACADEMY NEWS =================
+  const fetchAcademyNews = async () => {
+    try {
+      const res = await axios.get(
+        `${API}/academy/news/academy/news`,
+        authHeader(),
+      );
+      setAcademyNews(Array.isArray(res.data) ? res.data : []);
+    } catch (err) {
+      console.error("Academy news error:", err);
+    }
+  };
+
+  // ================= WEEKEND PICTURES =================
+  const fetchWeekend = async () => {
+    try {
+      const res = await axios.get(`${API}/weekend/weekends`, authHeader());
+      setWeekendImages(Array.isArray(res.data) ? res.data : []);
+    } catch (err) {
+      console.error("Weekend error:", err);
+    }
   };
 
   return (
     <div className="admin-page">
-      <h1 className="h1-admin">Admin Page</h1>
-      <button onClick={handleLogout}>Logout</button>
-      <div>
-        <button>
-          <Link to="/news">Manage News</Link>
-        </button>
-        <button>
-          <Link to="/admin-schedule">Manage Schedule</Link>
-        </button>
-        <button>
-          <Link to="/players">Manage Players</Link>
-        </button>
-        <button>
-          <Link to="/academy-players-admin">Manage Academy Players</Link>
-        </button>
-        <button>
-          <Link to="/academy-news-admin">Manage Academy News</Link>
-        </button>
-        <button>
-          <Link to="/results-admin">Manage Results</Link>
-        </button>
-        <button>
-          <Link to="/weekend-pics">Manage Weekend Pictures</Link>
-        </button>
+      <h1>Admin Dashboard (View Only)</h1>
+
+      <button onClick={() => navigate("/admin")}>Logout</button>
+
+      {/* NAVIGATION */}
+      <div className="admin-nav">
+        <Link to="/news">News</Link>
+        <Link to="/admin-schedule">Schedule</Link>
+        <Link to="/players">Players</Link>
+        <Link to="/academy-players-admin">Academy Players</Link>
+        <Link to="/academy-news-admin">Academy News</Link>
+        <Link to="/results-admin">Results</Link>
+        <Link to="/weekend-pics">Weekend Pictures</Link>
       </div>
 
-      <section className="news-section">
-        <h2 className="section-title">Team News</h2>
-        <ul className="news-list">
-          {news.length > 0 ? (
-            news.map((item) => (
-              <li className="news-item" key={item.id}>
-                <img
-                  className="news-image"
-                  src={`https://kisima-football-club-website-27xr.onrender.com/news/${item.image}`}
-                  alt={item.title}
-                />
-                <h3>{item.title}</h3>
-                <p className="news-description">{item.description}</p>
-              </li>
-            ))
-          ) : (
-            <p>No news available.</p>
-          )}
-        </ul>
+      {/* NEWS */}
+      <section>
+        <h2>News</h2>
+        {news.length === 0 ? (
+          <p>No news available</p>
+        ) : (
+          news.map((n) => (
+            <div key={n.id}>
+              <h3>{n.title}</h3>
+              <p>{n.description}</p>
+            </div>
+          ))
+        )}
       </section>
 
-      <section className="pictures-section">
-        <h2 className="section-title">Team Pictures</h2>
-        <ul className="pictures-list">
-          {weekendImages.length > 0 ? (
-            weekendImages.map((item) => (
-              <li className="picture-item" key={item.id}>
-                <img
-                  className="picture-image"
-                  src={`https://kisima-football-club-website-27xr.onrender.com/weekend/${item.weekendImages}`}
-                  alt={item.title}
-                />
-                <p className="picture-date">Date: {item.date}</p>
-              </li>
-            ))
-          ) : (
-            <p>No pictures available.</p>
-          )}
-        </ul>
+      {/* FIXTURES */}
+      <section>
+        <h2>Fixtures</h2>
+        {fixtures.length === 0 ? (
+          <p>No fixtures available</p>
+        ) : (
+          fixtures.map((f) => (
+            <div key={f.id}>
+              <img
+                src={`${API}/fixture/uploads/${f.homeTeamImage}`}
+                alt="home"
+                width="80"
+              />
+              <span> VS </span>
+              <img
+                src={`${API}/fixture/uploads/${f.awayTeamImage}`}
+                alt="away"
+                width="80"
+              />
+              <p>
+                {f.homeTeam} vs {f.awayTeam}
+              </p>
+              <p>
+                {f.venue} | {f.date}
+              </p>
+            </div>
+          ))
+        )}
       </section>
 
-      <section className="academy-news-section">
-        <h2 className="section-title">Academy News</h2>
-        <ul className="academy-news-list">
-          {academyNews.length > 0 ? (
-            academyNews.map((item) => (
-              <li className="academy-news-item" key={item.id}>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
-                <img
-                  className="academy-news-image"
-                  src={`https://kisima-football-club-website-27xr.onrender.com/academy/news/${item.image}`}
-                  alt={item.title}
-                />
-              </li>
-            ))
-          ) : (
-            <p>No academy news available.</p>
-          )}
-        </ul>
+      {/* RESULTS */}
+      <section>
+        <h2>Results</h2>
+        {results.length === 0 ? (
+          <p>No results available</p>
+        ) : (
+          results.map((r) => (
+            <div key={r.id}>
+              <p>{r.result}</p>
+              <p>
+                {r.venue} | {r.date}
+              </p>
+            </div>
+          ))
+        )}
       </section>
 
-      <section className="fixtures-section">
-        <h2 className="section-title">Fixtures</h2>
-        <ul className="fixtures-list">
-          {AdminSchedule.length > 0 ? (
-            AdminSchedule.map((item) => (
-              <li className="fixture-item" key={item.id}>
-                {item.homeTeamImage && (
-                  <img
-                    className="fixture-image"
-                    src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${item.homeTeamImage}`}
-                    alt="Home Team"
-                  />
-                )}
-                <h1 className="vs">VS</h1>
-                {item.awayTeamImage && (
-                  <img
-                    className="fixture-image"
-                    src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${item.awayTeamImage}`}
-                    alt="Away Team"
-                  />
-                )}
-                <p className="fixture-venue">Venue: {item.venue}</p>
-                <p className="fixture-date">Date: {item.date}</p>
-              </li>
-            ))
-          ) : (
-            <p>No fixtures available.</p>
-          )}
-        </ul>
+      {/* PLAYERS */}
+      <section>
+        <h2>Players</h2>
+        {players.length === 0 ? (
+          <p>No players available</p>
+        ) : (
+          players.map((p) => (
+            <div key={p.id}>
+              <p>
+                {p.name} - {p.position}
+              </p>
+            </div>
+          ))
+        )}
       </section>
 
-      <section className="results-section">
-        <h2 className="section-title">Results</h2>
-        <ul className="results-list">
-          {results.length > 0 ? (
-            results.map((item) => (
-              <li className="result-item" key={item.id}>
-                {item.homeTeamImage && (
-                  <img
-                    className="result-image"
-                    src={`https://kisima-football-club-website-27xr.onrender.com/result/${item.homeTeamImage}`}
-                    alt="Home Team"
-                  />
-                )}
-                <h1 className="vs">VS</h1>
-                {item.awayTeamImage && (
-                  <img
-                    className="result-image"
-                    src={`https://kisima-football-club-website-27xr.onrender.com/result/${item.awayTeamImage}`}
-                    alt="Away Team"
-                  />
-                )}
-                <p className="result-score">Results: {item.result}</p>
-                <p className="result-venue">Venue: {item.venue}</p>
-                <p className="result-date">Date: {item.date}</p>
-              </li>
-            ))
-          ) : (
-            <p>No results available.</p>
-          )}
-        </ul>
+      {/* ACADEMY PLAYERS */}
+      <section>
+        <h2>Academy Players</h2>
+        {academyPlayers.length === 0 ? (
+          <p>No academy players available</p>
+        ) : (
+          academyPlayers.map((p) => (
+            <div key={p.id}>
+              <p>
+                {p.name} - {p.position}
+              </p>
+            </div>
+          ))
+        )}
       </section>
 
-      <section className="players-section">
-        <h2 className="section-title">Team Players</h2>
-        <ul className="players-list">
-          {players.length > 0 ? (
-            players.map((player) => (
-              <li className="player-item" key={player.id}>
-                <p>
-                  <span className="highlight-text">Name:</span> {player.name}
-                </p>
-                <p>
-                  <span className="highlight-text">Position:</span>{" "}
-                  {player.position}
-                </p>
-              </li>
-            ))
-          ) : (
-            <p>No players available.</p>
-          )}
-        </ul>
+      {/* ACADEMY NEWS */}
+      <section>
+        <h2>Academy News</h2>
+        {academyNews.length === 0 ? (
+          <p>No academy news available</p>
+        ) : (
+          academyNews.map((n) => (
+            <div key={n.id}>
+              <p>{n.title}</p>
+              <p>{n.description}</p>
+            </div>
+          ))
+        )}
       </section>
 
-      <section className="academy-players-section">
-        <h2 className="section-title">Academy Team Players</h2>
-        <ul className="academy-players-list">
-          {academyPlayers.length > 0 ? (
-            academyPlayers.map((academyPlayer) => (
-              <li className="academy-player-item" key={academyPlayer.id}>
-                <p>
-                  <span className="highlight-text">Name:</span>{" "}
-                  {academyPlayer.name}
-                </p>
-                <p>
-                  <span className="highlight-text">Position:</span>{" "}
-                  {academyPlayer.position}
-                </p>
-              </li>
-            ))
-          ) : (
-            <p>No academy players available.</p>
-          )}
-        </ul>
+      {/* WEEKEND PICTURES */}
+      <section>
+        <h2>Weekend Pictures</h2>
+        {weekendImages.length === 0 ? (
+          <p>No pictures available</p>
+        ) : (
+          weekendImages.map((w) => (
+            <div key={w.id}>
+              <img
+                src={`${API}/weekend/${w.weekendImages}`}
+                alt="weekend"
+                width="120"
+              />
+              <p>{w.date}</p>
+            </div>
+          ))
+        )}
       </section>
     </div>
   );

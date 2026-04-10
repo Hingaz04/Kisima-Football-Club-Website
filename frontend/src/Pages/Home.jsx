@@ -7,9 +7,12 @@ function Home() {
   const [images, setImages] = useState([]);
   const [error, setError] = useState("");
 
+  const BASE_URL = "https://kisima-football-club-website-27xr.onrender.com";
+
+  // ================= NEWS =================
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:5000/news")
+      .get(`${BASE_URL}/news/`)
       .then((response) => {
         const sortedNews = response.data.sort(
           (a, b) => new Date(b.date) - new Date(a.date),
@@ -19,9 +22,10 @@ function Home() {
       .catch(() => setError("Failed to fetch news."));
   }, []);
 
+  // ================= WEEKEND IMAGES =================
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:5000/weekend/weekends")
+      .get(`${BASE_URL}/weekend/`)
       .then((response) => setImages(response.data))
       .catch(() => setError("Failed to fetch images."));
   }, []);
@@ -39,10 +43,7 @@ function Home() {
             {news.map((item) => (
               <div key={item.id} className="news-card">
                 {item.image && (
-                  <img
-                    src={`https://kisima-football-club-website-27xr.onrender.com/news/${item.image}`}
-                    alt={item.title}
-                  />
+                  <img src={`${BASE_URL}${item.image}`} alt={item.title} />
                 )}
                 <div className="news-content">
                   <h3>{item.title}</h3>
@@ -63,7 +64,7 @@ function Home() {
               images.map((item) => (
                 <img
                   key={item.id}
-                  src={`https://kisima-football-club-website-27xr.onrender.com/weekend/${item.weekendImages}`}
+                  src={`${BASE_URL}/weekend/uploads/${item.image}`}
                   alt="moment"
                 />
               ))

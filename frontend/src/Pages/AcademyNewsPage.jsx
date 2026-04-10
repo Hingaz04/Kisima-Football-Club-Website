@@ -6,19 +6,18 @@ function AcademyNewsPage() {
   const [academyNews, setAcademyNews] = useState([]);
   const [error, setError] = useState("");
 
+  const BASE_URL = "https://kisima-football-club-website-27xr.onrender.com";
+
   useEffect(() => {
     axios
-      .get(
-        "https://kisima-football-club-website-27xr.onrender.com/academy/news/academy/news",
-      )
+      .get(`${BASE_URL}/academy/news/`)
       .then((response) => {
-        // Sort news items to display the most recent first
         const sortedNews = response.data.sort(
           (a, b) => new Date(b.date) - new Date(a.date),
         );
         setAcademyNews(sortedNews);
       })
-      .catch((err) => {
+      .catch(() => {
         setError("Failed to fetch news.");
       });
   }, []);
@@ -26,24 +25,29 @@ function AcademyNewsPage() {
   return (
     <div className="academy">
       <h1 className="academy-heading">Academy News</h1>
+
       {academyNews.length === 0 && (
         <p className="academy-no-news">No news available.</p>
       )}
+
       <ul className="academy-list">
         {academyNews.map((item) => (
           <li key={item.id} className="academy-item">
             <h3 className="academy-item-title">{item.title}</h3>
+
             {item.image && (
               <img
-                src={`https://kisima-football-club-website-27xr.onrender.com/academy/news/${item.image}`}
+                src={`${BASE_URL}/academy/news/uploads/${item.image}`}
                 alt={item.title}
                 className="academy-item-image"
               />
             )}
+
             <p className="academy-item-description">{item.description}</p>
           </li>
         ))}
       </ul>
+
       {error && <p className="academy-error">{error}</p>}
     </div>
   );

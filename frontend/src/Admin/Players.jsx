@@ -5,53 +5,48 @@ import "./Players.css";
 function Players() {
   const [players, setPlayers] = useState([]);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const [form, setForm] = useState({
     name: "",
     position: "",
   });
+
   const [errors, setErrors] = useState({});
 
+  const BASE_URL = "https://kisima-football-club-website-27xr.onrender.com";
+
+  // --------------------
+  // GET PLAYERS
+  // --------------------
   useEffect(() => {
     const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
 
-    if (!token) {
-      console.error("Token not found");
-      return;
-    }
+    if (!token) return;
 
-    const parsedToken = JSON.parse(token);
-    const accessToken = parsedToken.access_token;
+    const accessToken = JSON.parse(token).access_token;
 
-    fetch(
-      "https://kisima-football-club-website-27xr.onrender.com/player/players",
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+    fetch(`${BASE_URL}/players/`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
       },
-    )
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log("Fetched players:", data);
-        setPlayers(data);
-      })
-      .catch((err) => {
-        console.error("Error fetching players:", err);
-        setError("Failed to fetch players.");
-      });
+    })
+      .then((res) => res.json())
+      .then((data) => setPlayers(data))
+      .catch(() => setError("Failed to fetch players"));
   }, []);
 
+  // --------------------
+  // HANDLE INPUT
+  // --------------------
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prevForm) => ({ ...prevForm, [name]: value }));
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  // --------------------
+  // VALIDATION
+  // --------------------
   const validateForm = () => {
     const newErrors = {};
     if (!form.name) newErrors.name = "Name is required";
@@ -59,8 +54,12 @@ function Players() {
     return newErrors;
   };
 
+  // --------------------
+  // ADD PLAYER
+  // --------------------
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -68,78 +67,60 @@ function Players() {
     }
 
     const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
-    if (!token) {
-      console.error("Token not found");
-      return;
-    }
+    const accessToken = JSON.parse(token).access_token;
 
-    const parsedToken = JSON.parse(token);
-    const accessToken = parsedToken.access_token;
+    setLoading(true);
 
-    const requestOptions = {
+    fetch(`${BASE_URL}/players/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({
-        name: form.name,
-        position: form.position,
-      }),
-    };
-
-    fetch(
-      "https://kisima-football-club-website-27xr.onrender.com/player/players",
-      requestOptions,
-    )
+      body: JSON.stringify(form),
+    })
       .then((res) => {
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
+        if (!res.ok) throw new Error("Failed");
         return res.json();
       })
       .then((data) => {
-        console.log("Player added:", data);
-        setPlayers([...players, data]);
-        window.alert("Player added successfully!");
+        setPlayers((prev) => [...prev, data]);
+        setForm({ name: "", position: "" });
+        setErrors({});
+        alert("Player added successfully!");
       })
-      .catch((err) => console.error("Error:", err));
+      .catch(() => setError("Failed to add player"))
+      .finally(() => setLoading(false));
   };
 
+  // --------------------
+  // DELETE PLAYER
+  // --------------------
   const handleDeletePlayer = (id) => {
     const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
-    if (!token) {
-      console.error("Token not found");
-      return;
-    }
+    const accessToken = JSON.parse(token).access_token;
 
-    const parsedToken = JSON.parse(token);
-    const accessToken = parsedToken.access_token;
-
-    fetch(
-      `https://kisima-football-club-website-27xr.onrender.com/player/player/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+    fetch(`${BASE_URL}/players/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
       },
-    )
+    })
       .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to delete player");
-        }
-        setPlayers(players.filter((player) => player.id !== id));
-        window.alert("Player deleted successfully!");
+        if (!res.ok) throw new Error();
+        setPlayers((prev) => prev.filter((p) => p.id !== id));
+        alert("Player deleted!");
       })
-      .catch((err) => console.error("Error:", err));
+      .catch(() => setError("Failed to delete player"));
   };
 
   return (
     <div className="players">
       <Link to="/admin_dashboard">Back to Admin Dashboard</Link>
+
       <h1>Players</h1>
 
+      {/* FORM */}
       <form onSubmit={handleSubmit} className="add-player-form">
         <label>
           Name:
@@ -148,10 +129,10 @@ function Players() {
             name="name"
             value={form.name}
             onChange={handleChange}
-            required
           />
-          {errors.name && <span className="error-message">{errors.name}</span>}
+          {errors.name && <span>{errors.name}</span>}
         </label>
+
         <label>
           Position:
           <input
@@ -159,34 +140,35 @@ function Players() {
             name="position"
             value={form.position}
             onChange={handleChange}
-            required
           />
-          {errors.position && (
-            <span className="error-message">{errors.position}</span>
-          )}
+          {errors.position && <span>{errors.position}</span>}
         </label>
-        <button type="submit">Add Player</button>
+
+        <button type="submit" disabled={loading}>
+          {loading ? "Adding..." : "Add Player"}
+        </button>
       </form>
 
-      <section>
-        <h2>Player List</h2>
-        {error && <p className="error-message">{error}</p>}
-        {players.length === 0 && <p>No players available.</p>}
-        <ul>
-          {players.map((player, index) => (
-            <li key={player.id}>
-              <p>
-                {index + 1}. Name: {player.name}
-              </p>{" "}
-              {/* Numbered list */}
-              <p>Position: {player.position}</p>
-              <button onClick={() => handleDeletePlayer(player.id)}>
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
-      </section>
+      {/* LIST */}
+      <h2>Player List</h2>
+
+      {error && <p>{error}</p>}
+      {players.length === 0 && <p>No players available.</p>}
+
+      <ul>
+        {players.map((player, index) => (
+          <li key={player.id}>
+            <p>
+              {index + 1}. {player.name}
+            </p>
+            <p>Position: {player.position}</p>
+
+            <button onClick={() => handleDeletePlayer(player.id)}>
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

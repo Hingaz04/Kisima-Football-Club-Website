@@ -9,177 +9,144 @@ function WeekendPics() {
     image: null,
     date: "",
   });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  const BASE_URL = "https://kisima-football-club-website-27xr.onrender.com";
+
+  // ================= GET IMAGES =================
   useEffect(() => {
     const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
-    if (!token) {
-      console.error("Token not found");
-      return;
-    }
+    if (!token) return;
 
-    const parsedToken = JSON.parse(token);
-    const accessToken = parsedToken.access_token;
+    const accessToken = JSON.parse(token).access_token;
 
     axios
-      .get(
-        "https://kisima-football-club-website-27xr.onrender.com/weekend/weekends",
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
+      .get(`${BASE_URL}/weekend/`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
         },
-      )
-      .then((response) => {
-        console.log("Fetched weekend images:", response.data);
-        setWeekendImages(response.data);
       })
-      .catch((err) => {
-        console.error("Error fetching weekend images:", err);
-        setError("Failed to fetch images.");
-      });
+      .then((res) => setWeekendImages(res.data))
+      .catch(() => setError("Failed to fetch images"));
   }, []);
 
+  // ================= HANDLE INPUT =================
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === "weekendImages") {
-      setForm((prevForm) => ({ ...prevForm, image: files[0] }));
+    const { name, files, value } = e.target;
+
+    if (name === "image") {
+      setForm((prev) => ({ ...prev, image: files[0] }));
     } else {
-      setForm((prevForm) => ({ ...prevForm, [name]: value }));
+      setForm((prev) => ({ ...prev, [name]: value }));
     }
   };
 
+  // ================= VALIDATION =================
   const validateForm = () => {
-    const newErrors = {};
-    if (!form.image) newErrors.image = "Image is required";
-    if (!form.date) newErrors.date = "Date is required";
-    return newErrors;
+    const err = {};
+    if (!form.image) err.image = "Image required";
+    if (!form.date) err.date = "Date required";
+    return err;
   };
 
+  // ================= SUBMIT =================
   const handleSubmit = (e) => {
     e.preventDefault();
-    const validationErrors = validateForm();
-    if (Object.keys(validationErrors).length > 0) {
-      setError(validationErrors);
+
+    const validation = validateForm();
+    if (Object.keys(validation).length > 0) {
+      setError("Please fill all fields");
       return;
     }
 
-    const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
-    if (!token) {
-      console.error("Token not found");
-      return;
-    }
-
-    const parsedToken = JSON.parse(token);
-    const accessToken = parsedToken.access_token;
+    const token = JSON.parse(
+      localStorage.getItem("REACT_TOKEN_AUTH_KEY"),
+    ).access_token;
 
     const formData = new FormData();
-    formData.append("weekendImages", form.image);
+
+    // ✅ FIXED FIELD NAME (backend expects "image")
+    formData.append("image", form.image);
     formData.append("date", form.date);
 
     setLoading(true);
+
     axios
-      .post(
-        "https://kisima-football-club-website-27xr.onrender.com/weekend/weekends",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${accessToken}`,
-          },
+      .post(`${BASE_URL}/weekend/`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
         },
-      )
-      .then((response) => {
-        console.log("Image added:", response.data);
-        setWeekendImages((prevImages) => [response.data, ...prevImages]);
-        setSuccess("Image added successfully!");
-        setLoading(false);
       })
-      .catch((err) => {
-        console.error("Error:", err);
-        setError("Failed to add image.");
-        setLoading(false);
-      });
+      .then((res) => {
+        setWeekendImages((prev) => [res.data, ...prev]);
+        setSuccess("Uploaded successfully!");
+        setForm({ image: null, date: "" });
+      })
+      .catch(() => setError("Upload failed"))
+      .finally(() => setLoading(false));
   };
 
+  // ================= DELETE =================
   const handleDelete = (id) => {
-    const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
-    if (!token) {
-      console.error("Token not found");
-      return;
-    }
-
-    const parsedToken = JSON.parse(token);
-    const accessToken = parsedToken.access_token;
+    const token = JSON.parse(
+      localStorage.getItem("REACT_TOKEN_AUTH_KEY"),
+    ).access_token;
 
     axios
-      .delete(
-        `https://kisima-football-club-website-27xr.onrender.com/weekend/weekend/${id}`,
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
+      .delete(`${BASE_URL}/weekend/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      )
-      .then(() => {
-        setWeekendImages(weekendImages.filter((item) => item.id !== id));
-        alert("Image deleted successfully!");
       })
-      .catch((err) => {
-        console.error("Error deleting image:", err);
-        setError("Failed to delete image.");
-      });
+      .then(() => {
+        setWeekendImages((prev) => prev.filter((item) => item.id !== id));
+      })
+      .catch(() => setError("Delete failed"));
   };
 
   return (
     <div className="weekend-page">
       <h1>Weekend Pictures</h1>
-      <Link to="/admin_dashboard">Back to Admin Dashboard</Link>
+      <Link to="/admin_dashboard">Back</Link>
 
+      {/* ================= FORM ================= */}
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Image:</label>
-          <input
-            type="file"
-            name="weekendImages"
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Date:</label>
-          <input
-            type="date"
-            name="date"
-            value={form.date}
-            onChange={handleChange}
-            required
-          />
-        </div>
+        <input type="file" name="image" onChange={handleChange} />
+
+        <input
+          type="date"
+          name="date"
+          value={form.date}
+          onChange={handleChange}
+        />
 
         <button type="submit" disabled={loading}>
-          Add Picture
+          {loading ? "Uploading..." : "Add Picture"}
         </button>
-        {loading && <p>Loading...</p>}
-        {Object.values(error).map((errMsg, index) => (
-          <p key={index} className="error-message">
-            {errMsg}
-          </p>
-        ))}
-        {success && <p className="success-message">{success}</p>}
+
+        {error && <p>{error}</p>}
+        {success && <p>{success}</p>}
       </form>
 
-      <h2>Weekend Images</h2>
-      {weekendImages.length === 0 && <p>No images available.</p>}
+      {/* ================= LIST ================= */}
       <ul>
         {weekendImages.map((item) => (
           <li key={item.id}>
             <h3>{item.date}</h3>
-            {item.weekendImages && (
+
+            {/* ✅ FIXED IMAGE ROUTE */}
+            {item.image && (
               <img
-                src={`https://kisima-football-club-website-27xr.onrender.com/weekend/${item.weekendImages}`}
-                alt={item.date}
-                style={{ width: "200px", height: "auto" }}
+                src={`${BASE_URL}/weekend/uploads/${item.image}`}
+                alt="weekend"
+                width="200"
               />
             )}
+
             <button onClick={() => handleDelete(item.id)}>Delete</button>
           </li>
         ))}

@@ -13,7 +13,7 @@ function Team() {
   const fetchPlayers = async () => {
     try {
       const response = await axios.get(
-        "https://kisima-football-club-website-27xr.onrender.com/player/players",
+        "https://kisima-football-club-website-27xr.onrender.com/players/",
       );
       if (Array.isArray(response.data)) {
         setPlayers(response.data);

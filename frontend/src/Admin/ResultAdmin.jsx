@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "./ResultAdmin.css"; // new CSS file
+import "./ResultAdmin.css";
+
+const BASE_URL = "https://kisima-football-club-website-27xr.onrender.com";
 
 function ResultAdmin() {
   const [results, setResults] = useState([]);
@@ -14,37 +16,39 @@ function ResultAdmin() {
     venue: "",
     date: "",
   });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // Fetch results from backend
+  // --------------------------
+  // GET RESULTS
+  // --------------------------
   useEffect(() => {
     const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
     if (!token) return;
 
-    const parsedToken = JSON.parse(token);
-    const accessToken = parsedToken.access_token;
+    const accessToken = JSON.parse(token).access_token;
 
     axios
-      .get(
-        "https://kisima-football-club-website-27xr.onrender.com/result/results",
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
+      .get(`${BASE_URL}/results/`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
         },
-      )
-      .then((response) => {
-        setResults(response.data);
       })
+      .then((res) => setResults(res.data))
       .catch((err) => {
-        console.error("Error fetching results:", err);
-        setError("Failed to fetch results.");
+        console.error(err);
+        setError("Failed to fetch results");
       });
   }, []);
 
-  // Handle input changes
+  // --------------------------
+  // HANDLE INPUT
+  // --------------------------
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+
     if (files) {
       setFormData((prev) => ({ ...prev, [name]: files[0] }));
     } else {
@@ -52,59 +56,60 @@ function ResultAdmin() {
     }
   };
 
-  // Validate form
+  // --------------------------
+  // VALIDATION
+  // --------------------------
   const validateForm = () => {
-    const newErrors = {};
-    if (!formData.homeTeamImage)
-      newErrors.homeTeamImage = "Home team image is required";
-    if (!formData.homeTeam) newErrors.homeTeam = "Home team is required";
-    if (!formData.awayTeamImage)
-      newErrors.awayTeamImage = "Away team image is required";
-    if (!formData.awayTeam) newErrors.awayTeam = "Away team is required";
-    if (!formData.result) newErrors.result = "Result is required";
-    if (!formData.venue) newErrors.venue = "Venue is required";
-    if (!formData.date) newErrors.date = "Date is required";
-    return newErrors;
+    const errors = {};
+    if (!formData.homeTeamImage) errors.homeTeamImage = "Home image required";
+    if (!formData.awayTeamImage) errors.awayTeamImage = "Away image required";
+    if (!formData.homeTeam) errors.homeTeam = "Home team required";
+    if (!formData.awayTeam) errors.awayTeam = "Away team required";
+    if (!formData.result) errors.result = "Result required";
+    if (!formData.venue) errors.venue = "Venue required";
+    if (!formData.date) errors.date = "Date required";
+    return errors;
   };
 
-  // Submit form
+  // --------------------------
+  // SUBMIT
+  // --------------------------
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setError(validationErrors);
       return;
     }
 
-    const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
-    if (!token) return;
-    const parsedToken = JSON.parse(token);
-    const accessToken = parsedToken.access_token;
+    const accessToken = JSON.parse(
+      localStorage.getItem("REACT_TOKEN_AUTH_KEY"),
+    ).access_token;
 
-    const resultData = new FormData();
-    resultData.append("homeTeamImage", formData.homeTeamImage);
-    resultData.append("homeTeam", formData.homeTeam);
-    resultData.append("awayTeamImage", formData.awayTeamImage);
-    resultData.append("awayTeam", formData.awayTeam);
-    resultData.append("result", formData.result);
-    resultData.append("venue", formData.venue);
-    resultData.append("date", formData.date);
+    const form = new FormData();
+    form.append("homeTeamImage", formData.homeTeamImage);
+    form.append("awayTeamImage", formData.awayTeamImage);
+    form.append("homeTeam", formData.homeTeam);
+    form.append("awayTeam", formData.awayTeam);
+    form.append("result", formData.result);
+    form.append("venue", formData.venue);
+    form.append("date", formData.date);
 
     setLoading(true);
+
     axios
-      .post(
-        "https://kisima-football-club-website-27xr.onrender.com/result/results",
-        resultData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${accessToken}`,
-          },
+      .post(`${BASE_URL}/results/`, form, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${accessToken}`,
         },
-      )
-      .then((response) => {
-        setResults([response.data, ...results]);
+      })
+      .then((res) => {
+        setResults([res.data, ...results]);
         setSuccess("Result added successfully!");
+        setLoading(false);
+
         setFormData({
           homeTeamImage: null,
           awayTeamImage: null,
@@ -114,136 +119,85 @@ function ResultAdmin() {
           venue: "",
           date: "",
         });
-        setLoading(false);
       })
       .catch((err) => {
-        console.error("Error adding result:", err);
-        setError("Failed to add result.");
+        console.error(err);
+        setError("Failed to add result");
         setLoading(false);
       });
   };
 
-  // Delete result
+  // --------------------------
+  // DELETE
+  // --------------------------
   const handleDelete = (id) => {
-    const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
-    if (!token) return;
-    const parsedToken = JSON.parse(token);
-    const accessToken = parsedToken.access_token;
+    const accessToken = JSON.parse(
+      localStorage.getItem("REACT_TOKEN_AUTH_KEY"),
+    ).access_token;
 
     axios
-      .delete(
-        `https://kisima-football-club-website-27xr.onrender.com/result/result/${id}`,
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
+      .delete(`${BASE_URL}/results/${id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
         },
-      )
+      })
       .then(() => {
-        setResults(results.filter((result) => result.id !== id));
-        alert("Result deleted successfully!");
+        setResults(results.filter((r) => r.id !== id));
       })
       .catch((err) => {
-        console.error("Error deleting result:", err);
-        setError("Failed to delete result.");
+        console.error(err);
+        setError("Failed to delete result");
       });
   };
 
+  // --------------------------
+  // UI
+  // --------------------------
   return (
     <div className="result-page">
       <h1>Results Admin Page</h1>
-      <Link to="/admin_dashboard">Back to Admin Dashboard</Link>
 
-      <form className="result-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Home Team Image:</label>
-          <input type="file" name="homeTeamImage" onChange={handleChange} />
-        </div>
-        <div className="form-group">
-          <label>Home Team:</label>
-          <input
-            type="text"
-            name="homeTeam"
-            value={formData.homeTeam}
-            onChange={handleChange}
-            placeholder="Home Team Name"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Away Team Image:</label>
-          <input type="file" name="awayTeamImage" onChange={handleChange} />
-        </div>
-        <div className="form-group">
-          <label>Away Team:</label>
-          <input
-            type="text"
-            name="awayTeam"
-            value={formData.awayTeam}
-            onChange={handleChange}
-            placeholder="Away Team Name"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Result:</label>
-          <input
-            type="text"
-            name="result"
-            value={formData.result}
-            onChange={handleChange}
-            placeholder="Enter Result"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Venue:</label>
-          <input
-            type="text"
-            name="venue"
-            value={formData.venue}
-            onChange={handleChange}
-            placeholder="Venue"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Date:</label>
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            required
-          />
-        </div>
+      <Link to="/admin_dashboard">Back</Link>
+
+      <form onSubmit={handleSubmit}>
+        <input type="file" name="homeTeamImage" onChange={handleChange} />
+        <input type="text" name="homeTeam" onChange={handleChange} />
+
+        <input type="file" name="awayTeamImage" onChange={handleChange} />
+        <input type="text" name="awayTeam" onChange={handleChange} />
+
+        <input type="text" name="result" onChange={handleChange} />
+        <input type="text" name="venue" onChange={handleChange} />
+        <input type="date" name="date" onChange={handleChange} />
+
         <button type="submit" disabled={loading}>
-          Add Result
+          {loading ? "Loading..." : "Add Result"}
         </button>
-        {loading && <p>Loading...</p>}
-        {error && <p className="error-message">{JSON.stringify(error)}</p>}
-        {success && <p className="success-message">{success}</p>}
+
+        {typeof error === "object"
+          ? Object.values(error).map((e, i) => <p key={i}>{e}</p>)
+          : error && <p>{error}</p>}
+
+        {success && <p>{success}</p>}
       </form>
 
-      <h2>Results List</h2>
-      {results.length === 0 && <p>No results available.</p>}
-
       <div className="results-grid">
-        {results.map((result) => (
-          <div className="card" key={result.id}>
-            <img
-              src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${result.homeTeamImage}`}
-              alt="Home Team"
-            />
+        {results.map((r) => (
+          <div key={r.id} className="card">
+            <img src={`${BASE_URL}/${r.homeTeamImage}`} alt="home" />
+
             <h3>VS</h3>
-            <img
-              src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${result.awayTeamImage}`}
-              alt="Away Team"
-            />
-            <p>Home Team: {result.homeTeam}</p>
-            <p>Away Team: {result.awayTeam}</p>
-            <p>Result: {result.result}</p>
-            <p>Venue: {result.venue}</p>
-            <p>Date: {result.date}</p>
-            <button onClick={() => handleDelete(result.id)}>Delete</button>
+
+            <img src={`${BASE_URL}/${r.awayTeamImage}`} alt="away" />
+
+            <p>
+              {r.homeTeam} vs {r.awayTeam}
+            </p>
+            <p>{r.result}</p>
+            <p>{r.venue}</p>
+            <p>{r.date}</p>
+
+            <button onClick={() => handleDelete(r.id)}>Delete</button>
           </div>
         ))}
       </div>
