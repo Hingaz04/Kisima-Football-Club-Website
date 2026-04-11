@@ -81,12 +81,12 @@ function AdminSchedulePage() {
       {/* FORM */}
       <form className="admin-schedule-form" onSubmit={handleSubmit}>
         <div className="form-group">
-          <label className="label">Home Team Image:</label>
+          <label>Home Team Image:</label>
           <input type="file" name="homeTeamImage" onChange={handleChange} />
         </div>
 
         <div className="form-group">
-          <label className="label">Home Team:</label>
+          <label>Home Team:</label>
           <input
             type="text"
             name="homeTeam"
@@ -96,12 +96,12 @@ function AdminSchedulePage() {
         </div>
 
         <div className="form-group">
-          <label className="label">Away Team Image:</label>
+          <label>Away Team Image:</label>
           <input type="file" name="awayTeamImage" onChange={handleChange} />
         </div>
 
         <div className="form-group">
-          <label className="label">Away Team:</label>
+          <label>Away Team:</label>
           <input
             type="text"
             name="awayTeam"
@@ -111,7 +111,7 @@ function AdminSchedulePage() {
         </div>
 
         <div className="form-group">
-          <label className="label">Venue:</label>
+          <label>Venue:</label>
           <input
             type="text"
             name="venue"
@@ -121,7 +121,7 @@ function AdminSchedulePage() {
         </div>
 
         <div className="form-group">
-          <label className="label">Date:</label>
+          <label>Date:</label>
           <input
             type="date"
             name="date"

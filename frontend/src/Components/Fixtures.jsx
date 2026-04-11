@@ -9,7 +9,7 @@ function Fixtures() {
   useEffect(() => {
     axios
       .get(
-        "https://kisima-football-club-website-27xr.onrender.com/fixture/fixtures",
+        "https://kisima-football-club-website-27xr.onrender.com/fixtures",
       )
       .then((response) => {
         const sortedFixtures = response.data.sort(

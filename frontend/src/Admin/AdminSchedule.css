@@ -34,15 +34,11 @@
   margin-bottom: 15px;
 }
 
-.admin-schedule-form {
+.admin-schedule-form .form-group label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
-  
-}
-
-.label {
- color:#ff033e;
+  color: #ff033e;
 }
 
 .admin-schedule-form input {

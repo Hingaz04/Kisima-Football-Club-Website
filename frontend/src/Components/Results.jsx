@@ -8,7 +8,7 @@ function Results() {
 
   useEffect(() => {
     axios
-      .get("https://kisima-football-club-website-27xr.onrender.com/result/results")
+      .get("https://kisima-football-club-website-27xr.onrender.com/results")
       .then((response) => {
         // Sort results by date in descending order
         const sortedResults = response.data.sort(
