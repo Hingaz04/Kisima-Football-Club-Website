@@ -59,6 +59,7 @@ function Home() {
                 )}
 
                 <div className="news-content">
+                  
                   <p>{item.description}</p>
                   <span>{item.date}</span>
                 </div>
@@ -68,16 +69,17 @@ function Home() {
         </div>
 
         {/* ================= MATCH MOMENTS ================= */}
-
         <div className="home-photos-section">
           <h2 className="section-title">Match Moments</h2>
 
-          <div className="vertical-carousel">
+          <div className="photo-grid">
             {images.length > 0 ? (
               images.map((item) => (
-                <div className="vertical-item" key={item.id}>
-                  <img src={getImageUrl(item.weekendImages)} alt="moment" />
-                </div>
+                <img
+                  key={item.id}
+                  src={getImageUrl(item.weekendImages)}
+                  alt="moment"
+                />
               ))
             ) : (
               <p>No pictures available.</p>
