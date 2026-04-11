@@ -37,7 +37,7 @@ function AcademyNewsPage() {
 
             {item.image && (
               <img
-                src={`${BASE_URL}/academy/news/uploads/${item.image}`}
+                src={`${BASE_URL}/uploads/${item.image}`}
                 alt={item.title}
                 className="academy-item-image"
               />

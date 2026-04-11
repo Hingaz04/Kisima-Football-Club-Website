@@ -25,7 +25,7 @@ function AdminPage() {
   }, []);
 
   const getAuthHeader = () => ({
-    Authorization: `Bearer ${localStorage.getItem("REACT_TOKEN_AUTH_KEY")}`,
+    Authorization: `Bearer ${JSON.parse(localStorage.getItem("REACT_TOKEN_AUTH_KEY"))?.access_token}`,
   });
 
   const fetchNews = async () => {
@@ -155,7 +155,7 @@ function AdminPage() {
               <li className="news-item" key={item.id}>
                 <img
                   className="news-image"
-                  src={`https://kisima-football-club-website-27xr.onrender.com/news/${item.image}`}
+                  src={`https://kisima-football-club-website-27xr.onrender.com/${item.image}`}
                   alt={item.title}
                 />
                 <h3>{item.title}</h3>
@@ -177,7 +177,7 @@ function AdminPage() {
               <li className="picture-item" key={item.id}>
                 <img
                   className="picture-image"
-                  src={`https://kisima-football-club-website-27xr.onrender.com/weekend/${item.weekendImages}`}
+                  src={`https://kisima-football-club-website-27xr.onrender.com/${item.weekendImages}`}
                   alt=""
                 />
                 <p className="picture-date">Date: {item.date}</p>
@@ -220,13 +220,13 @@ function AdminPage() {
               <li className="fixture-item" key={item.id}>
                 <img
                   className="fixture-image"
-                  src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${item.homeTeamImage}`}
+                  src={`https://kisima-football-club-website-27xr.onrender.com/${item.homeTeamImage}`}
                   alt=""
                 />
                 <h1 className="vs">VS</h1>
                 <img
                   className="fixture-image"
-                  src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${item.awayTeamImage}`}
+                  src={`https://kisima-football-club-website-27xr.onrender.com/${item.awayTeamImage}`}
                   alt=""
                 />
                 <p className="fixture-venue">{item.venue}</p>
@@ -248,13 +248,13 @@ function AdminPage() {
               <li className="result-item" key={item.id}>
                 <img
                   className="result-image"
-                  src={`https://kisima-football-club-website-27xr.onrender.com/result/${item.homeTeamImage}`}
+                  src={`https://kisima-football-club-website-27xr.onrender.com/${item.homeTeamImage}`}
                   alt=""
                 />
                 <h1 className="vs">VS</h1>
                 <img
                   className="result-image"
-                  src={`https://kisima-football-club-website-27xr.onrender.com/result/${item.awayTeamImage}`}
+                  src={`https://kisima-football-club-website-27xr.onrender.com/${item.awayTeamImage}`}
                   alt=""
                 />
                 <p className="result-score">{item.result}</p>

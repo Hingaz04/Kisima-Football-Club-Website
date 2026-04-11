@@ -185,12 +185,12 @@ function ResultAdmin() {
         {results.map((result) => (
           <div key={result.id} className="card">
             <img
-              src={`https://kisima-football-club-website-27xr.onrender.com/result/${result.homeTeamImage}`}
+              src={`https://kisima-football-club-website-27xr.onrender.com/${result.homeTeamImage}`}
               alt="Home"
             />
             <h3>VS</h3>
             <img
-              src={`https://kisima-football-club-website-27xr.onrender.com/result/${result.awayTeamImage}`}
+              src={`https://kisima-football-club-website-27xr.onrender.com/${result.awayTeamImage}`}
               alt="Away"
             />
             <p>{result.homeTeam}</p>

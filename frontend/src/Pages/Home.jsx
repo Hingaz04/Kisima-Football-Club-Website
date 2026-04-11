@@ -64,8 +64,8 @@ function Home() {
               images.map((item) => (
                 <img
                   key={item.id}
-                  src={`${BASE_URL}/weekend/uploads/${item.image}`}
-                  alt="moment"
+                  src={`${BASE_URL}/${item.image}`}
+                  alt={item.title}
                 />
               ))
             ) : (

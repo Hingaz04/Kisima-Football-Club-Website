@@ -145,7 +145,7 @@ function AdminSchedulePage() {
               </p>
               {f.homeTeamImage && (
                 <img
-                  src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${f.homeTeamImage}`}
+                  src={`https://kisima-football-club-website-27xr.onrender.com/${f.homeTeamImage}`}
                   alt="Home Team"
                 />
               )}
@@ -158,7 +158,7 @@ function AdminSchedulePage() {
 
               {f.awayTeamImage && (
                 <img
-                  src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${f.awayTeamImage}`}
+                  src={`https://kisima-football-club-website-27xr.onrender.com/${f.awayTeamImage}`}
                   alt="Away Team"
                 />
               )}

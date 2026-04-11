@@ -18,14 +18,13 @@ from auth import auth_ns
 from AcademyPlayer import academyPlayer_ns
 from AcademyNews import academyNews_ns
 from results import result_ns
-from weekend import weekend_ns
-from weekend import register_upload_route
+from weekend import weekend_ns, register_upload_route
 
 
 def create_app():
     app = Flask(__name__, template_folder="templates", static_folder="uploads")
 
-    # 🔥 Prevents redirect issues (important)
+    # 🔥 Prevent redirect issues
     app.url_map.strict_slashes = False
 
     # --------------------------
@@ -34,7 +33,7 @@ def create_app():
     app.config.from_object(Config)
 
     # --------------------------
-    # SSL (Aiven MySQL safe config)
+    # SSL (Aiven MySQL)
     # --------------------------
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
         "connect_args": {
@@ -43,13 +42,18 @@ def create_app():
     }
 
     # --------------------------
-    # ✅ CLEAN CORS (FIXED)
+    # ✅ CORS
     # --------------------------
     CORS(
         app,
         resources={r"/*": {"origins": "https://kisimafc.netlify.app"}},
         supports_credentials=True
     )
+
+    # --------------------------
+    # 🔥 REGISTER IMAGE ROUTE (CRITICAL FIX)
+    # --------------------------
+    register_upload_route(app)
 
     # --------------------------
     # DB + MIGRATE + JWT
@@ -59,7 +63,7 @@ def create_app():
     JWTManager(app)
 
     # --------------------------
-    # BASIC ROUTES
+    # ROUTES
     # --------------------------
     @app.route("/")
     def homepage():
@@ -83,7 +87,7 @@ def create_app():
         })
 
     # --------------------------
-    # API SETUP
+    # API
     # --------------------------
     api = Api(
         app,
@@ -96,7 +100,7 @@ def create_app():
     app.config['ERROR_404_HELP'] = False
 
     # --------------------------
-    # NAMESPACES (IMPORTANT PATHS)
+    # NAMESPACES
     # --------------------------
     api.add_namespace(player_ns, path='/players')
     api.add_namespace(news_ns, path='/news')
@@ -114,10 +118,11 @@ def create_app():
 # CREATE APP
 # --------------------------
 app = create_app()
-register_upload_route(app)
 
-# ⚠️ DO NOT USE IN PRODUCTION (Render)
+
+# ⚠️ DO NOT USE IN PRODUCTION
 # db.create_all()
+
 
 if __name__ == "__main__":
     import os

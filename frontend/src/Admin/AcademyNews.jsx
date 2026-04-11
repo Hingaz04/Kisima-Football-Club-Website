@@ -182,7 +182,7 @@ function AcademyNews() {
 
             {item.image && (
               <img
-                src={`https://kisima-football-club-website-27xr.onrender.com/academy/news/${item.image}`}
+                src={`https://kisima-football-club-website-27xr.onrender.com/${item.image}`}
                 alt={item.title}
               />
             )}

@@ -34,13 +34,13 @@ function Results() {
             <div className="results-team-row">
               <img
                 className="results-team-image"
-                src={`https://kisima-football-club-website-27xr.onrender.com/result/${result.homeTeamImage}`}
+                src={`https://kisima-football-club-website-27xr.onrender.com/${result.homeTeamImage}`}
                 alt={result.homeTeam}
               />
               <h2 className="results-vs">VS</h2>
               <img
                 className="results-team-image"
-                src={`https://kisima-football-club-website-27xr.onrender.com/result/${result.awayTeamImage}`}
+                src={`https://kisima-football-club-website-27xr.onrender.com/${result.awayTeamImage}`}
                 alt={result.awayTeam}
               />
             </div>

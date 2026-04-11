@@ -8,9 +8,7 @@ function Fixtures() {
 
   useEffect(() => {
     axios
-      .get(
-        "https://kisima-football-club-website-27xr.onrender.com/fixtures",
-      )
+      .get("https://kisima-football-club-website-27xr.onrender.com/fixtures")
       .then((response) => {
         const sortedFixtures = response.data.sort(
           (a, b) => new Date(b.date) - new Date(a.date),
@@ -35,13 +33,13 @@ function Fixtures() {
             <div className="fixtureTeam-row">
               <img
                 className="fixtureTeam-image"
-                src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${fixture.homeTeamImage}`}
+                src={`https://kisima-football-club-website-27xr.onrender.com/${fixture.homeTeamImage}`}
                 alt="Home Team"
               />
               <h2 className="fixtureVS">VS</h2>
               <img
                 className="fixtureTeam-image"
-                src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${fixture.awayTeamImage}`}
+                src={`https://kisima-football-club-website-27xr.onrender.com/${fixture.awayTeamImage}`}
                 alt="Away Team"
               />
             </div>

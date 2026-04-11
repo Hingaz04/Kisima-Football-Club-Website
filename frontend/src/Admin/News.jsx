@@ -230,7 +230,11 @@ function NewsPage() {
 
             {item.image && (
               <img
-                src={`${BASE_URL}/${item.image}`}
+                src={`${BASE_URL}/${
+                  item.image?.startsWith("uploads/")
+                    ? item.image
+                    : `uploads/${item.image}`
+                }`}
                 alt={item.title}
                 style={{ width: "200px", height: "auto" }}
               />
