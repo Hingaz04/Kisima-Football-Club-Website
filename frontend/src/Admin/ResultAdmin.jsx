@@ -145,7 +145,7 @@ function ResultAdmin() {
       <Link to="/admin_dashboard">Back to Admin Dashboard</Link>
 
       <form className="result-form" onSubmit={handleSubmit}>
-        <p>HOME TEAM</p>
+        <p>Home Team</p>
         <input type="file" name="homeTeamImage" onChange={handleChange} />
         <input
           type="text"
@@ -153,7 +153,7 @@ function ResultAdmin() {
           value={formData.homeTeam}
           onChange={handleChange}
         />
-        <p>AWAY TEAM</p>
+        <p>Away Team</p>
         <input type="file" name="awayTeamImage" onChange={handleChange} />
         <input
           type="text"
@@ -161,14 +161,14 @@ function ResultAdmin() {
           value={formData.awayTeam}
           onChange={handleChange}
         />
-        <p>VENUE</p>
+        <p>Venue</p>
         <input
           type="text"
           name="venue"
           value={formData.venue}
           onChange={handleChange}
         />
-        <p>RESULTS</p>
+        <p>Results</p>
         <input
           type="text"
           name="result"
@@ -200,8 +200,10 @@ function ResultAdmin() {
       <div className="results-grid">
         {results.map((result) => (
           <div key={result.id} className="card">
+            <p>Home Team</p>
             <img src={getImageUrl(result.homeTeamImage)} alt="Home" />
             <h3>VS</h3>
+            <p>Away Team</p>
             <img src={getImageUrl(result.awayTeamImage)} alt="Away" />
 
             <p>{result.homeTeam}</p>
