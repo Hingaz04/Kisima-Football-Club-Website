@@ -17,6 +17,33 @@ weekend_model = weekend_ns.model(
 )
 
 
+# 🔥 ADD THIS FUNCTION - Register upload route
+def register_upload_route(app):
+    """Register the upload route for weekend images (legacy support)"""
+    
+    @app.route('/weekend/upload', methods=['POST'])
+    @jwt_required()
+    def upload_weekend_image():
+        from flask import jsonify
+        
+        if 'image' not in request.files:
+            return jsonify({"error": "No image file provided"}), 400
+        
+        file = request.files['image']
+        if file.filename == '':
+            return jsonify({"error": "No file selected"}), 400
+        
+        if file:
+            # Upload to Cloudinary
+            upload_result = cloudinary.uploader.upload(file)
+            image_url = upload_result["secure_url"]
+            
+            return jsonify({
+                "message": "File uploaded successfully",
+                "url": image_url
+            }), 200
+
+
 @weekend_ns.route('/')
 class WeekendListResource(Resource):
 
