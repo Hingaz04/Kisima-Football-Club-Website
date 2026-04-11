@@ -117,7 +117,7 @@ function WeekendPics() {
   return (
     <div className="weekend-page">
       <h1>Weekend Pictures</h1>
-      <Link to="/admin_dashboard">Back</Link>
+      <Link to="/admin_dashboard">Back to Admin Dashboard</Link>
 
       {/* FORM */}
       <form onSubmit={handleSubmit}>

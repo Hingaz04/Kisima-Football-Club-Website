@@ -1,0 +1,137 @@
+/* AcademyNews.css */
+
+.academy-news-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.academy-news-page h1 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+.academy-news-page a {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.academy-news-page a:hover {
+  text-decoration: underline;
+}
+
+/* FORM */
+.academy-news-form {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.academy-news-form div {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.academy-news-form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.academy-news-form input,
+.academy-news-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.academy-news-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.academy-news-form button {
+  background: #28a745;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.academy-news-form button:hover {
+  background: #218838;
+}
+
+.academy-news-form button:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+
+/* MESSAGES */
+.academy-news-page p {
+  margin: 10px 0;
+}
+
+.academy-news-page p[style],
+.academy-news-page p {
+  font-size: 14px;
+}
+
+/* LIST */
+.academy-news-page ul {
+  list-style: none;
+  padding: 0;
+}
+
+.academy-news-page li {
+  background: white;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.academy-news-page li h3 {
+  margin-bottom: 10px;
+  color: #222;
+}
+
+.academy-news-page li p {
+  margin-top: 10px;
+  color: #555;
+}
+
+/* IMAGE */
+.academy-news-page img {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 10px;
+  display: block;
+}
+
+/* DELETE BUTTON */
+.academy-news-page button {
+  margin-top: 10px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.academy-news-page button:hover {
+  background: #c82333;
+}

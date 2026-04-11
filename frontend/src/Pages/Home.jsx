@@ -53,12 +53,13 @@ function Home() {
           <div className="news-grid">
             {news.map((item) => (
               <div key={item.id} className="news-card">
+                <h3>{item.title}</h3>
                 {item.image && (
                   <img src={getImageUrl(item.image)} alt={item.title} />
                 )}
 
                 <div className="news-content">
-                  <h3>{item.title}</h3>
+                  
                   <p>{item.description}</p>
                   <span>{item.date}</span>
                 </div>
