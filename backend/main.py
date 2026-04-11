@@ -10,6 +10,9 @@ from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 
+# 🔥 IMPORT CLOUDINARY CONFIG (must come before any uploads)
+import cloudinary_config  # <-- ADD THIS LINE
+
 # Namespaces
 from Players import player_ns
 from News import news_ns
@@ -48,7 +51,9 @@ def create_app():
         app,
         origins=[
             "https://kisima-football-club-website.vercel.app", 
-                                    
+            "https://kisimafc.netlify.app",  # Keep old URL for backward compatibility
+            "http://localhost:5173",  # Local Vite dev
+            "http://localhost:3000",  # Alternative local dev
         ],
         methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
         allow_headers=["Content-Type", "Authorization", "Accept"],
