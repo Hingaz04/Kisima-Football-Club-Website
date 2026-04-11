@@ -105,12 +105,17 @@ function About() {
           <strong>Team Welfare:</strong> Kepha Momanyi.
         </li>
         <li>
+          <strong>Coach:</strong> Pele Makana.
+        </li>
+        <li>
+          <strong>Assisant Coach:</strong> Kim Modo.
+        </li>
+        <li>
           <strong>Team Treasurer</strong> John Macharia.
         </li>
         <li>
           <strong>Team Doctor</strong> Henry Wangai
         </li>
-        
 
         <li>
           <strong>Home Ground:</strong> Mahiga Primary
@@ -151,7 +156,7 @@ function About() {
             <li>No midfielders available.</li>
           )}
         </ul>
-        <h3 className="kisima-players-category">Attackers:</h3>
+        <h3 className="kisima-players-category">Forwards:</h3>
         <ul className="kisima-player-list">
           {Array.isArray(players.attackers) && players.attackers.length > 0 ? (
             players.attackers.map((player) => (
