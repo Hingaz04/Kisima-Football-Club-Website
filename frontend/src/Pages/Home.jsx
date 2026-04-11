@@ -25,9 +25,10 @@ function Home() {
     axios
       .get(`${BASE_URL}/news/`)
       .then((response) => {
-        const sortedNews = response.data.sort(
+        const sortedNews = [...response.data].sort(
           (a, b) => new Date(b.date) - new Date(a.date),
         );
+
         setNews(sortedNews);
       })
       .catch(() => setError("Failed to fetch news."));
@@ -59,7 +60,6 @@ function Home() {
                 )}
 
                 <div className="news-content">
-                  
                   <p>{item.description}</p>
                   <span>{item.date}</span>
                 </div>

@@ -15,7 +15,11 @@ function AcademyNewsPage() {
         const sortedNews = response.data.sort(
           (a, b) => new Date(b.date) - new Date(a.date),
         );
+
         setAcademyNews(sortedNews);
+
+        // ✅ CLEAR ERROR ON SUCCESS (only addition)
+        setError("");
       })
       .catch(() => {
         setError("Failed to fetch news.");
