@@ -81,12 +81,12 @@ function AdminSchedulePage() {
       {/* FORM */}
       <form className="admin-schedule-form" onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Home Team Image:</label>
+          <label className="label">Home Team Image:</label>
           <input type="file" name="homeTeamImage" onChange={handleChange} />
         </div>
 
         <div className="form-group">
-          <label>Home Team:</label>
+          <label className="label">Home Team:</label>
           <input
             type="text"
             name="homeTeam"
@@ -96,12 +96,12 @@ function AdminSchedulePage() {
         </div>
 
         <div className="form-group">
-          <label>Away Team Image:</label>
+          <label className="label">Away Team Image:</label>
           <input type="file" name="awayTeamImage" onChange={handleChange} />
         </div>
 
         <div className="form-group">
-          <label>Away Team:</label>
+          <label className="label">Away Team:</label>
           <input
             type="text"
             name="awayTeam"
@@ -111,7 +111,7 @@ function AdminSchedulePage() {
         </div>
 
         <div className="form-group">
-          <label>Venue:</label>
+          <label className="label">Venue:</label>
           <input
             type="text"
             name="venue"
@@ -121,7 +121,7 @@ function AdminSchedulePage() {
         </div>
 
         <div className="form-group">
-          <label>Date:</label>
+          <label className="label">Date:</label>
           <input
             type="date"
             name="date"
@@ -134,7 +134,7 @@ function AdminSchedulePage() {
       </form>
 
       {/* LIST */}
-      <h2>Fixture List</h2>
+      <h2>Fixtures List</h2>
 
       <div className="admin-fixtures-grid">
         {fixtures.length > 0 ? (
@@ -154,7 +154,7 @@ function AdminSchedulePage() {
 
               <p>
                 <strong>Away Team:</strong> {f.awayTeam}
-              </p> 
+              </p>
 
               {f.awayTeamImage && (
                 <img
