@@ -1,37 +1,15 @@
-from flask import request, send_from_directory, make_response
+from flask import request, make_response
 from flask_restx import Resource, Namespace, fields
 from models import News
 from flask_jwt_extended import jwt_required
-from werkzeug.utils import secure_filename
-import os
+import cloudinary.uploader
 
-# Namespace
 news_ns = Namespace('news', description="A namespace for news articles")
 
-# Upload config
-UPLOAD_FOLDER = 'uploads'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
-# Serve uploaded images
-@news_ns.route('/uploads/<filename>')
-class UploadedFileResource(Resource):
-    def get(self, filename):
-        filepath = os.path.join(UPLOAD_FOLDER, filename)
-
-        if os.path.exists(filepath):
-            return send_from_directory(UPLOAD_FOLDER, filename)
-
-        return {"message": "File not found"}, 404
-
-
-# News model for Swagger
+# --------------------------
+# NEWS MODEL
+# --------------------------
 news_model = news_ns.model(
     "News",
     {
@@ -44,23 +22,23 @@ news_model = news_ns.model(
 )
 
 
+# --------------------------
+# NEWS LIST
+# --------------------------
 @news_ns.route('/')
 class NewsListResource(Resource):
 
-    # ✅ FIX: Handle preflight requests (CORS)
     def options(self):
         return make_response("", 200)
 
-    # GET all news
     @news_ns.marshal_list_with(news_model)
     def get(self):
         return News.query.all()
 
-    # CREATE news (JWT protected)
     @jwt_required()
     def post(self):
 
-        # Validate image
+        # validate image
         if 'image' not in request.files:
             return {"message": "Image file is required"}, 400
 
@@ -69,16 +47,11 @@ class NewsListResource(Resource):
         if image_file.filename == '':
             return {"message": "No selected file"}, 400
 
-        if image_file and allowed_file(image_file.filename):
-            filename = secure_filename(image_file.filename)
-            filepath = os.path.join(UPLOAD_FOLDER, filename)
-            image_file.save(filepath)
+        # 🚀 UPLOAD TO CLOUDINARY
+        upload_result = cloudinary.uploader.upload(image_file)
+        image_url = upload_result["secure_url"]
 
-            image_url = f"/news/uploads/{filename}"
-        else:
-            return {"message": "Invalid image file type"}, 400
-
-        # Form data
+        # form data
         title = request.form.get('title')
         description = request.form.get('description')
         date = request.form.get('date')
@@ -86,7 +59,7 @@ class NewsListResource(Resource):
         if not title or not description or not date:
             return {"message": "Title, description, and date are required"}, 400
 
-        # Save to DB
+        # save to DB
         new_news = News(
             title=title,
             description=description,
@@ -98,10 +71,14 @@ class NewsListResource(Resource):
 
         return {
             "message": "News created successfully",
-            "data": new_news.id
+            "data": new_news.id,
+            "image": image_url
         }, 201
 
 
+# --------------------------
+# SINGLE NEWS
+# --------------------------
 @news_ns.route('/<int:id>')
 class NewsResource(Resource):
 
@@ -113,5 +90,4 @@ class NewsResource(Resource):
     def delete(self, id):
         news_item = News.query.get_or_404(id)
         news_item.delete()
-
         return {"message": "News deleted successfully"}, 200

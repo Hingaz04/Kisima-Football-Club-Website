@@ -1,31 +1,10 @@
-from flask import request, send_from_directory
+from flask import request
 from flask_restx import Resource, Namespace, fields
 from models import Fixture
 from flask_jwt_extended import jwt_required
-from werkzeug.utils import secure_filename
-import os
+import cloudinary.uploader
 
 fixture_ns = Namespace('fixtures', description="Fixtures API")
-
-UPLOAD_FOLDER = 'uploads'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
-# -------------------------
-# GLOBAL IMAGE ROUTE (IMPORTANT FIX)
-# -------------------------
-from flask import Flask
-
-def register_upload_route(app):
-    @app.route('/uploads/<filename>')
-    def uploaded_file(filename):
-        return send_from_directory(UPLOAD_FOLDER, filename)
 
 
 # -------------------------
@@ -56,38 +35,42 @@ class FixtureListResource(Resource):
         return Fixture.query.all()
 
     @jwt_required()
-    @fixture_ns.marshal_with(fixture_model)
     def post(self):
 
+        # validate files
         if 'homeTeamImage' not in request.files or 'awayTeamImage' not in request.files:
             return {"message": "Both images required"}, 400
 
         home_img = request.files['homeTeamImage']
         away_img = request.files['awayTeamImage']
 
-        if not allowed_file(home_img.filename):
-            return {"message": "Invalid home image"}, 400
+        # upload to cloudinary
+        home_upload = cloudinary.uploader.upload(home_img)
+        away_upload = cloudinary.uploader.upload(away_img)
 
-        if not allowed_file(away_img.filename):
-            return {"message": "Invalid away image"}, 400
-
-        home_filename = secure_filename(home_img.filename)
-        away_filename = secure_filename(away_img.filename)
-
-        home_img.save(os.path.join(UPLOAD_FOLDER, home_filename))
-        away_img.save(os.path.join(UPLOAD_FOLDER, away_filename))
+        home_url = home_upload["secure_url"]
+        away_url = away_upload["secure_url"]
 
         new_fixture = Fixture(
-            homeTeamImage=f"uploads/{home_filename}",
+            homeTeamImage=home_url,
             homeTeam=request.form.get("homeTeam"),
-            awayTeamImage=f"uploads/{away_filename}",
+            awayTeamImage=away_url,
             awayTeam=request.form.get("awayTeam"),
             venue=request.form.get("venue"),
             date=request.form.get("date"),
         )
 
         new_fixture.save()
-        return new_fixture, 201
+
+        return {
+            "id": new_fixture.id,
+            "homeTeamImage": home_url,
+            "awayTeamImage": away_url,
+            "homeTeam": new_fixture.homeTeam,
+            "awayTeam": new_fixture.awayTeam,
+            "venue": new_fixture.venue,
+            "date": new_fixture.date,
+        }, 201
 
 
 # -------------------------

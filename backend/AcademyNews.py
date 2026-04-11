@@ -1,26 +1,18 @@
-from flask import request, send_from_directory
+from flask import request, make_response
 from flask_restx import Resource, Namespace, fields
 from models import AcademyNews
 from flask_jwt_extended import jwt_required
-from werkzeug.utils import secure_filename
-import os
+import cloudinary.uploader
 
 academyNews_ns = Namespace(
     'academy/news',
     description="Academy News Namespace"
 )
 
-UPLOAD_FOLDER = "uploads"
-ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
 
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
-
-
-def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
+# --------------------------
+# MODEL
+# --------------------------
 academyNews_model = academyNews_ns.model(
     "AcademyNews",
     {
@@ -32,9 +24,15 @@ academyNews_model = academyNews_ns.model(
     },
 )
 
-# ================= LIST + CREATE =================
+
+# --------------------------
+# LIST + CREATE
+# --------------------------
 @academyNews_ns.route("/")
 class AcademyNewsList(Resource):
+
+    def options(self):
+        return make_response("", 200)
 
     @academyNews_ns.marshal_list_with(academyNews_model)
     def get(self):
@@ -42,17 +40,15 @@ class AcademyNewsList(Resource):
 
     @jwt_required()
     def post(self):
+
         if "image" not in request.files:
             return {"message": "Image required"}, 400
 
         image_file = request.files["image"]
 
-        if image_file and allowed_file(image_file.filename):
-            filename = secure_filename(image_file.filename)
-            image_file.save(os.path.join(UPLOAD_FOLDER, filename))
-            image_url = f"/academy/news/uploads/{filename}"
-        else:
-            return {"message": "Invalid image"}, 400
+        # 🚀 Upload to Cloudinary
+        upload_result = cloudinary.uploader.upload(image_file)
+        image_url = upload_result["secure_url"]
 
         title = request.form.get("title")
         description = request.form.get("description")
@@ -69,10 +65,19 @@ class AcademyNewsList(Resource):
         )
 
         news.save()
-        return news, 201
+
+        return {
+            "id": news.id,
+            "title": news.title,
+            "description": news.description,
+            "image": image_url,
+            "date": news.date,
+        }, 201
 
 
-# ================= SINGLE + DELETE =================
+# --------------------------
+# SINGLE + DELETE
+# --------------------------
 @academyNews_ns.route("/<int:id>")
 class AcademyNewsResource(Resource):
 
@@ -84,11 +89,3 @@ class AcademyNewsResource(Resource):
         item = AcademyNews.query.get_or_404(id)
         item.delete()
         return {"message": "Deleted"}, 200
-
-
-# ================= SERVE IMAGES =================
-@academyNews_ns.route("/uploads/<filename>")
-class UploadedFile(Resource):
-
-    def get(self, filename):
-        return send_from_directory(UPLOAD_FOLDER, filename)

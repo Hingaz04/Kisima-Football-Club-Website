@@ -3,6 +3,19 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "./AdminSchedule.css";
 
+const BASE_URL = "https://kisima-football-club-website-27xr.onrender.com";
+
+// 🔥 FIXED IMAGE HANDLER (CRITICAL)
+const getImageUrl = (path) => {
+  if (!path) return "";
+
+  // Cloudinary or external image
+  if (path.startsWith("http")) return path;
+
+  // Remove leading slash to avoid //
+  return `${BASE_URL}/${path.replace(/^\/+/, "")}`;
+};
+
 function AdminSchedulePage() {
   const [fixtures, setFixtures] = useState([]);
   const [formData, setFormData] = useState({
@@ -16,13 +29,14 @@ function AdminSchedulePage() {
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("REACT_TOKEN_AUTH_KEY"));
+
     if (!token) return;
 
-    const accessToken = token.access_token;
-
     axios
-      .get("https://kisima-football-club-website-27xr.onrender.com/fixtures", {
-        headers: { Authorization: `Bearer ${accessToken}` },
+      .get(`${BASE_URL}/fixtures`, {
+        headers: {
+          Authorization: `Bearer ${token.access_token}`,
+        },
       })
       .then((res) => setFixtures(Array.isArray(res.data) ? res.data : []))
       .catch(console.error);
@@ -30,6 +44,7 @@ function AdminSchedulePage() {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+
     setFormData((prev) => ({
       ...prev,
       [name]: files ? files[0] : value,
@@ -40,35 +55,33 @@ function AdminSchedulePage() {
     e.preventDefault();
 
     const token = JSON.parse(localStorage.getItem("REACT_TOKEN_AUTH_KEY"));
-    const accessToken = token.access_token;
 
     const data = new FormData();
-    Object.entries(formData).forEach(([k, v]) => data.append(k, v));
+
+    Object.entries(formData).forEach(([key, value]) => {
+      data.append(key, value);
+    });
 
     axios
-      .post(
-        "https://kisima-football-club-website-27xr.onrender.com/fixtures",
-        data,
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
+      .post(`${BASE_URL}/fixtures`, data, {
+        headers: {
+          Authorization: `Bearer ${token.access_token}`,
         },
-      )
+      })
       .then((res) => setFixtures((prev) => [res.data, ...prev]))
       .catch(console.error);
   };
 
   const handleDelete = (id) => {
     const token = JSON.parse(localStorage.getItem("REACT_TOKEN_AUTH_KEY"));
-    const accessToken = token.access_token;
 
     axios
-      .delete(
-        `https://kisima-football-club-website-27xr.onrender.com/fixtures/${id}`,
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
+      .delete(`${BASE_URL}/fixtures/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token.access_token}`,
         },
-      )
-      .then(() => setFixtures((prev) => prev.filter((f) => f.id !== id)))
+      })
+      .then(() => setFixtures((prev) => prev.filter((item) => item.id !== id)))
       .catch(console.error);
   };
 
@@ -79,14 +92,14 @@ function AdminSchedulePage() {
       <Link to="/admin_dashboard">Back to Admin Dashboard</Link>
 
       {/* FORM */}
-      <form className="admin-schedule-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Home Team Image:</label>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Home Team Image</label>
           <input type="file" name="homeTeamImage" onChange={handleChange} />
         </div>
 
-        <div className="form-group">
-          <label>Home Team:</label>
+        <div>
+          <label>Home Team</label>
           <input
             type="text"
             name="homeTeam"
@@ -95,13 +108,13 @@ function AdminSchedulePage() {
           />
         </div>
 
-        <div className="form-group">
-          <label>Away Team Image:</label>
+        <div>
+          <label>Away Team Image</label>
           <input type="file" name="awayTeamImage" onChange={handleChange} />
         </div>
 
-        <div className="form-group">
-          <label>Away Team:</label>
+        <div>
+          <label>Away Team</label>
           <input
             type="text"
             name="awayTeam"
@@ -110,8 +123,8 @@ function AdminSchedulePage() {
           />
         </div>
 
-        <div className="form-group">
-          <label>Venue:</label>
+        <div>
+          <label>Venue</label>
           <input
             type="text"
             name="venue"
@@ -120,8 +133,8 @@ function AdminSchedulePage() {
           />
         </div>
 
-        <div className="form-group">
-          <label>Date:</label>
+        <div>
+          <label>Date</label>
           <input
             type="date"
             name="date"
@@ -136,47 +149,45 @@ function AdminSchedulePage() {
       {/* LIST */}
       <h2>Fixtures List</h2>
 
-      <div className="admin-fixtures-grid">
-        {fixtures.length > 0 ? (
-          fixtures.map((f) => (
-            <div className="admin-card" key={f.id}>
-              <p>
-                <strong>Home Team:</strong> {f.homeTeam}
-              </p>
-              {f.homeTeamImage && (
-                <img
-                  src={`https://kisima-football-club-website-27xr.onrender.com/${f.homeTeamImage}`}
-                  alt="Home Team"
-                />
-              )}
+      {fixtures.length === 0 ? (
+        <p>No fixtures available.</p>
+      ) : (
+        fixtures.map((f) => (
+          <div key={f.id} className="fixture-card">
+            <p>
+              <strong>Home:</strong> {f.homeTeam}
+            </p>
 
-              <h3>VS</h3>
+            <img
+              src={getImageUrl(f.homeTeamImage)}
+              alt="home team"
+              width="120"
+            />
 
-              <p>
-                <strong>Away Team:</strong> {f.awayTeam}
-              </p>
+            <h3>VS</h3>
 
-              {f.awayTeamImage && (
-                <img
-                  src={`https://kisima-football-club-website-27xr.onrender.com/${f.awayTeamImage}`}
-                  alt="Away Team"
-                />
-              )}
+            <p>
+              <strong>Away:</strong> {f.awayTeam}
+            </p>
 
-              <p>
-                <strong>Venue:</strong> {f.venue}
-              </p>
-              <p>
-                <strong>Date:</strong> {f.date}
-              </p>
+            <img
+              src={getImageUrl(f.awayTeamImage)}
+              alt="away team"
+              width="120"
+            />
 
-              <button onClick={() => handleDelete(f.id)}>Delete</button>
-            </div>
-          ))
-        ) : (
-          <p>No fixtures available.</p>
-        )}
-      </div>
+            <p>
+              <strong>Venue:</strong> {f.venue}
+            </p>
+
+            <p>
+              <strong>Date:</strong> {f.date}
+            </p>
+
+            <button onClick={() => handleDelete(f.id)}>Delete</button>
+          </div>
+        ))
+      )}
     </div>
   );
 }

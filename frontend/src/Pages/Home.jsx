@@ -9,6 +9,17 @@ function Home() {
 
   const BASE_URL = "https://kisima-football-club-website-27xr.onrender.com";
 
+  // ================= SAFE IMAGE HELPER =================
+  const getImageUrl = (path) => {
+    if (!path) return "";
+
+    // Cloudinary or external URL
+    if (path.startsWith("http")) return path;
+
+    // remove leading slash if exists
+    return `${BASE_URL}/${path.startsWith("/") ? path.slice(1) : path}`;
+  };
+
   // ================= NEWS =================
   useEffect(() => {
     axios
@@ -33,7 +44,7 @@ function Home() {
   return (
     <div className="home">
       <div className="home-container">
-        {/* NEWS */}
+        {/* ================= NEWS ================= */}
         <div className="home-news-section">
           <h2 className="section-title">Latest News</h2>
 
@@ -43,8 +54,9 @@ function Home() {
             {news.map((item) => (
               <div key={item.id} className="news-card">
                 {item.image && (
-                  <img src={`${BASE_URL}${item.image}`} alt={item.title} />
+                  <img src={getImageUrl(item.image)} alt={item.title} />
                 )}
+
                 <div className="news-content">
                   <h3>{item.title}</h3>
                   <p>{item.description}</p>
@@ -55,7 +67,7 @@ function Home() {
           </div>
         </div>
 
-        {/* SIDEBAR */}
+        {/* ================= MATCH MOMENTS ================= */}
         <div className="home-photos-section">
           <h2 className="section-title">Match Moments</h2>
 
@@ -64,8 +76,8 @@ function Home() {
               images.map((item) => (
                 <img
                   key={item.id}
-                  src={`${BASE_URL}/${item.image}`}
-                  alt={item.title}
+                  src={getImageUrl(item.weekendImages)}
+                  alt="moment"
                 />
               ))
             ) : (

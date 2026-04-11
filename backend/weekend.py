@@ -1,36 +1,12 @@
-from flask import request, send_from_directory
+from flask import request
 from flask_restx import Resource, Namespace, fields
 from models import Weekend
 from flask_jwt_extended import jwt_required
-from werkzeug.utils import secure_filename
-import os
+import cloudinary.uploader
 
 weekend_ns = Namespace('weekend', description="Weekend events")
 
-UPLOAD_FOLDER = 'uploads'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
-# -------------------------
-# GLOBAL IMAGE SERVING (IMPORTANT FIX)
-# -------------------------
-from flask import Flask
-
-def register_upload_route(app):
-    @app.route('/uploads/<filename>')
-    def uploaded_file(filename):
-        return send_from_directory(UPLOAD_FOLDER, filename)
-
-
-# -------------------------
-# MODEL
-# -------------------------
 weekend_model = weekend_ns.model(
     "Weekend",
     {
@@ -41,9 +17,6 @@ weekend_model = weekend_ns.model(
 )
 
 
-# -------------------------
-# LIST + CREATE
-# -------------------------
 @weekend_ns.route('/')
 class WeekendListResource(Resource):
 
@@ -52,33 +25,33 @@ class WeekendListResource(Resource):
         return Weekend.query.all()
 
     @jwt_required()
-    @weekend_ns.marshal_with(weekend_model)
     def post(self):
 
-        if 'weekendImages' not in request.files:
+        if 'image' not in request.files:
             return {"message": "Image required"}, 400
 
-        image = request.files['weekendImages']
+        image = request.files['image']
         date = request.form.get('date')
 
-        if not image or not allowed_file(image.filename):
-            return {"message": "Invalid image"}, 400
+        # 🚀 Upload to Cloudinary
+        upload_result = cloudinary.uploader.upload(image)
 
-        filename = secure_filename(image.filename)
-        image.save(os.path.join(UPLOAD_FOLDER, filename))
+        image_url = upload_result["secure_url"]
 
         new_weekend = Weekend(
-            weekendImages=f"uploads/{filename}",
+            weekendImages=image_url,
             date=date
         )
 
         new_weekend.save()
-        return new_weekend, 201
+
+        return {
+            "id": new_weekend.id,
+            "weekendImages": image_url,
+            "date": date
+        }, 201
 
 
-# -------------------------
-# SINGLE ITEM
-# -------------------------
 @weekend_ns.route('/<int:id>')
 class WeekendResource(Resource):
 

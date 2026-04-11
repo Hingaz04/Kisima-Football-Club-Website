@@ -17,7 +17,7 @@ function About() {
   const fetchPlayers = async () => {
     try {
       const response = await axios.get(
-        "https://kisima-football-club-website-27xr.onrender.com/player/players",
+        "https://kisima-football-club-website-27xr.onrender.com/players",
       );
       console.log("API Response:", response.data);
       if (response.data && Array.isArray(response.data)) {

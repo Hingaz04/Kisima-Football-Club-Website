@@ -47,3 +47,4 @@ wtforms
 zope.event
 zope.interface
 pymysql
+cloudinary

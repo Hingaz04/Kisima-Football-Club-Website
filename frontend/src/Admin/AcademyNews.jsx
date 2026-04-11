@@ -14,6 +14,16 @@ function AcademyNews() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  const BASE_URL = "https://kisima-football-club-website-27xr.onrender.com";
+
+  // ✅ SAFE IMAGE HANDLER (FIX)
+  const getImageUrl = (img) => {
+    if (!img) return "";
+    if (img.startsWith("http")) return img;
+    if (img.startsWith("/")) return `${BASE_URL}${img}`;
+    return `${BASE_URL}/${img}`;
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
     if (!token) return;
@@ -180,11 +190,9 @@ function AcademyNews() {
           <li key={item.id}>
             <h3>{item.title}</h3>
 
+            {/* ✅ FIXED IMAGE */}
             {item.image && (
-              <img
-                src={`https://kisima-football-club-website-27xr.onrender.com/${item.image}`}
-                alt={item.title}
-              />
+              <img src={getImageUrl(item.image)} alt={item.title} />
             )}
 
             <p>{item.description}</p>

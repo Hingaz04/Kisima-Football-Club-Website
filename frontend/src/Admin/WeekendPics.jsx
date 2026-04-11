@@ -16,6 +16,13 @@ function WeekendPics() {
 
   const BASE_URL = "https://kisima-football-club-website-27xr.onrender.com";
 
+  // ================= SAFE IMAGE HELPER =================
+  const getImageUrl = (path) => {
+    if (!path) return "";
+    if (path.startsWith("http")) return path;
+    return `${BASE_URL}/${path.startsWith("/") ? path.slice(1) : path}`;
+  };
+
   // ================= GET IMAGES =================
   useEffect(() => {
     const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
@@ -24,7 +31,7 @@ function WeekendPics() {
     const accessToken = JSON.parse(token).access_token;
 
     axios
-      .get(`${BASE_URL}/weekend`, {
+      .get(`${BASE_URL}/weekend/`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -37,11 +44,10 @@ function WeekendPics() {
   const handleChange = (e) => {
     const { name, files, value } = e.target;
 
-    if (name === "image") {
-      setForm((prev) => ({ ...prev, image: files[0] }));
-    } else {
-      setForm((prev) => ({ ...prev, [name]: value }));
-    }
+    setForm((prev) => ({
+      ...prev,
+      [name]: files ? files[0] : value,
+    }));
   };
 
   // ================= VALIDATION =================
@@ -68,14 +74,14 @@ function WeekendPics() {
 
     const formData = new FormData();
 
-    // ✅ FIXED FIELD NAME (backend expects "image")
-    formData.append("weekendImages", form.image);
+    // ✅ FIXED: MUST MATCH BACKEND ("image")
+    formData.append("image", form.image);
     formData.append("date", form.date);
 
     setLoading(true);
 
     axios
-      .post(`${BASE_URL}/weekend`, formData, {
+      .post(`${BASE_URL}/weekend/`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -113,7 +119,7 @@ function WeekendPics() {
       <h1>Weekend Pictures</h1>
       <Link to="/admin_dashboard">Back</Link>
 
-      {/* ================= FORM ================= */}
+      {/* FORM */}
       <form onSubmit={handleSubmit}>
         <input type="file" name="image" onChange={handleChange} />
 
@@ -132,16 +138,15 @@ function WeekendPics() {
         {success && <p>{success}</p>}
       </form>
 
-      {/* ================= LIST ================= */}
+      {/* LIST */}
       <ul>
         {weekendImages.map((item) => (
           <li key={item.id}>
             <h3>{item.date}</h3>
 
-            {/* ✅ FIXED IMAGE ROUTE */}
-            {item.image && (
+            {item.weekendImages && (
               <img
-                src={`${BASE_URL}/${item.weekendImages}`}
+                src={getImageUrl(item.weekendImages)}
                 alt="weekend"
                 width="200"
               />

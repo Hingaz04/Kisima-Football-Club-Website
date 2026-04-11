@@ -12,6 +12,7 @@ python-decouple = "*"
 flask-migrate = "*"
 flask-cors = "*"
 pymysql = "*"
+cloudinary = "*"
 
 [dev-packages]
 

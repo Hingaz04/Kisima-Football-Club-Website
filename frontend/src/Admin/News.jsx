@@ -5,6 +5,17 @@ import "./News.css";
 
 const BASE_URL = "https://kisima-football-club-website-27xr.onrender.com";
 
+// 🔥 SAFE IMAGE HANDLER (IMPORTANT FIX)
+const getImageUrl = (path) => {
+  if (!path) return "";
+
+  // Cloudinary or full URL
+  if (path.startsWith("http")) return path;
+
+  // remove leading slashes
+  return `${BASE_URL}/${path.replace(/^\/+/, "")}`;
+};
+
 function NewsPage() {
   const [news, setNews] = useState([]);
   const [form, setForm] = useState({
@@ -30,17 +41,14 @@ function NewsPage() {
     }
 
     const parsedToken = JSON.parse(token);
-    const accessToken = parsedToken.access_token;
 
     axios
       .get(`${BASE_URL}/news/`, {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${parsedToken.access_token}`,
         },
       })
-      .then((response) => {
-        setNews(response.data);
-      })
+      .then((res) => setNews(res.data))
       .catch((err) => {
         console.error(err);
         setError("Failed to fetch news");
@@ -53,11 +61,10 @@ function NewsPage() {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
-    if (name === "image") {
-      setForm((prev) => ({ ...prev, image: files[0] }));
-    } else {
-      setForm((prev) => ({ ...prev, [name]: value }));
-    }
+    setForm((prev) => ({
+      ...prev,
+      [name]: files ? files[0] : value,
+    }));
   };
 
   // --------------------------
@@ -80,19 +87,11 @@ function NewsPage() {
 
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
-      setError(validationErrors);
+      setError("Please fill all fields correctly");
       return;
     }
 
-    const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
-
-    if (!token) {
-      setError("Token not found");
-      return;
-    }
-
-    const parsedToken = JSON.parse(token);
-    const accessToken = parsedToken.access_token;
+    const token = JSON.parse(localStorage.getItem("REACT_TOKEN_AUTH_KEY"));
 
     const formData = new FormData();
     formData.append("title", form.title);
@@ -106,11 +105,11 @@ function NewsPage() {
       .post(`${BASE_URL}/news/`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${token.access_token}`,
         },
       })
-      .then((response) => {
-        setNews([response.data, ...news]);
+      .then((res) => {
+        setNews((prev) => [res.data, ...prev]);
         setSuccess("News added successfully!");
         setLoading(false);
 
@@ -132,24 +131,16 @@ function NewsPage() {
   // DELETE NEWS
   // --------------------------
   const handleDelete = (id) => {
-    const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
-
-    if (!token) {
-      setError("Token not found");
-      return;
-    }
-
-    const parsedToken = JSON.parse(token);
-    const accessToken = parsedToken.access_token;
+    const token = JSON.parse(localStorage.getItem("REACT_TOKEN_AUTH_KEY"));
 
     axios
       .delete(`${BASE_URL}/news/${id}`, {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${token.access_token}`,
         },
       })
       .then(() => {
-        setNews(news.filter((item) => item.id !== id));
+        setNews((prev) => prev.filter((item) => item.id !== id));
       })
       .catch((err) => {
         console.error(err);
@@ -168,85 +159,58 @@ function NewsPage() {
 
       {/* FORM */}
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Title</label>
-          <input
-            type="text"
-            name="title"
-            value={form.title}
-            onChange={handleChange}
-          />
-        </div>
+        <input
+          type="text"
+          name="title"
+          placeholder="Title"
+          value={form.title}
+          onChange={handleChange}
+        />
 
-        <div className="form-group">
-          <label>Image</label>
-          <input type="file" name="image" onChange={handleChange} />
-        </div>
+        <input type="file" name="image" onChange={handleChange} />
 
-        <div className="form-group">
-          <label>Description</label>
-          <textarea
-            name="description"
-            value={form.description}
-            onChange={handleChange}
-          />
-        </div>
+        <textarea
+          name="description"
+          placeholder="Description"
+          value={form.description}
+          onChange={handleChange}
+        />
 
-        <div className="form-group">
-          <label>Date</label>
-          <input
-            type="date"
-            name="date"
-            value={form.date}
-            onChange={handleChange}
-          />
-        </div>
+        <input
+          type="date"
+          name="date"
+          value={form.date}
+          onChange={handleChange}
+        />
 
         <button type="submit" disabled={loading}>
           {loading ? "Loading..." : "Add News"}
         </button>
 
-        {/* ERRORS */}
-        {typeof error === "object"
-          ? Object.values(error).map((e, i) => (
-              <p key={i} className="error-message">
-                {e}
-              </p>
-            ))
-          : error && <p className="error-message">{error}</p>}
-
-        {success && <p className="success-message">{success}</p>}
+        {error && <p className="error">{error}</p>}
+        {success && <p className="success">{success}</p>}
       </form>
 
       {/* NEWS LIST */}
       <h2>News List</h2>
 
-      {news.length === 0 && <p>No news available.</p>}
-
-      <ul>
-        {news.map((item) => (
-          <li key={item.id}>
+      {news.length === 0 ? (
+        <p>No news available.</p>
+      ) : (
+        news.map((item) => (
+          <div key={item.id}>
             <h3>{item.title}</h3>
 
-            {item.image && (
-              <img
-                src={`${BASE_URL}/${
-                  item.image?.startsWith("uploads/")
-                    ? item.image
-                    : `uploads/${item.image}`
-                }`}
-                alt={item.title}
-                style={{ width: "200px", height: "auto" }}
-              />
-            )}
+            {/* 🔥 FIXED IMAGE */}
+            <img src={getImageUrl(item.image)} alt={item.title} width="200" />
 
             <p>{item.description}</p>
             <p>{item.date}</p>
 
             <button onClick={() => handleDelete(item.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+          </div>
+        ))
+      )}
     </div>
   );
 }

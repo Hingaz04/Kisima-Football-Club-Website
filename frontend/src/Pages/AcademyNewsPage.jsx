@@ -22,6 +22,18 @@ function AcademyNewsPage() {
       });
   }, []);
 
+  // ✅ FIX: normalize image URL properly
+  const fixImageUrl = (img) => {
+    if (!img) return "";
+
+    if (img.startsWith("http")) return img;
+
+    // already has leading slash
+    if (img.startsWith("/")) return `${BASE_URL}${img}`;
+
+    return `${BASE_URL}/${img}`;
+  };
+
   return (
     <div className="academy">
       <h1 className="academy-heading">Academy News</h1>
@@ -35,9 +47,10 @@ function AcademyNewsPage() {
           <li key={item.id} className="academy-item">
             <h3 className="academy-item-title">{item.title}</h3>
 
+            {/* ✅ FIXED IMAGE HANDLING */}
             {item.image && (
               <img
-                src={`${BASE_URL}/uploads/${item.image}`}
+                src={fixImageUrl(item.image)}
                 alt={item.title}
                 className="academy-item-image"
               />
