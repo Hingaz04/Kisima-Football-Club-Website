@@ -1,7 +1,7 @@
 /* ===================== GENERAL ===================== */
 
 .home {
-   background: #f8f8f8;
+  background: #f8f8f8;
   color: #111111;
 }
 
@@ -48,7 +48,7 @@
 /* ===================== NEWS GRID ===================== */
 .news-grid {
   display: grid;
-  grid-template-columns: 1fr; /* single column for large images */
+  grid-template-columns: 1fr;
   gap: 20px;
 }
 
@@ -59,12 +59,15 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.news-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+.news-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
 
 /* LARGE NEWS IMAGES */
 .news-card img {
   width: 100%;
-  min-width: 780px; /* large image like original */
+  min-width: 780px;
   height: auto;
   border-radius: 8px 8px 0 0;
   object-fit: cover;
@@ -93,19 +96,47 @@
   color: #ef0107; 
 }
 
-/* ===================== PHOTO GRID ===================== */
-.photo-grid {
-  display: grid;
+/* ===================== VERTICAL CAROUSEL ===================== */
+.vertical-carousel {
+  display: flex;
+  flex-direction: column;
   gap: 15px;
+
+  max-height: 500px; /* adjust if needed */
+  overflow-y: auto;
+
+  scroll-snap-type: y mandatory;
+  padding-right: 5px;
 }
 
-.photo-grid img {
-  width: 100%;
+/* Scrollbar styling */
+.vertical-carousel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.vertical-carousel::-webkit-scrollbar-thumb {
+  background: #ccc;
   border-radius: 10px;
+}
+
+/* Each image card */
+.vertical-item {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Image styling */
+.vertical-item img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
   transition: transform 0.3s ease;
 }
 
-.photo-grid img:hover {
+.vertical-item img:hover {
   transform: scale(1.05);
 }
 
@@ -130,8 +161,12 @@
   }
 
   .news-card img {
-    min-width: auto; /* scale down images for mobile */
+    min-width: auto;
     width: 100%;
     height: auto;
+  }
+
+  .vertical-carousel {
+    max-height: 400px;
   }
 }
