@@ -47,11 +47,8 @@ def create_app():
     CORS(
         app,
         origins=[
-            "https://kisima-football-club-website.vercel.app",  # New Vercel frontend
-            "https://kisimafc.netlify.app",                    # Old Netlify frontend
-            "http://localhost:5173",                           # Local Vite dev
-            "http://localhost:3000",                           # Alternative local dev
-            "http://localhost:5000"                            # Local backend
+            "https://kisima-football-club-website.vercel.app", 
+                                    
         ],
         methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
         allow_headers=["Content-Type", "Authorization", "Accept"],
