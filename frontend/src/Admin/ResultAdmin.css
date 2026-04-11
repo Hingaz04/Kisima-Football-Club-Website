@@ -51,6 +51,10 @@
   box-sizing: border-box;
 }
 
+.result-form p {
+  color:#ff033e;
+}
+
 .result-form button {
   background-color: #ff033e;
   color: white;

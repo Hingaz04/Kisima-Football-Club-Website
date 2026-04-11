@@ -124,12 +124,28 @@ function ResultAdmin() {
       });
   };
 
+  // ✅ FIXED IMAGE HANDLER (ONLY CHANGE)
+  const getImageUrl = (img) => {
+    if (!img) return "";
+    if (img.startsWith("http")) return img;
+
+    // avoid double uploads/ prefix
+    const cleaned = img.startsWith("/") ? img.slice(1) : img;
+
+    if (cleaned.startsWith("uploads/")) {
+      return `${BASE_URL}/${cleaned}`;
+    }
+
+    return `${BASE_URL}/uploads/${cleaned}`;
+  };
+
   return (
     <div className="result-page">
       <h1>Results Admin Page</h1>
       <Link to="/admin_dashboard">Back to Admin Dashboard</Link>
 
       <form className="result-form" onSubmit={handleSubmit}>
+        <p>HOME TEAM</p>
         <input type="file" name="homeTeamImage" onChange={handleChange} />
         <input
           type="text"
@@ -137,6 +153,7 @@ function ResultAdmin() {
           value={formData.homeTeam}
           onChange={handleChange}
         />
+        <p>AWAY TEAM</p>
         <input type="file" name="awayTeamImage" onChange={handleChange} />
         <input
           type="text"
@@ -144,18 +161,22 @@ function ResultAdmin() {
           value={formData.awayTeam}
           onChange={handleChange}
         />
-        <input
-          type="text"
-          name="result"
-          value={formData.result}
-          onChange={handleChange}
-        />
+        <p>VENUE</p>
         <input
           type="text"
           name="venue"
           value={formData.venue}
           onChange={handleChange}
         />
+        <p>RESULTS</p>
+        <input
+          type="text"
+          name="result"
+          value={formData.result}
+          onChange={handleChange}
+        />
+
+        <p>DATE</p>
         <input
           type="date"
           name="date"
@@ -179,23 +200,10 @@ function ResultAdmin() {
       <div className="results-grid">
         {results.map((result) => (
           <div key={result.id} className="card">
-            <img
-              src={`${BASE_URL}/${
-                result.homeTeamImage?.startsWith("uploads/")
-                  ? result.homeTeamImage
-                  : `uploads/${result.homeTeamImage}`
-              }`}
-              alt="Home"
-            />
+            <img src={getImageUrl(result.homeTeamImage)} alt="Home" />
             <h3>VS</h3>
-            <img
-              src={`${BASE_URL}/${
-                result.awayTeamImage?.startsWith("uploads/")
-                  ? result.awayTeamImage
-                  : `uploads/${result.awayTeamImage}`
-              }`}
-              alt="Away"
-            />
+            <img src={getImageUrl(result.awayTeamImage)} alt="Away" />
+
             <p>{result.homeTeam}</p>
             <p>{result.awayTeam}</p>
             <p>{result.result}</p>
