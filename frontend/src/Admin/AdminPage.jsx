@@ -4,14 +4,6 @@ import { logout } from "../Auth";
 import axios from "axios";
 import "./AdminPage.css";
 
-const BASE_URL = "https://kisima-football-club-website-27xr.onrender.com";
-
-const getImageUrl = (img) => {
-  if (!img) return "";
-  if (img.startsWith("http")) return img;
-  return `${BASE_URL}/${img}`;
-};
-
 function AdminPage() {
   const [news, setNews] = useState([]);
   const [AdminSchedule, setAdminSchedule] = useState([]);
@@ -38,65 +30,86 @@ function AdminPage() {
 
   const fetchNews = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/news`, {
-        headers: getAuthHeader(),
-      });
+      const res = await axios.get(
+        "https://kisima-football-club-website-27xr.onrender.com/news",
+        { headers: getAuthHeader() },
+      );
       setNews(Array.isArray(res.data) ? res.data : []);
-    } catch (err) {}
+    } catch (err) {
+      console.error("Error fetching news:", err);
+    }
   };
 
   const fetchWeekendPictures = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/weekend`, {
-        headers: getAuthHeader(),
-      });
+      const res = await axios.get(
+        "https://kisima-football-club-website-27xr.onrender.com/weekend",
+        { headers: getAuthHeader() },
+      );
       setWeekendImages(Array.isArray(res.data) ? res.data : []);
-    } catch (err) {}
+    } catch (err) {
+      console.error("Error fetching weekend:", err);
+    }
   };
 
   const fetchAcademyNews = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/academy/news`, {
-        headers: getAuthHeader(),
-      });
+      const res = await axios.get(
+        "https://kisima-football-club-website-27xr.onrender.com/academy/news",
+        { headers: getAuthHeader() },
+      );
       setAcademyNews(Array.isArray(res.data) ? res.data : []);
-    } catch (err) {}
+    } catch (err) {
+      console.error("Error fetching academy news:", err);
+    }
   };
 
   const fetchAdminSchedule = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/fixtures`, {
-        headers: getAuthHeader(),
-      });
+      const res = await axios.get(
+        "https://kisima-football-club-website-27xr.onrender.com/fixtures",
+        { headers: getAuthHeader() },
+      );
       setAdminSchedule(Array.isArray(res.data) ? res.data : []);
-    } catch (err) {}
+    } catch (err) {
+      console.error("Error fetching fixtures:", err);
+    }
   };
 
   const fetchResults = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/results`, {
-        headers: getAuthHeader(),
-      });
+      const res = await axios.get(
+        "https://kisima-football-club-website-27xr.onrender.com/results",
+        { headers: getAuthHeader() },
+      );
       setResults(Array.isArray(res.data) ? res.data : []);
-    } catch (err) {}
+    } catch (err) {
+      console.error("Error fetching results:", err);
+    }
   };
 
   const fetchPlayers = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/players`, {
-        headers: getAuthHeader(),
-      });
+      const res = await axios.get(
+        "https://kisima-football-club-website-27xr.onrender.com/players",
+        { headers: getAuthHeader() },
+      );
       setPlayers(Array.isArray(res.data) ? res.data : []);
-    } catch (err) {}
+    } catch (err) {
+      console.error("Error fetching players:", err);
+    }
   };
 
   const fetchAcademyPlayers = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/academy/players`, {
-        headers: getAuthHeader(),
-      });
+      const res = await axios.get(
+        "https://kisima-football-club-website-27xr.onrender.com/academy/players",
+        { headers: getAuthHeader() },
+      );
       setAcademyPlayers(Array.isArray(res.data) ? res.data : []);
-    } catch (err) {}
+    } catch (err) {
+      console.error("Error fetching academy players:", err);
+    }
   };
 
   const handleLogout = () => {
@@ -109,7 +122,29 @@ function AdminPage() {
       <h1 className="h1-admin">Admin Page</h1>
       <button onClick={handleLogout}>Logout</button>
 
-      {/* unchanged buttons */}
+      <div>
+        <button>
+          <Link to="/news">Manage News</Link>
+        </button>
+        <button>
+          <Link to="/admin-schedule">Manage Schedule</Link>
+        </button>
+        <button>
+          <Link to="/players">Manage Players</Link>
+        </button>
+        <button>
+          <Link to="/academy-players-admin">Manage Academy Players</Link>
+        </button>
+        <button>
+          <Link to="/academy-news-admin">Manage Academy News</Link>
+        </button>
+        <button>
+          <Link to="/results-admin">Manage Results</Link>
+        </button>
+        <button>
+          <Link to="/weekend-pics">Manage Weekend Pictures</Link>
+        </button>
+      </div>
 
       {/* NEWS */}
       <section className="news-section">
@@ -120,7 +155,11 @@ function AdminPage() {
               <li className="news-item" key={item.id}>
                 <img
                   className="news-image"
-                  src={getImageUrl(item.image)}
+                  src={`https://kisima-football-club-website-27xr.onrender.com/${
+                    item.image?.startsWith("uploads/")
+                      ? item.image
+                      : `uploads/${item.image}`
+                  }`}
                   alt={item.title}
                 />
                 <h3>{item.title}</h3>
@@ -142,7 +181,11 @@ function AdminPage() {
               <li className="picture-item" key={item.id}>
                 <img
                   className="picture-image"
-                  src={getImageUrl(item.weekendImages)}
+                  src={`https://kisima-football-club-website-27xr.onrender.com/${
+                    item.weekendImages?.startsWith("uploads/")
+                      ? item.weekendImages
+                      : item.weekendImages
+                  }`}
                   alt=""
                 />
                 <p className="picture-date">Date: {item.date}</p>
@@ -163,9 +206,14 @@ function AdminPage() {
               <li className="academy-news-item" key={item.id}>
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
+
                 <img
                   className="academy-news-image"
-                  src={getImageUrl(item.image)}
+                  src={`https://kisima-football-club-website-27xr.onrender.com/${
+                    item.image?.startsWith("uploads/")
+                      ? item.image
+                      : `uploads/${item.image}`
+                  }`}
                   alt=""
                 />
               </li>
@@ -185,12 +233,22 @@ function AdminPage() {
               <li className="fixture-item" key={item.id}>
                 <img
                   className="fixture-image"
-                  src={getImageUrl(item.homeTeamImage)}
+                  src={`https://kisima-football-club-website-27xr.onrender.com/${
+                    item.homeTeamImage?.startsWith("uploads/")
+                      ? item.homeTeamImage
+                      : `uploads/${item.homeTeamImage}`
+                  }`}
+                  alt=""
                 />
                 <h1 className="vs">VS</h1>
                 <img
                   className="fixture-image"
-                  src={getImageUrl(item.awayTeamImage)}
+                  src={`https://kisima-football-club-website-27xr.onrender.com/${
+                    item.awayTeamImage?.startsWith("uploads/")
+                      ? item.awayTeamImage
+                      : `uploads/${item.awayTeamImage}`
+                  }`}
+                  alt=""
                 />
                 <p className="fixture-venue">{item.venue}</p>
                 <p className="fixture-date">{item.date}</p>
@@ -211,12 +269,22 @@ function AdminPage() {
               <li className="result-item" key={item.id}>
                 <img
                   className="result-image"
-                  src={getImageUrl(item.homeTeamImage)}
+                  src={`https://kisima-football-club-website-27xr.onrender.com/${
+                    item.homeTeamImage?.startsWith("uploads/")
+                      ? item.homeTeamImage
+                      : `uploads/${item.homeTeamImage}`
+                  }`}
+                  alt=""
                 />
                 <h1 className="vs">VS</h1>
                 <img
                   className="result-image"
-                  src={getImageUrl(item.awayTeamImage)}
+                  src={`https://kisima-football-club-website-27xr.onrender.com/${
+                    item.awayTeamImage?.startsWith("uploads/")
+                      ? item.awayTeamImage
+                      : `uploads/${item.awayTeamImage}`
+                  }`}
+                  alt=""
                 />
                 <p className="result-score">{item.result}</p>
                 <p className="result-venue">{item.venue}</p>
@@ -229,8 +297,47 @@ function AdminPage() {
         </ul>
       </section>
 
-      {/* PLAYERS (UNCHANGED) */}
-      {/* ACADEMY PLAYERS (UNCHANGED) */}
+      {/* PLAYERS */}
+      <section className="players-section">
+        <h2 className="section-title">Team Players</h2>
+        <ul className="players-list">
+          {players.length ? (
+            players.map((p) => (
+              <li className="player-item" key={p.id}>
+                <p>
+                  <span className="highlight-text">Name:</span> {p.name}
+                </p>
+                <p>
+                  <span className="highlight-text">Position:</span> {p.position}
+                </p>
+              </li>
+            ))
+          ) : (
+            <p>No players available.</p>
+          )}
+        </ul>
+      </section>
+
+      {/* ACADEMY PLAYERS */}
+      <section className="academy-players-section">
+        <h2 className="section-title">Academy Players</h2>
+        <ul className="academy-players-list">
+          {academyPlayers.length ? (
+            academyPlayers.map((p) => (
+              <li className="academy-player-item" key={p.id}>
+                <p>
+                  <span className="highlight-text">Name:</span> {p.name}
+                </p>
+                <p>
+                  <span className="highlight-text">Position:</span> {p.position}
+                </p>
+              </li>
+            ))
+          ) : (
+            <p>No academy players available.</p>
+          )}
+        </ul>
+      </section>
     </div>
   );
 }
