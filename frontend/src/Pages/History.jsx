@@ -46,7 +46,7 @@ function History() {
           Some of the first youth to be integrated into the team
         </p>
         <img src={youthTeam} alt="youth team" />
-        <p className="paragraph">The team's fisrt youth team</p>
+        <p className="paragraph">The team's first youth team</p>
 
         <p className="history-text">
           By 2021, Kisima FC was ready to take on competitive football, joining

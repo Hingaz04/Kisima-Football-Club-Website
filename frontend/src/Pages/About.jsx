@@ -110,12 +110,7 @@ function About() {
         <li>
           <strong>Team Doctor</strong> Henry Wangai
         </li>
-        <li>
-          <strong>Coach:</strong> Pele Makana.
-        </li>
-        <li>
-          <strong>Assisant Coach:</strong> Kim Modo.
-        </li>
+        
 
         <li>
           <strong>Home Ground:</strong> Mahiga Primary
