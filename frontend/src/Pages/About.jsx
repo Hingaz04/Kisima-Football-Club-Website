@@ -16,7 +16,9 @@ function About() {
 
   const fetchPlayers = async () => {
     try {
-      const response = await axios.get("https://kisima-football-club-website-27xr.onrender.com/player/players");
+      const response = await axios.get(
+        "https://kisima-football-club-website-27xr.onrender.com/player/players",
+      );
       console.log("API Response:", response.data);
       if (response.data && Array.isArray(response.data)) {
         const categorizedPlayers = categorizePlayers(response.data);
@@ -94,25 +96,25 @@ function About() {
       <h2 className="kisima-subtitle">Team Officials</h2>
       <ul className="kisima-team-details">
         <li>
-          <strong>Team Manager:</strong> Dan Njuguna
+          <strong>Team Manager:</strong> Dan Njuguna.
         </li>
         <li>
-          <strong>Assistant Team Manager:</strong> Fredrick Mwangi
+          <strong>Assistant Team Manager:</strong> Fredrick Mwangi.
         </li>
         <li>
-          <strong>Team Welfare:</strong> Kepha Momanyi
+          <strong>Team Welfare:</strong> Kepha Momanyi.
         </li>
         <li>
-          <strong>Team Treasurer</strong> John Macharia
+          <strong>Team Treasurer</strong> John Macharia.
         </li>
         <li>
           <strong>Team Doctor</strong> Henry Wangai
         </li>
         <li>
-          <strong>Coach:</strong> Pele Makana
+          <strong>Coach:</strong> Pele Makana.
         </li>
         <li>
-          <strong>Assisant Coach:</strong> Kim Modo
+          <strong>Assisant Coach:</strong> Kim Modo.
         </li>
 
         <li>
