@@ -7,7 +7,7 @@ function About() {
     goalkeepers: [],
     defenders: [],
     midfielders: [],
-    attackers: [],
+    forwards: [],
   });
 
   useEffect(() => {
@@ -41,15 +41,15 @@ function About() {
     const midfielders = playersData.filter(
       (player) => player.position === "Midfielder",
     );
-    const attackers = playersData.filter(
-      (player) => player.position === "Attacking",
+    const forwards = playersData.filter(
+      (player) => player.position === "Forward",
     );
 
     return {
       goalkeepers: goalkeepers || [],
       defenders: defenders || [],
       midfielders: midfielders || [],
-      attackers: attackers || [],
+      forwards: forwards || [], // ✅ Fixed typo
     };
   };
 
@@ -62,8 +62,8 @@ function About() {
         competitive force in local football.
       </p>
       <p className="kisima-about-text">
-        Today, Kisima FC competes fiercely in Nairobi’s county football league
-        and continues to be a symbol of community and ambition. The team’s home
+        Today, Kisima FC competes fiercely in Nairobi's county football league
+        and continues to be a symbol of community and ambition. The team's home
         ground, Mahiga Primary, serves as a hub for both seasoned players and
         young talents, all united by their love for football and commitment to
         excellence.
@@ -108,15 +108,14 @@ function About() {
           <strong>Coach:</strong> Pele Makana.
         </li>
         <li>
-          <strong>Assisant Coach:</strong> Kim Modo.
+          <strong>Assistant Coach:</strong> Kim Modo.
         </li>
         <li>
-          <strong>Team Treasurer</strong> John Macharia.
+          <strong>Team Treasurer:</strong> John Macharia.
         </li>
         <li>
-          <strong>Team Doctor</strong> Henry Wangai
+          <strong>Team Doctor:</strong> Henry Wangai
         </li>
-
         <li>
           <strong>Home Ground:</strong> Mahiga Primary
         </li>
@@ -135,6 +134,7 @@ function About() {
             <li>No goalkeepers available.</li>
           )}
         </ul>
+
         <h3 className="kisima-players-category">Defenders:</h3>
         <ul className="kisima-player-list">
           {Array.isArray(players.defenders) && players.defenders.length > 0 ? (
@@ -145,6 +145,7 @@ function About() {
             <li>No defenders available.</li>
           )}
         </ul>
+
         <h3 className="kisima-players-category">Midfielders:</h3>
         <ul className="kisima-player-list">
           {Array.isArray(players.midfielders) &&
@@ -156,14 +157,17 @@ function About() {
             <li>No midfielders available.</li>
           )}
         </ul>
+
         <h3 className="kisima-players-category">Forwards:</h3>
         <ul className="kisima-player-list">
-          {Array.isArray(players.attackers) && players.attackers.length > 0 ? (
-            players.attackers.map((player) => (
-              <li key={player.id}>{player.name}</li>
-            ))
+          {Array.isArray(players.forwards) && players.forwards.length > 0 ? (
+            players.forwards.map(
+              (
+                player,
+              ) => <li key={player.id}>{player.name}</li>,
+            )
           ) : (
-            <li>No attackers available.</li>
+            <li>No forwards available.</li> 
           )}
         </ul>
       </div>
