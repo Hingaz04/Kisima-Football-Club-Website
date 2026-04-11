@@ -94,6 +94,18 @@ function ResultAdmin() {
       .then((response) => {
         setResults((prev) => [response.data, ...prev]);
         setSuccess("Result added successfully!");
+
+        // ✅ RESET FORM
+        setFormData({
+          homeTeamImage: null,
+          awayTeamImage: null,
+          homeTeam: "",
+          awayTeam: "",
+          result: "",
+          venue: "",
+          date: "",
+        });
+
         setLoading(false);
       })
       .catch((err) => {
@@ -124,12 +136,11 @@ function ResultAdmin() {
       });
   };
 
-  // ✅ FIXED IMAGE HANDLER (ONLY CHANGE)
+  // IMAGE HANDLER
   const getImageUrl = (img) => {
     if (!img) return "";
     if (img.startsWith("http")) return img;
 
-    // avoid double uploads/ prefix
     const cleaned = img.startsWith("/") ? img.slice(1) : img;
 
     if (cleaned.startsWith("uploads/")) {
@@ -144,7 +155,8 @@ function ResultAdmin() {
       <h1>Results Admin Page</h1>
       <Link to="/admin_dashboard">Back to Admin Dashboard</Link>
 
-      <form className="result-form" onSubmit={handleSubmit}>
+      {/* ✅ key added to force full reset (including file inputs) */}
+      <form className="result-form" onSubmit={handleSubmit} key={success}>
         <p>Home Team</p>
         <input type="file" name="homeTeamImage" onChange={handleChange} />
         <input
@@ -153,6 +165,7 @@ function ResultAdmin() {
           value={formData.homeTeam}
           onChange={handleChange}
         />
+
         <p>Away Team</p>
         <input type="file" name="awayTeamImage" onChange={handleChange} />
         <input
@@ -161,6 +174,7 @@ function ResultAdmin() {
           value={formData.awayTeam}
           onChange={handleChange}
         />
+
         <p>Venue</p>
         <input
           type="text"
@@ -168,6 +182,7 @@ function ResultAdmin() {
           value={formData.venue}
           onChange={handleChange}
         />
+
         <p>Results</p>
         <input
           type="text"
