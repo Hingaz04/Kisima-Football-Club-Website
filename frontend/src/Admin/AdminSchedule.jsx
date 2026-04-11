@@ -140,6 +140,9 @@ function AdminSchedulePage() {
         {fixtures.length > 0 ? (
           fixtures.map((f) => (
             <div className="admin-card" key={f.id}>
+              <p>
+                <strong>Home Team:</strong> {f.homeTeam}
+              </p>
               {f.homeTeamImage && (
                 <img
                   src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${f.homeTeamImage}`}
@@ -149,6 +152,10 @@ function AdminSchedulePage() {
 
               <h3>VS</h3>
 
+              <p>
+                <strong>Away Team:</strong> {f.awayTeam}
+              </p> 
+
               {f.awayTeamImage && (
                 <img
                   src={`https://kisima-football-club-website-27xr.onrender.com/fixture/${f.awayTeamImage}`}
@@ -156,12 +163,6 @@ function AdminSchedulePage() {
                 />
               )}
 
-              <p>
-                <strong>Home:</strong> {f.homeTeam}
-              </p>
-              <p>
-                <strong>Away:</strong> {f.awayTeam}
-              </p>
               <p>
                 <strong>Venue:</strong> {f.venue}
               </p>

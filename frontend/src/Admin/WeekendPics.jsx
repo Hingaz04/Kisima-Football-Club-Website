@@ -69,7 +69,7 @@ function WeekendPics() {
     const formData = new FormData();
 
     // ✅ FIXED FIELD NAME (backend expects "image")
-    formData.append("image", form.image);
+    formData.append("weekendImages", form.image);
     formData.append("date", form.date);
 
     setLoading(true);
@@ -141,7 +141,7 @@ function WeekendPics() {
             {/* ✅ FIXED IMAGE ROUTE */}
             {item.image && (
               <img
-                src={`${BASE_URL}/weekend/uploads/${item.image}`}
+                src={`${BASE_URL}/${item.weekendImages}`}
                 alt="weekend"
                 width="200"
               />

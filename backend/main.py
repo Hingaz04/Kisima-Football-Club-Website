@@ -19,6 +19,7 @@ from AcademyPlayer import academyPlayer_ns
 from AcademyNews import academyNews_ns
 from results import result_ns
 from weekend import weekend_ns
+from weekend import register_upload_route
 
 
 def create_app():
@@ -113,6 +114,7 @@ def create_app():
 # CREATE APP
 # --------------------------
 app = create_app()
+register_upload_route(app)
 
 # ⚠️ DO NOT USE IN PRODUCTION (Render)
 # db.create_all()
