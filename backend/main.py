@@ -50,7 +50,7 @@ def create_app():
     CORS(
         app,
         origins=[
-            "https://kisima-football-club-website.vercel.app", 
+            "https://kisima-fc.vercel.app"", 
             "https://kisimafc.netlify.app",  # Keep old URL for backward compatibility
             "http://localhost:5173",  # Local Vite dev
             "http://localhost:3000",  # Alternative local dev
