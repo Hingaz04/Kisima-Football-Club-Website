@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./Home.css";
+import "./ResultAdmin.css";
 
 const BASE_URL = "https://kisima-football-club-website-27xr.onrender.com";
 
